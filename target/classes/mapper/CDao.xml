@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ryanalexander.minipro.dao.CDao">
+
+    <insert id="Cinsert" parameterType="java.util.List">
+        insert into C(CCid, Cname, Cscore, Cparticipate, CTid, Cscore_1, Cscore_2, Cscore_3, Cscore_4) values
+        <foreach collection ="list" item="c" separator =",">
+            (#{c.CCid}, #{c.Cname}, #{c.Cscore}, #{c.Cparticipate}, #{c.CTid}, #{c.Cscore_1}, #{c.Cscore_2}, #{c.Cscore_3}, #{c.Cscore_4})
+        </foreach>
+    </insert>
+
+    <select id="CGetById" parameterType="String">
+        select * from #{Cid}
+    </select>
+</mapper>
