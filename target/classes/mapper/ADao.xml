@@ -11,4 +11,11 @@
         </foreach>
     </insert>
 
+    <select id="AShow" parameterType="String" resultType="com.alibaba.fastjson.JSONObject">
+        select * from A where Atime=#{Atime} and ATid=#{ATid}
+
+    </select>
+    <select id="AShowAllTime" parameterType="String" resultType="String">
+        select DISTINCT Atime from A where ATid=#{ATid}
+    </select>
 </mapper>

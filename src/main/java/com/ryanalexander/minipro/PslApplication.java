@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync //异步注解？
 @EnableScheduling
-@MapperScan("com.ryanalexander.minipro.dao")
+@MapperScan(basePackages = "com.ryanalexander.minipro.dao")
 public class PslApplication {
 
     public static void main(String[] args) {

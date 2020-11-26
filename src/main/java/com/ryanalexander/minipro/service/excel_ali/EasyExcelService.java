@@ -6,51 +6,68 @@ import com.ryanalexander.minipro.dao.EDao;
 import com.ryanalexander.minipro.dao.TDao;
 import com.ryanalexander.minipro.entries.A;
 import com.ryanalexander.minipro.entries.C;
+import com.ryanalexander.minipro.service.MathService;
 import com.ryanalexander.minipro.service.excel_ali.entity.*;
 import com.ryanalexander.minipro.service.SpringUtil;
-//import com.ryanalxander.psl.psl_project.service.excel_ali.entity.CourseEntity;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
-public class DemoDAO {
+@Service
+public class EasyExcelService {
 
-    private TDao tDao = (TDao) SpringUtil.getBean("TDao");
-    private EDao eDao = (EDao) SpringUtil.getBean("EDao");
-    private CDao cDao = (CDao) SpringUtil.getBean("CDao");
-    private ADao aDao = (ADao) SpringUtil.getBean("ADao");
+    @Autowired
+    private TDao tDao;
 
+    @Autowired
+    private EDao eDao;
+
+    @Autowired
+    private CDao cDao;
+    @Autowired
+    private ADao aDao;
+
+//    private TDao tDao = (TDao) SpringUtil.getBean("TDao");
+//    private EDao eDao = (EDao) SpringUtil.getBean("EDao");
+//    private CDao cDao = (CDao) SpringUtil.getBean("CDao");
+//    private ADao aDao = (ADao) SpringUtil.getBean("ADao");
+
+    public String CCidTrim(String ccid){
+        Pattern r3 = Pattern.compile("^\\((.*?)\\)");
+
+        Matcher m = r3.matcher(ccid);
+        if(m.find())
+            return m.group(1);
+        else {
+//            System.out.println("123123123");
+            return "";
+        }
+    }
     public List<String> strTrim (Object o){
         Pattern r1 = Pattern.compile("\\((.*?)\\)$");
 
         Pattern r2 = Pattern.compile("=(.*)$");
 
-        String a = o.toString();
-        System.out.println("原来一个对象" + a);
-
-        Matcher m = r1.matcher(a);
+        Matcher m = r1.matcher(o.toString());
         List<String> result = new ArrayList<String>();
         if (m.find()) {
             String temp = m.group(1);
-//                        System.out.println(temp);
             String[] temp_ = temp.split(",");
-//                        System.out.println("fragment"+temp_);
 
             for (String s : temp_) {
-//                            System.out.println(temp_[j]);
                 Matcher target = r2.matcher(s);
                 if (target.find()) {
-//                                System.out.println("target "+target.group(1));
                     result.add(target.group(1));
                 }
             }
             // 部门	教师职工号	姓名	参评人次	总得分	全校排名	学院排名
-            System.out.println(result);
+//            System.out.println(result);
         }
         return result;
     }
@@ -96,7 +113,7 @@ public class DemoDAO {
                         "2018",
                         result.get(1),
                         result.get(2), // null ->0
-                        result.get(3),
+                        MathService.rounded(result.get(3)),
                         result.get(4),
                         result.get(5)
                     ));
@@ -110,21 +127,21 @@ public class DemoDAO {
                 for (Object o : list) {
                     List<String> result = strTrim(o);
                     updateTFromOthers(result.get(5),result.get(0));
-
                     list_.add(
                         new C(
                                 result.get(1),
+                                CCidTrim(result.get(1)),
                                 result.get(2),
-                                result.get(3),
+                                MathService.rounded(result.get(3)),
                                 result.get(4),
                                 result.get(5),
-                                result.get(6),
-                                result.get(7),
-                                result.get(8),
-                                result.get(9)
+                                MathService.rounded(result.get(6)),
+                                MathService.rounded(result.get(7)),
+                                MathService.rounded(result.get(8)),
+                                MathService.rounded(result.get(9))
                     ));
                 }
-                System.out.println(list_);
+//                System.out.println(list_);
                 try{
                     cDao.Cinsert(list_);
                 }
@@ -139,7 +156,7 @@ public class DemoDAO {
                 for (Object o : list) {
                     List<String> temp_s = strTrim(o);
                         // 部门	教师职工号	姓名	参评人次	总得分	全校排名	学院排名
-                    System.out.println(temp_s);
+//                    System.out.println(temp_s);
                     if(temp_s.size()>5){
                         if(tDao.TgetById(temp_s.get(1))==null){
                             List<TeacherEntity_> list1 = new ArrayList<>();
@@ -185,7 +202,7 @@ public class DemoDAO {
 
                 for (Object o : list) {
                     List<String> temp_s = strTrim(o);
-                    System.out.println(temp_s);
+//                    System.out.println(temp_s);
                     list_.add(new TeacherEntity_(temp_s.get(0), temp_s.get(1)));
                 }
                 try{
@@ -212,4 +229,6 @@ public class DemoDAO {
             }
         }
     }
+
+
 }

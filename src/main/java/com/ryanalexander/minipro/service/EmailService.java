@@ -1,11 +1,11 @@
 package com.ryanalexander.minipro.service;
 
 import com.ryanalexander.minipro.dao.TDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
@@ -15,20 +15,17 @@ import java.io.IOException;
 
 
 @Service
-public class emailService {
+public class EmailService {
 
-    final
-    JavaMailSender mailSender;
+    @Resource
+    private JavaMailSender mailSender;
 
-    @Autowired
+    @Resource
+    private StaticConfiguration StaticConfiguration;
+    @Resource
     private TDao tDao;
 
-    public emailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
-
-    public static String readFileByLines(String fileName) {
+    public static String readFile(String fileName) {
         File file = new File(fileName);
         BufferedReader reader = null;
         String allString = null;
@@ -63,32 +60,23 @@ public class emailService {
     }
 
 
-    public void sendMails(String Tid) throws MessagingException {
-
-        String addr1 = "D:\\Users\\Lenovo\\IdeaProjects\\psl_project\\src\\main\\resources\\mail.html";
-        String a = null;
-        a = readFileByLines(addr1);
-
-
+    public void sendMails(String Tid, String Tcaptcha, String Tname) throws MessagingException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
+//        String name = tDao.TgetById(Tid).getTname();
 
-        helper.setText(a, true);
-        String mailTo = Tid+"@hdu.edu.cn";
+        String content = readFile(StaticConfiguration.getMailurl());
+        helper.setText(content.replace("老师",Tname+"老师").replace("123456",Tcaptcha),
+                true);
 
-
-
-        String mailTitle = tDao.TgetById(Tid).getTname()+"老师（职工号:"+Tid+"）您好";
-
+//        String mailTo = Tid+"@hdu.edu.cn";
+        String mailTo = "1162179851@QQ.com";
+        String mailTitle = Tname+"老师（职工号:"+Tid+"）您好";
         String mailFrom = "ryan_innerpeace@foxmail.com";
-
         helper.setTo(mailTo);
         helper.setFrom(mailFrom);
-
-
         helper.setSubject(mailTitle);
-
         mailSender.send(mimiMessage);
 
 

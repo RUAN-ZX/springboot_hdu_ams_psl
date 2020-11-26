@@ -1,5 +1,6 @@
 package com.ryanalexander.minipro.entries;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

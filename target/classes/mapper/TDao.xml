@@ -21,10 +21,10 @@
 		UPDATE T SET Tmail = #{Tmail} WHERE Tid = #{Tid}
 	</update>
 
+
 	<update id="TupdatePwd" parameterType="String">
 		UPDATE T SET Tpwd = #{Tpwd} WHERE Tid = #{Tid}
 	</update>
-
 
 	<update id="TupdateDid" parameterType="String">
 		UPDATE T SET TDid = #{TDid} WHERE Tid = #{Tid}

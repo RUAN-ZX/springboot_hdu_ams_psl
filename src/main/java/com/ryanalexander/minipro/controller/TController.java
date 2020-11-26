@@ -4,37 +4,49 @@ package com.ryanalexander.minipro.controller;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.fastjson.JSONObject;
+import com.ryanalexander.minipro.dao.AccountDao;
 import com.ryanalexander.minipro.dao.TDao;
 import com.ryanalexander.minipro.entries.T;
-import com.ryanalexander.minipro.service.emailService;
-import com.ryanalexander.minipro.service.errorService;
+import com.ryanalexander.minipro.service.*;
 import com.ryanalexander.minipro.service.excel_ali.DataListener_T;
+import com.ryanalexander.minipro.service.excel_ali.EasyExcelService;
 import com.ryanalexander.minipro.service.excel_ali.entity.*;
-import com.ryanalexander.minipro.service.jwtService;
-import com.ryanalexander.minipro.service.verifyService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.javassist.bytecode.stackmap.TypeData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
 
 @RestController
 public class TController {
     @Autowired
     private TDao tDao;
-
+    @Resource
+    private EmailService emailservice;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private TService tService;
+
+    @Resource
+    private StaticConfiguration StaticConfiguration;
+
+    @Resource
+    private AccountDao accountDao;
+    @Autowired
+    private EasyExcelService easyExcelService;
 
 
-    List temp = new ArrayList();
+    @ApiOperation("通过token验证")
+    @PostMapping("/loginByaccess")
+    public String verifyByaccess(String Tid, String access){
+        return accountDao.TverifyAccess(Tid,access).toJSONString();
+
+    }
+
     /**
      *
      * return token!!! or error code!!!!
@@ -45,67 +57,89 @@ public class TController {
      *      *      检测到其他输入 却是第一次使用本系统 没有密码 -> 还没有注册过密码 请先使用验证码登录 并注册自己的密码 以为未来登录时使用
      *      *      检测到其他输入 密码错误 ——>密码错误！
      */
+
+    /**
+     * 1 用户登录 传输使用jwt生成的info token [token(Tid Tpwd)]
+     * 2 服务器生成access token与refresh token 【token(Tid)】
+     *
+     */
     @ApiOperation("登录 或者说注册 反正验证一波")
-    @PostMapping("/login")
-    public String verifyByMailPwd(String Tid, String pwd){
+    @PostMapping("/loginBypwd")
+    public String verifyByMailPwd(String Tid, String Tpwd) throws Exception {
+//        String Tid = JSONObject.parseObject(AesService.decrypt(temp))
+//                .getString("Tid");
+//
+//        String pwd = JSONObject.parseObject(AesService.decrypt(temp))
+//                .getString("Tpwd");
 
         try{
             T t =  tDao.TgetById(Tid);
-            // 第一次使用的用户 要求后面设置密码 无论验证码对不对！ ? 要不让前端判断得了 ？
-            // 怎么结合spring security验证啊 感觉直接jwt也行啊
-            if(verifyService.iscaptcha(pwd)){
-                if(t.getTcaptcha().equals("")) return errorService.getCode(3,"验证码过期啦");
-                else if(!t.getTcaptcha().equals(pwd)) return errorService.getCode(4,"验证码错误");
-
+            // 密码不允许纯数字！！ 8位以上
+            if(TService.iscaptcha(Tpwd)){
+                JSONObject jsonObject = accountDao.TverifyCaptcha(Tid,Tpwd);
+                if(jsonObject.getIntValue("code")!=0) return jsonObject.toJSONString();
             }// 普通密码
             else{
-
-                if(t.getTPwd().equals("")){
-                    errorService.getCode(2,"请设置自己的密码 否则均需要验证码登录");
+                if(t.getTPwd()==null){
+                    ErrorService.getCode(2,"请设置自己的密码 否则均需要验证码登录");
                 }
-                else if(!t.getTPwd().equals(pwd)){
-                    return errorService.getCode(5,"密码错误");
+                else if(!t.getTPwd().equals(Tpwd)){
+                    return ErrorService.getCode(5,"密码错误").toJSONString();
                 }
             }
+            JSONObject jsonObject = tService.refreshBothToken(Tid);
+            jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
+            return ErrorService.getCode(0, jsonObject).toJSONString();
 
         }
         catch (Exception e){
             System.out.println(e);
             //用户名找不到
-            return errorService.getCode(1,"教工号不存在");
+            return ErrorService.getCode(1,"您的教工号可能输错了").toJSONString();
         }
 
-        // 无论是验证码还是密码都是ok的 不过怎么验证token时 不把密码加入token！！！ 这样也不需要验证密码和验证码
-        return errorService.getCode(0,jwtService.getToken(Tid));
+
     }
 
-    /**
-     *
-     * @param Tid
-     * @return
-     * 到时候问候语句加上老师名称 职工号等信息 更加可信
-     * 定时任务timertask还没有实现 到时候先写入captcha然后定时清除 所以
-     *
-     */
+
+
+
+
+
     @ApiOperation("获取验证码")
     @PostMapping("/getCaptcha")
-    public boolean getCaptcha(String Tid) throws MessagingException {
-        emailService emailservice = new emailService(mailSender);
-        emailservice.sendMails(Tid);
-        //
-        return true;
+    public String getCaptcha(String Tid) throws Exception {
+//        String Tid = JSONObject.parseObject(AesService.decrypt(temp))
+//                .getString("Tid");
+
+        try{
+            String Tname = tDao.TgetById(Tid).getTname();
+            accountDao.getCaptcha_async(Tid, Tname);
+            return ErrorService.getCode(0,"验证码已发送到您的邮箱 5分钟内有效").toJSONString();
+        }
+        catch (Exception e){
+            return ErrorService.getCode(-1,"您的教工号可能输错了").toJSONString();
+        }
+
     }
+
 
 
     @ApiOperation("更改密码")
     @PostMapping("/updatePwd")
     public String updatePwd(
             String Tid,
-            String Tpwd
+            String Tpwd,
+            String access
         ){
-        // 验证token之后 当然：）
-        tDao.TupdatePwd(Tid,Tpwd);
-        return errorService.getCode(1,"修改完成");
+        JSONObject jsonObject = accountDao.TverifyAccess(Tid,access);
+        if(jsonObject.getIntValue("code")==0){
+            tDao.TupdatePwd(Tid,Tpwd);
+            return ErrorService.getCode(0,"修改完成").toJSONString();
+        }
+        else return jsonObject.toJSONString();
+
+
 
     }
 
@@ -113,7 +147,9 @@ public class TController {
     @ApiOperation("更新Excel")
     @GetMapping("/updateExcel")
     public String updateExcel(){
-        String url = "D:\\Users\\Ryan\\IdeaProjects\\psl\\src\\main\\java\\com\\ryanalexander\\minipro\\service\\excel_ali\\教务查询系统数据.xlsx";
+        String url = StaticConfiguration.getExcelurl();
+//        String url = ResourceUtils.CLASSPATH_URL_PREFIX + "教务查询系统数据.xlsx";
+//        String url = "D:\\Users\\Ryan\\IdeaProjects\\psl\\src\\main\\java\\com\\ryanalexander\\minipro\\service\\excel_ali\\教务查询系统数据.xlsx";
         // 人员信息
         ExcelReader excelReader_1 = EasyExcel.read(url).build();
 
@@ -131,7 +167,7 @@ public class TController {
         try {
             ReadSheet readSheet1 = EasyExcel.readSheet("人员信息")
                     .head(TeacherEntity.class)
-                    .registerReadListener(new DataListener_T<TeacherEntity>()).build();
+                    .registerReadListener(new DataListener_T<TeacherEntity>(easyExcelService)).build();
 
             excelReader_1.read(readSheet1);
         } finally {
@@ -143,7 +179,7 @@ public class TController {
                     EasyExcel.readSheet("学评教总表")
                             .headRowNumber(2)
                             .head(EvaluationEntity.class)
-                            .registerReadListener(new DataListener_T<EvaluationEntity>()).build();
+                            .registerReadListener(new DataListener_T<EvaluationEntity>(easyExcelService)).build();
 
             excelReader_2.read(readSheet2);
 
@@ -156,7 +192,7 @@ public class TController {
                     EasyExcel.readSheet("学评教明细表")
                             .headRowNumber(2)
                             .head(CourseEntity.class)
-                            .registerReadListener(new DataListener_T<CourseEntity>()).build();
+                            .registerReadListener(new DataListener_T<CourseEntity>(easyExcelService)).build();
 
             excelReader_3.read(readSheet3);
 //            return errorService.getCode(0,"good");
@@ -171,7 +207,7 @@ public class TController {
                     EasyExcel.readSheet("业绩考核明细表")
                             .headRowNumber(3)
                             .head(AchievementEntity.class)
-                            .registerReadListener(new DataListener_T<AchievementEntity>()).build();
+                            .registerReadListener(new DataListener_T<AchievementEntity>(easyExcelService)).build();
 
             excelReader_4.read(readSheet4);
 //            return errorService.getCode(0,"good");
@@ -181,19 +217,18 @@ public class TController {
         }
 
         try {
-//            System.out.println("fuxk");
             ReadSheet readSheet5 =
                 EasyExcel.readSheet("工号和邮箱")
                     .headRowNumber(1)
                     .head(EmailEntity.class)
-                    .registerReadListener(new DataListener_T<EmailEntity>()).build();
+                    .registerReadListener(new DataListener_T<EmailEntity>(easyExcelService)).build();
 
             excelReader_5.read(readSheet5);
         } finally {
             if (excelReader_5 != null) excelReader_5.finish();
         }
 
-        return errorService.getCode(0,"good");
+        return ErrorService.getCode(0,"good").toJSONString();
     }
 }
 

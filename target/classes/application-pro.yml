@@ -1,2 +1,6 @@
 server:
-  port: 8080
+  port: 2333
+
+service:
+  excelurl: /usr/local/Ryan/教务查询系统数据.xlsx
+  mailurl: /usr/local/Ryan/mail.html

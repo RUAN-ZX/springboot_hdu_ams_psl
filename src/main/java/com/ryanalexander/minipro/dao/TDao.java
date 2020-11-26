@@ -3,6 +3,7 @@ package com.ryanalexander.minipro.dao;
 import com.ryanalexander.minipro.entries.T;
 import com.ryanalexander.minipro.service.excel_ali.entity.EmailEntity_;
 import com.ryanalexander.minipro.service.excel_ali.entity.TeacherEntity_;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.List;
 /**
  * 对接数据库 真正存储 读取硬盘的操作
  */
-
 @Repository
 public interface TDao {
 
@@ -23,6 +23,8 @@ public interface TDao {
 	void insert(TeacherEntity_ teacherEntity);
 	/* update */
 	void TupdatePwd(String Tid, String Tpwd);
+
+
 
 	void TupdateDid(String TDid,String Tid);
 

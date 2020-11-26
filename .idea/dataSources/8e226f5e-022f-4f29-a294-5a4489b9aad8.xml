@@ -986,165 +986,171 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="230" name="Cname">
+    <column id="247" parent="230" name="Ctime">
       <Position>3</Position>
+      <DataType>char(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="248" parent="230" name="Cname">
+      <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="230" name="Cscore">
-      <Position>4</Position>
+    <column id="249" parent="230" name="Cscore">
+      <Position>5</Position>
       <DataType>int(2)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="230" name="Cparticipate">
-      <Position>5</Position>
+    <column id="250" parent="230" name="Cparticipate">
+      <Position>6</Position>
       <DataType>int(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="230" name="CTid">
-      <Position>6</Position>
+    <column id="251" parent="230" name="CTid">
+      <Position>7</Position>
       <DataType>char(5)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="230" name="Cscore_1">
-      <Position>7</Position>
-      <DataType>int(2)|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="252" parent="230" name="Cscore_2">
+    <column id="252" parent="230" name="Cscore_1">
       <Position>8</Position>
       <DataType>int(2)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="230" name="Cscore_3">
+    <column id="253" parent="230" name="Cscore_2">
       <Position>9</Position>
       <DataType>int(2)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="254" parent="230" name="Cscore_4">
+    <column id="254" parent="230" name="Cscore_3">
       <Position>10</Position>
       <DataType>int(2)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="255" parent="230" name="ctid_tid_fk">
+    <column id="255" parent="230" name="Cscore_4">
+      <Position>11</Position>
+      <DataType>int(2)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="256" parent="230" name="ctid_tid_fk">
       <ColNames>CTid</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="256" parent="230" name="PRIMARY">
+    <key id="257" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Cid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="257" parent="230" name="ctid_tid_fk">
+    <foreign-key id="258" parent="230" name="ctid_tid_fk">
       <ColNames>CTid</ColNames>
       <RefTableName>t</RefTableName>
       <RefColNames>Tid</RefColNames>
     </foreign-key>
-    <column id="258" parent="231" name="Did">
+    <column id="259" parent="231" name="Did">
       <Position>1</Position>
       <DataType>int(2)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="259" parent="231" name="Dname">
+    <column id="260" parent="231" name="Dname">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="260" parent="231" name="PRIMARY">
+    <key id="261" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Did</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="261" parent="232" name="Eid">
+    <column id="262" parent="232" name="Eid">
       <Position>1</Position>
       <DataType>int(8)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="232" name="ETid">
+    <column id="263" parent="232" name="ETid">
       <Position>2</Position>
       <DataType>char(5)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="232" name="Etime">
+    <column id="264" parent="232" name="Etime">
       <Position>3</Position>
       <DataType>char(6)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="232" name="Eparticipate">
+    <column id="265" parent="232" name="Eparticipate">
       <Position>4</Position>
       <DataType>int(4)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="232" name="Escore">
+    <column id="266" parent="232" name="Escore">
       <Position>5</Position>
       <DataType>int(3)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="232" name="Esrank">
+    <column id="267" parent="232" name="Esrank">
       <Position>6</Position>
       <DataType>int(3)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="267" parent="232" name="Eprank">
+    <column id="268" parent="232" name="Eprank">
       <Position>7</Position>
       <DataType>int(3)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="268" parent="232" name="etid_tid_fk">
+    <index id="269" parent="232" name="etid_tid_fk">
       <ColNames>ETid</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="269" parent="232" name="PRIMARY">
+    <key id="270" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Eid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="270" parent="232" name="etid_tid_fk">
+    <foreign-key id="271" parent="232" name="etid_tid_fk">
       <ColNames>ETid</ColNames>
       <RefTableName>t</RefTableName>
       <RefColNames>Tid</RefColNames>
     </foreign-key>
-    <column id="271" parent="233" name="Tid">
+    <column id="272" parent="233" name="Tid">
       <Position>1</Position>
       <DataType>char(5)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="272" parent="233" name="Tname">
+    <column id="273" parent="233" name="Tname">
       <Position>2</Position>
       <DataType>varchar(25)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="233" name="Tmail">
+    <column id="274" parent="233" name="Tmail">
       <Position>3</Position>
-      <DataType>varchar(30)|0s</DataType>
+      <DataType>varchar(50)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="233" name="Tpwd">
+    <column id="275" parent="233" name="Tpwd">
       <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="275" parent="233" name="TDid">
+    <column id="276" parent="233" name="TDid">
       <Position>5</Position>
       <DataType>int(2)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="276" parent="233" name="tdid_did_fk">
+    <index id="277" parent="233" name="tdid_did_fk">
       <ColNames>TDid</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="277" parent="233" name="PRIMARY">
+    <key id="278" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Tid</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="278" parent="233" name="tdid_did_fk">
+    <foreign-key id="279" parent="233" name="tdid_did_fk">
       <ColNames>TDid</ColNames>
       <RefTableName>d</RefTableName>
       <RefColNames>Did</RefColNames>

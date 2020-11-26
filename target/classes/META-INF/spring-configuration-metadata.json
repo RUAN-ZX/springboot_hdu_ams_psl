@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "name": "service",
+      "type": "com.ryanalexander.minipro.service.StaticConfiguration",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration"
+    },
+    {
+      "name": "spring.datasource",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.ryanalexander.minipro.config.DruidConfig",
+      "sourceMethod": "druidDataSource()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "service.excelurl",
+      "type": "java.lang.String",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration"
+    },
+    {
+      "name": "service.mailurl",
+      "type": "java.lang.String",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration"
+    }
+  ],
+  "hints": []
+}

@@ -2,7 +2,7 @@ package com.ryanalexander.minipro.controller;
 
 import com.ryanalexander.minipro.dao.DDao;
 import com.ryanalexander.minipro.entries.D;
-import com.ryanalexander.minipro.service.errorService;
+import com.ryanalexander.minipro.service.ErrorService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ public class DController {
     ){
         // 验证token之后 当然：）
         
-        return errorService.getCode(1,dDao.DgetById(Did));
+        return ErrorService.getCode(1,dDao.DgetById(Did)).toJSONString();
 
     }
 
@@ -35,12 +35,12 @@ public class DController {
         D d = new D(Did,Dname);
         try {
             dDao.Dinsert(d);
-            return errorService.getCode(0,dDao.DgetById(Did));
+            return ErrorService.getCode(0,dDao.DgetById(Did)).toJSONString();
 
         }
         catch (Exception e){
 
-            return errorService.getCode(1,e.toString());
+            return ErrorService.getCode(1,e.toString()).toJSONString();
         }
     }
 

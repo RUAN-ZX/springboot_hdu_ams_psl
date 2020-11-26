@@ -3,11 +3,8 @@ package com.ryanalexander.minipro.service.excel_ali;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
-import com.ryanalexander.minipro.dao.TDao;
-import com.ryanalexander.minipro.service.excel_ali.entity.TeacherEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +16,11 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
 
 
 
-    private DemoDAO demoDAO;
+    private EasyExcelService easyExcelService;
 
-    public DataListener_T() {
+    public DataListener_T(EasyExcelService easyExcelService) {
         // 这里是demo，所以随便new一个。实际使用如果到了spring,请使用下面的有参构造函数
-        this.demoDAO = new DemoDAO();
+        this.easyExcelService = easyExcelService;
     }
     private static final Logger LOGGER = LoggerFactory.getLogger(DataListener_T.class);
 
@@ -50,7 +47,7 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
 
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (list.size() >= BATCH_COUNT) {
-            demoDAO.save(list,m.group(0));
+            easyExcelService.save(list,m.group(0));
             // 存储完成清理 list
             list.clear();
         }
@@ -58,7 +55,7 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        demoDAO.save(list,className);
+        easyExcelService.save(list,className);
     }
 
 

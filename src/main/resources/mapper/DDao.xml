@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ryanalexander.minipro.dao.DDao">
 <select id="DgetById" parameterType="String" resultType="String">
-    select Dname from d where Did=#{Did}
+    select Dname from D where Did=#{Did}
 </select>
 
 

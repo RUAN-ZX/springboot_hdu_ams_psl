@@ -10,4 +10,13 @@
             (#{e.ETid}, #{e.Etime}, #{e.Eparticipate}, #{e.Escore}, #{e.Esrank}, #{e.Eprank})
         </foreach>
     </insert>
+
+    <select id="EShow" parameterType="String" resultType="com.alibaba.fastjson.JSONObject">
+        select * from E where Etime=#{Etime} and ETid=#{ETid}
+
+    </select>
+    <select id="EShowAllTime" parameterType="String" resultType="String">
+        select DISTINCT Etime from E where ETid=#{ETid}
+    </select>
+
 </mapper>

@@ -14,6 +14,7 @@ import lombok.ToString;
 public class C {
     //一定要和数据表中的名字完全一样！ 用别名非常麻烦！！！
     private String CCid;
+    private String Ctime;
 
 
 

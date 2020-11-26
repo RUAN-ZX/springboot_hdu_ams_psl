@@ -1,22 +1,38 @@
 
 
 spring:
+  profiles:
+    active: pro
+  redis:
+    host: 127.0.0.1
+    port: 6379
   mail:
+    port: 465
     username: 1162179851@qq.com
     password: lljobwqcuqslgcdh
     host: smtp.qq.com
+    default-encoding: UTF-8
     properties:
       mail:
         stmp:
           ssl:
             enable: true
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+          starttls:
+            enable: true
+            required: true
 
 
-  profiles:
-    active: dev
+
+
   datasource:
     username: root
-    password: Rzx8170069
+    password: Rzx8170069:)
     url: jdbc:mysql://localhost:3306/teacherdata?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -59,3 +75,6 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+service:
+  excelurl: /usr/local/Ryan/教务查询系统数据.xlsx
+  mailurl: /usr/local/Ryan/mail.html

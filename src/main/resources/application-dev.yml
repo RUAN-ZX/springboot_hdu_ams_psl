@@ -1,2 +1,6 @@
 server:
-  port: 8081
+  port: 8080
+
+service:
+  excelurl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\教务查询系统数据.xlsx
+  mailurl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\mail.html
