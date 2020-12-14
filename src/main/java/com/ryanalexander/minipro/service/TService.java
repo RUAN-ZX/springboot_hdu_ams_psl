@@ -3,6 +3,7 @@ package com.ryanalexander.minipro.service;
 import com.alibaba.fastjson.JSONObject;
 import com.ryanalexander.minipro.dao.AccountDao;
 import com.ryanalexander.minipro.dao.TDao;
+import com.ryanalexander.minipro.entries.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -72,4 +73,15 @@ public class TService {
         }
         else return jsonObject;
     }
+
+    public JSONObject getEmailById(String Tid){
+        try {
+            T t = tDao.TgetById(Tid);
+            return ErrorService.getCode(0, t.getTmail());
+        }
+        catch (Exception e){
+            return ErrorService.getCode(1,"您的教工号可能输错了");
+        }
+    }
+
 }

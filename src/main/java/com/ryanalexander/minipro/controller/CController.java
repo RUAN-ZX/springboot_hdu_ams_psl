@@ -26,11 +26,11 @@ public class CController {
         return tService.verifyAccess(cService.CGetLast(CTid),CTid,access).toJSONString();
     }
 
-    @ApiOperation("获取当前老师最新的课程学评教信息C 所有的年份 ")
-    @PostMapping("/CGetAllYears")
-    public String CGetAllYears(String CTid, String access){
-        return tService.verifyAccess(cService.CGetAllYears(CTid),CTid,access).toJSONString();
-    }
+//    @ApiOperation("获取当前老师最新的课程学评教信息C 所有的年份 ")
+//    @PostMapping("/CGetAllYears")
+//    public String CGetAllYears(String CTid, String access){
+//        return tService.verifyAccess(cService.CGetAllYears(CTid),CTid,access).toJSONString();
+//    }
     @ApiOperation("获取当前老师一年的课程学评教信息C ")
     @PostMapping("/CGetOne")
     public String CGetOne(String CTid, String year, String access){

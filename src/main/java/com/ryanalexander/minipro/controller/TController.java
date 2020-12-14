@@ -14,7 +14,6 @@ import com.ryanalexander.minipro.service.excel_ali.EasyExcelService;
 import com.ryanalexander.minipro.service.excel_ali.entity.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +39,33 @@ public class TController {
     private EasyExcelService easyExcelService;
 
 
+
+
     @ApiOperation("通过token验证")
     @PostMapping("/loginByaccess")
-    public String verifyByaccess(String Tid, String access){
-        return accountDao.TverifyAccess(Tid,access).toJSONString();
+    public String loginByaccess(String Tid, String access){
+        JSONObject result = accountDao.TverifyAccess(Tid,access);
+        if(result.getIntValue("code")==0){
+            JSONObject jsonObject = tService.refreshBothToken(Tid);
+            jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
+            return ErrorService.getCode(0, jsonObject).toJSONString();
+        }
+
+        return result.toJSONString();
+
+    }
+
+    @ApiOperation("通过refresh token更新access token")
+    @PostMapping("/refresh")
+    public String refresh(String Tid, String refresh){
+        JSONObject result = accountDao.TverifyRefresh(Tid,refresh);
+        if(result.getIntValue("code")==0){
+            JSONObject jsonObject = tService.refreshBothToken(Tid);
+//            jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
+            return ErrorService.getCode(0, jsonObject).toJSONString();
+        }
+
+        return result.toJSONString();
 
     }
 
@@ -65,7 +87,7 @@ public class TController {
      */
     @ApiOperation("登录 或者说注册 反正验证一波")
     @PostMapping("/loginBypwd")
-    public String verifyByMailPwd(String Tid, String Tpwd) throws Exception {
+    public String loginBypwd(String Tid, String Tpwd) throws Exception {
 //        String Tid = JSONObject.parseObject(AesService.decrypt(temp))
 //                .getString("Tid");
 //
@@ -229,6 +251,12 @@ public class TController {
         }
 
         return ErrorService.getCode(0,"good").toJSONString();
+    }
+
+    @ApiOperation("getEmailById")
+    @PostMapping("/getEmailById")
+    public String getEmailById(String Tid, String access){
+        return tService.verifyAccess(tService.getEmailById(Tid),Tid,access).toJSONString();
     }
 }
 

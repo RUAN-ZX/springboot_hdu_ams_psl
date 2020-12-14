@@ -27,5 +27,16 @@ public class EController {
         return tService.verifyAccess(eService.EGetLast(ETid),ETid,access).toJSONString();
     }
 
+    @ApiOperation("获取当前老师最新学评教总评E 所有的年份 ")
+    @PostMapping("/EGetAllYears")
+    public String EGetAllYears(String ETid, String access){
+        return tService.verifyAccess(eService.EGetAllYears(ETid),ETid,access).toJSONString();
+    }
+    @ApiOperation("获取当前老师一年最新总评A ")
+    @PostMapping("/EGetOne")
+    public String EGetOne(String ETid, String year, String access){
+        return tService.verifyAccess(eService.EGetOne(ETid, year),ETid,access).toJSONString();
+    }
+
 }
 

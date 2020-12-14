@@ -17,16 +17,19 @@ public class AService {
     ADao aDao;
 
     public JSONObject AGetLast(String Aid){
-        List<String> str = new ArrayList<String>();
-        try{
-            str = aDao.AShowAllTime(Aid);
+        return AGetOne(Aid, Collections.max(aDao.AShowAllTime(Aid)));
 
-            return ErrorService.getCode(0,aDao.AShow(Aid, Collections.max(str)));
+    }
+    public JSONObject AGetAllYears(String Aid){
+        return ErrorService.getCode(0,aDao.AShowAllTime(Aid));
+    }
+    public JSONObject AGetOne(String Aid, String Year){
+        try{
+            return ErrorService.getCode(0,aDao.AShow(Aid, Year));
         }
         catch (Exception e){
             return ErrorService.getCode(-1,"ATid 不存在");
         }
 
     }
-
 }

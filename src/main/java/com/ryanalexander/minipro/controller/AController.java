@@ -18,9 +18,20 @@ public class AController {
     private AccountDao accountDao;
     @Autowired
     private TService tService;
-    @ApiOperation("获取当前老师最新的教学成果A 总评数据")
+    @ApiOperation("获取当前最新的菜品")
     @PostMapping("/AgetLast")
     public String AGetLast(String ATid,String access){
         return tService.verifyAccess(aService.AGetLast(ATid),ATid,access).toJSONString();
+    }
+
+    @ApiOperation("获取当前老师最新总评A 所有的年份 ")
+    @PostMapping("/AGetAllYears")
+    public String AGetAllYears(String ATid, String access){
+        return tService.verifyAccess(aService.AGetAllYears(ATid),ATid,access).toJSONString();
+    }
+    @ApiOperation("获取当前老师一年最新总评A ")
+    @PostMapping("/AGetOne")
+    public String AGetOne(String ATid, String year, String access){
+        return tService.verifyAccess(aService.AGetOne(ATid, year),ATid,access).toJSONString();
     }
 }

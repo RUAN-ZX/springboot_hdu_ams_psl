@@ -77,17 +77,17 @@ public class AccountDao {
         int code = verifyKey(Tid,"Taccess",Taccess).getIntValue("code");
         if(code==0) return ErrorService.getCode(0,"access token验证成功");
         else if(code==-1)
-            // 这里设计 让客户端再次发起请求 用refresh token获取新的access token再说 而不是这次请求就连refresh token一起用了
+            // 这里设计 让客户端再次发起请求 用refresh token获取新的access token
             return ErrorService.getCode(-1,"access token过期 请尝试refresh");
         else return ErrorService.getCode(1,"access token 不可用");
 
     }
 
-    public JSONObject Tverifyrefresh(String Tid, String Trefresh){
+    public JSONObject TverifyRefresh(String Tid, String Trefresh){
         int code = verifyKey(Tid,"Trefresh",Trefresh).getIntValue("code");
         if(code==0) return ErrorService.getCode(0,"Trefresh token验证成功");
         else if(code==-1)
-            // 这里设计 让客户端再次发起请求 用refresh token获取新的access token再说 而不是这次请求就连refresh token一起用了
+
             return ErrorService.getCode(-1,"Trefresh token过期 ");
         else return ErrorService.getCode(1,"Trefresh token 不可用");
 

@@ -17,13 +17,13 @@ public class CService {
     @Autowired
     CDao cDao;
 
-    public JSONObject CGetAllYears(String Cid){
-        return ErrorService.getCode(0,cDao.CShowAllTime(Cid));
-    }
-    public JSONObject CGetLast(String Cid){
-            return CGetOne(Cid, Collections.max(cDao.CShowAllTime(Cid)));
-    }
 
+    public JSONObject CGetLast(String Cid){
+        return CGetOne(Cid, Collections.max(cDao.CShowAllTime(Cid)));
+    }
+//    public JSONObject CGetAllYears(String Cid){
+//        return ErrorService.getCode(0,cDao.CShowAllTime(Cid));
+//    }
     public JSONObject CGetOne(String Cid, String Year){
         try{
             return ErrorService.getCode(0,cDao.CShow(Cid, Year));

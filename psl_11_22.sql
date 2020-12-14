@@ -74,3 +74,6 @@ CREATE TABLE `A` (
 
 
 INSERT D(`Did`,`Dname`) VALUES("01", "电子信息学院（微电子学院）");
+
+
+

@@ -16,16 +16,20 @@ public class EService {
     EDao eDao;
 
     public JSONObject EGetLast(String Eid){
-        List<String> str = new ArrayList<String>();
+        return EGetOne(Eid, Collections.max(eDao.EShowAllTime(Eid)));
+    }
+    public JSONObject EGetAllYears(String Eid){
+        return ErrorService.getCode(0,eDao.EShowAllTime(Eid));
+    }
+    public JSONObject EGetOne(String Eid, String Year){
         try{
-            str = eDao.EShowAllTime(Eid);
-
-            return ErrorService.getCode(0,eDao.EShow(Eid, Collections.max(str)));
+            return ErrorService.getCode(0,eDao.EShow(Eid, Year));
         }
         catch (Exception e){
             return ErrorService.getCode(-1,"ETid 不存在");
         }
 
     }
+
 
 }
