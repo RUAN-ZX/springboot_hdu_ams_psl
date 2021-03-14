@@ -15,7 +15,7 @@ public class DController {
 
     
     @ApiOperation("根据ID获取部门名字")
-    @PostMapping("/DgetById")
+    @PostMapping("/DGetById")
     public String DgetById(
             String Did
     ){
@@ -26,7 +26,7 @@ public class DController {
     }
 
     @ApiOperation("部门插入")
-    @PostMapping("/Dinsert")
+    @PostMapping("/DInsert")
     public String Dinsert(
             String Did,
             String Dname

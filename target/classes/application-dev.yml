@@ -2,5 +2,8 @@ server:
   port: 8080
 
 service:
-  excelurl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\教务查询系统数据.xlsx
-  mailurl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\mail.html
+  excelUrl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\教务查询系统数据.xlsx
+  mailUrl: D:\Users\Ryan\IdeaProjects\minipro_psl\src\main\resources\mail.html
+  captchaExpire: 10
+  accessExpire: 1
+  refreshExpire: 60

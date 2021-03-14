@@ -1,9 +1,9 @@
 package com.ryanalexander.minipro.dao;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ryanalexander.minipro.entries.E;
 import com.ryanalexander.minipro.service.EmailService;
 import com.ryanalexander.minipro.service.ErrorService;
+import com.ryanalexander.minipro.service.StaticConfiguration;
 import com.ryanalexander.minipro.service.TService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +28,8 @@ public class AccountDao {
 
     @Resource
     EmailService emailService;
+    @Resource
+    StaticConfiguration staticConfiguration;
 
     private void updateKey(String Tid, String eventName, String value,int nums, TimeUnit timeUnit){
         ryanRedisTemplate.opsForValue().set(Tid+":"+eventName,value, nums, timeUnit);
@@ -49,16 +51,23 @@ public class AccountDao {
 
 
     public void TupdateAccess(String Taccess, String Tid){
-        updateKey(Tid,"Taccess",Taccess,1,TimeUnit.DAYS);
+        int nums = staticConfiguration.getAccessExpire();
+//        int nums = 1;
+        updateKey(Tid,"Taccess",Taccess,nums,TimeUnit.DAYS);
 
     }
     public void TupdateRefresh(String Trefresh, String Tid){
-        updateKey(Tid,"Trefresh",Trefresh,7,TimeUnit.DAYS);
+        int nums = staticConfiguration.getRefreshExpire();
+//        int nums = 1;
+        updateKey(Tid,"Trefresh",Trefresh,nums,TimeUnit.DAYS);
 
     }
 
     public void TupdateCaptcha(String Tcaptcha, String Tid) throws MessagingException {
-        updateKey(Tid,"Tcaptcha",Tcaptcha,5,TimeUnit.MINUTES);
+
+        int nums = staticConfiguration.getCaptchaExpire();
+//        int nums = 1;
+        updateKey(Tid,"Tcaptcha",Tcaptcha,nums,TimeUnit.MINUTES);
     }
 
     public JSONObject TverifyCaptcha(String Tid, String Tcaptcha){
@@ -94,11 +103,11 @@ public class AccountDao {
     }
 
     @Async
-    public void getCaptcha_async(String Tid, String Tname) throws Exception{
+    public void getCaptcha_async(String Tid, String Tname, String Tmail) throws Exception{
 
 
         String Tcaptcha = TService.generateVerCode(Tid);
-        emailService.sendMails(Tid,Tcaptcha, Tname);
+        emailService.sendCaptchaMails(Tid,Tcaptcha, Tname, Tmail);
 
         TupdateCaptcha(Tcaptcha,Tid);
     }

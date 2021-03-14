@@ -55,6 +55,7 @@ CREATE TABLE `E` (
   CONSTRAINT `etid_tid_fk` FOREIGN KEY (`ETid`) REFERENCES `T` (`Tid`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `A` (
   `Aid` INT(8) AUTO_INCREMENT NOT NULL,
 
@@ -74,6 +75,3 @@ CREATE TABLE `A` (
 
 
 INSERT D(`Did`,`Dname`) VALUES("01", "电子信息学院（微电子学院）");
-
-
-

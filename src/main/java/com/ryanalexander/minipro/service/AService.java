@@ -23,6 +23,7 @@ public class AService {
     public JSONObject AGetAllYears(String Aid){
         return ErrorService.getCode(0,aDao.AShowAllTime(Aid));
     }
+
     public JSONObject AGetOne(String Aid, String Year){
         try{
             return ErrorService.getCode(0,aDao.AShow(Aid, Year));
@@ -32,4 +33,17 @@ public class AService {
         }
 
     }
+
+    public JSONObject AGetAll(String Aid){
+        try{
+            return ErrorService.getCode(0,aDao.AShowAll(Aid));
+        }
+        catch (Exception e){
+            return ErrorService.getCode(-1,"ATid 不存在");
+        }
+
+    }
+
+
 }
+

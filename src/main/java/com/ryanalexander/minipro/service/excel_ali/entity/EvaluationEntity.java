@@ -33,6 +33,9 @@ public class EvaluationEntity {
     @ExcelProperty(value = "姓名")
     private String ename;
 
+
+    @ExcelProperty(value = "年份")
+    private String etime;
 //    private Double doubleData;
 }
 

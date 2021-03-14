@@ -23,8 +23,6 @@ public class EvaluationEntity_ {
     private String Eprank;
 
 
-
-
 //    private Double doubleData;
 }
 

@@ -41,8 +41,15 @@ public class TController {
 
 
 
+    @ApiOperation("SST Shiro hashcode")
+    @PostMapping("/md5")
+    public String md5Encryption(String name,String password){
+        return MathService.md5Encryption(name,password);
+    }
+
+
     @ApiOperation("通过token验证")
-    @PostMapping("/loginByaccess")
+    @PostMapping("/loginByAccess")
     public String loginByaccess(String Tid, String access){
         JSONObject result = accountDao.TverifyAccess(Tid,access);
         if(result.getIntValue("code")==0){
@@ -61,7 +68,7 @@ public class TController {
         JSONObject result = accountDao.TverifyRefresh(Tid,refresh);
         if(result.getIntValue("code")==0){
             JSONObject jsonObject = tService.refreshBothToken(Tid);
-//            jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
+            jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
             return ErrorService.getCode(0, jsonObject).toJSONString();
         }
 
@@ -86,7 +93,7 @@ public class TController {
      *
      */
     @ApiOperation("登录 或者说注册 反正验证一波")
-    @PostMapping("/loginBypwd")
+    @PostMapping("/loginByPwd")
     public String loginBypwd(String Tid, String Tpwd) throws Exception {
 //        String Tid = JSONObject.parseObject(AesService.decrypt(temp))
 //                .getString("Tid");
@@ -103,12 +110,13 @@ public class TController {
             }// 普通密码
             else{
                 if(t.getTPwd()==null){
-                    ErrorService.getCode(2,"请设置自己的密码 否则均需要验证码登录");
+                    return ErrorService.getCode(2,"请设置自己的密码 否则均需要验证码登录").toJSONString();
                 }
                 else if(!t.getTPwd().equals(Tpwd)){
                     return ErrorService.getCode(5,"密码错误").toJSONString();
                 }
             }
+
             JSONObject jsonObject = tService.refreshBothToken(Tid);
             jsonObject.put("Tname",tDao.TgetById(Tid).getTname());
             return ErrorService.getCode(0, jsonObject).toJSONString();
@@ -136,8 +144,10 @@ public class TController {
 
         try{
             String Tname = tDao.TgetById(Tid).getTname();
-            accountDao.getCaptcha_async(Tid, Tname);
-            return ErrorService.getCode(0,"验证码已发送到您的邮箱 5分钟内有效").toJSONString();
+            String Temail = tDao.TgetById(Tid).getTmail();
+
+            accountDao.getCaptcha_async(Tid, Tname, Temail);
+            return ErrorService.getCode(0,"验证码已发送到您的邮箱"+Temail+" 10分钟内有效").toJSONString();
         }
         catch (Exception e){
             return ErrorService.getCode(-1,"您的教工号可能输错了").toJSONString();
@@ -169,10 +179,8 @@ public class TController {
     @ApiOperation("更新Excel")
     @GetMapping("/updateExcel")
     public String updateExcel(){
-        String url = StaticConfiguration.getExcelurl();
-//        String url = ResourceUtils.CLASSPATH_URL_PREFIX + "教务查询系统数据.xlsx";
-//        String url = "D:\\Users\\Ryan\\IdeaProjects\\psl\\src\\main\\java\\com\\ryanalexander\\minipro\\service\\excel_ali\\教务查询系统数据.xlsx";
-        // 人员信息
+        String url = StaticConfiguration.getExcelUrl();
+//      // 人员信息
         ExcelReader excelReader_1 = EasyExcel.read(url).build();
 
         //学评教总表

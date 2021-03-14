@@ -75,6 +75,3 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-service:
-  excelurl: /usr/local/Ryan/教务查询系统数据.xlsx
-  mailurl: /usr/local/Ryan/mail.html

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ryanalexander.minipro.dao.FDao">
+
+    <select id="f_select" parameterType="String" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT * FROM f WHERE ISNULL(f_f_time);
+    </select>
+
+    <insert id="f_insert" parameterType="String">
+        INSERT INTO f (
+            f_t_id,
+            f_title,
+            f_path,
+            f_content,
+            f_time
+        )
+        VALUES
+            (#{f_t_id}, #{f_title}, #{f_path}, #{f_content},NOW()) ;
+    </insert>
+
+    <update id="f_update" parameterType="String">
+        UPDATE f SET f_f_time = NOW() WHERE f_id = #{f_id};
+    </update>
+
+    <select id="f_select_content" parameterType="String" resultType="String">
+        SELECT f_content FROM f WHERE f_id=#{f_id};
+    </select>
+</mapper>

@@ -14,14 +14,32 @@
   ],
   "properties": [
     {
-      "name": "service.excelurl",
+      "name": "service.access-expire",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration",
+      "defaultValue": 0
+    },
+    {
+      "name": "service.captcha-expire",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration",
+      "defaultValue": 0
+    },
+    {
+      "name": "service.excel-url",
       "type": "java.lang.String",
       "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration"
     },
     {
-      "name": "service.mailurl",
+      "name": "service.mail-url",
       "type": "java.lang.String",
       "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration"
+    },
+    {
+      "name": "service.refresh-expire",
+      "type": "java.lang.Integer",
+      "sourceType": "com.ryanalexander.minipro.service.StaticConfiguration",
+      "defaultValue": 0
     }
   ],
   "hints": []

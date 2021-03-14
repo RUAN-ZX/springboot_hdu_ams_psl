@@ -2,5 +2,8 @@ server:
   port: 2333
 
 service:
-  excelurl: /usr/local/Ryan/教务查询系统数据.xlsx
-  mailurl: /usr/local/Ryan/mail.html
+  excelUrl: /usr/local/Ryan/psl/static/教务查询系统数据.xlsx
+  mailUrl: /usr/local/Ryan/psl/static/mail.html
+  captchaExpire: 10
+  accessExpire: 1
+  refreshExpire: 60

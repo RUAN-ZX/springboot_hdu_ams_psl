@@ -21,7 +21,7 @@ public class CController {
     @Autowired
     private TService tService;
     @ApiOperation("获取当前老师最新的课程学评教信息C 总评数据")
-    @PostMapping("/CgetLast")
+    @PostMapping("/CGetLast")
     public String CGetLast(String CTid, String access){
         return tService.verifyAccess(cService.CGetLast(CTid),CTid,access).toJSONString();
     }

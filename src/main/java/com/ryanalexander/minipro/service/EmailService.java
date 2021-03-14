@@ -1,5 +1,6 @@
 package com.ryanalexander.minipro.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ryanalexander.minipro.dao.TDao;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -60,25 +61,41 @@ public class EmailService {
     }
 
 
-    public void sendMails(String Tid, String Tcaptcha, String Tname) throws MessagingException {
+    public void sendCaptchaMails(String Tid, String Tcaptcha, String Tname, String Tmail) throws MessagingException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
-//        String name = tDao.TgetById(Tid).getTname();
 
-        String content = readFile(StaticConfiguration.getMailurl());
+        String content = readFile(StaticConfiguration.getMailUrl());
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Tcaptcha),
                 true);
 
-//        String mailTo = Tid+"@hdu.edu.cn";
-        String mailTo = "1162179851@QQ.com";
-        String mailTitle = Tname+"老师（职工号:"+Tid+"）您好";
+        String mailTitle = "[教务查系统] 验证码："+Tcaptcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
-        helper.setTo(mailTo);
+        helper.setTo(Tmail);
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
 
 
     }
+    public void sendFeedbackMails(String Tid, String Tname, String Tmail, String Fcontent) throws MessagingException {
+        MimeMessage mimiMessage = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
+
+        String content = readFile(StaticConfiguration.getMailUrl());
+        helper.setText(content.replace("老师",Tname+"老师").replace("123456",Fcontent),
+                true);
+        // 怎么弄 怎么设计title
+        String mailTitle = "处理结果"+Fcontent+" [ "+Tname+"老师 (职工号:"+Tid+") ]";
+        String mailFrom = "ryan_innerpeace@foxmail.com";
+        helper.setTo(Tmail);
+        helper.setFrom(mailFrom);
+        helper.setSubject(mailTitle);
+        mailSender.send(mimiMessage);
+
+
+    }
+
 }

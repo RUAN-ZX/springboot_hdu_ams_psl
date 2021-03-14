@@ -103,19 +103,19 @@ public class EasyExcelService {
 
                 for (Object o : list) {
                     List<String> result = strTrim(o);
-                    updateTFromOthers(result.get(0),result.get(6));
+                    updateTFromOthers(result.get(0),result.get(1));
                     if(result.get(2).equals("null")) result.set(2,"0");
-                    if(result.get(3).equals("null")) result.set(3,"0");
-                    if(result.get(5).equals("null")) result.set(5,"无");
+                    if(result.get(4).equals("null")) result.set(4,"0");
+                    if(result.get(6).equals("null")) result.set(6,"无");
 
                     list_.add(new A(
                        result.get(0),
-                        "2018",
-                        result.get(1),
-                        result.get(2), // null ->0
-                        MathService.rounded(result.get(3)),
-                        result.get(4),
-                        result.get(5)
+                        result.get(2),
+                        result.get(3),
+                        MathService.rounded(result.get(4)), // null ->0
+                        result.get(5),
+                        result.get(6),
+                        result.get(7)
                     ));
                 }
                 aDao.Ainsert(list_);
@@ -163,14 +163,16 @@ public class EasyExcelService {
                             list1.add(new TeacherEntity_(temp_s.get(1),temp_s.get(6)));
                             tDao.TinsertByIdName(list1);
                         }
+                        System.out.println(temp_s);
                         list_.add(new EvaluationEntity_(
                                 temp_s.get(1),
-                                "2019-1",
+                                temp_s.get(7),
                                 temp_s.get(2),
                                 temp_s.get(3),
                                 temp_s.get(4),
                                 temp_s.get(5)
                         ));
+                        System.out.println("111"+list_);
                     }
 
 
@@ -187,8 +189,6 @@ public class EasyExcelService {
 
                 }
                 try{
-                    // 更新学评教明细
-                    EDao eDao = (EDao) SpringUtil.getBean("EDao");
                     if(eDao!=null) eDao.Einsert(list_);
                 }
                 catch (Exception e){

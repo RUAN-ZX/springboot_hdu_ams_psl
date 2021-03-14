@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.security.SecureRandom;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -83,5 +82,9 @@ public class TService {
             return ErrorService.getCode(1,"您的教工号可能输错了");
         }
     }
+
+
+
+
 
 }

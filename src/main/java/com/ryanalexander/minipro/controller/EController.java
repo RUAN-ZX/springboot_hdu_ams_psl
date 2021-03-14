@@ -22,7 +22,7 @@ public class EController {
     @Autowired
     private AccountDao accountDao;
     @ApiOperation("获取当前老师最新的学评教E 总评数据")
-    @PostMapping("/EgetLast")
+    @PostMapping("/EGetLast")
     public String EGetLast(String ETid, String access){
         return tService.verifyAccess(eService.EGetLast(ETid),ETid,access).toJSONString();
     }
@@ -39,4 +39,5 @@ public class EController {
     }
 
 }
+
 

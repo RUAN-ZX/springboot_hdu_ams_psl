@@ -11,4 +11,7 @@ public interface ADao {
     void Ainsert(List<A> list);
     List<String> AShowAllTime(String ATid);
     JSONObject AShow(String ATid, String Atime);
+    List<JSONObject> AShowAll(String ATid);
+
 }
+
