@@ -1,7 +1,5 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
-public class ExcelEntity {
-    public Object transformAndSave(){
-        return this;
-    };
+public interface ExcelEntity {
+    public Object transformAndSave();
 }

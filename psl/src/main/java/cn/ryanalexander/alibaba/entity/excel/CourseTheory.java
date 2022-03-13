@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 @AllArgsConstructor
 @ApiModel("工作量_理论课程")
 @ToString
-public class CourseTheory extends ExcelEntity{
+public class CourseTheory implements ExcelEntity{
 
     @ExcelProperty(value = "学期")
     private String c_term;

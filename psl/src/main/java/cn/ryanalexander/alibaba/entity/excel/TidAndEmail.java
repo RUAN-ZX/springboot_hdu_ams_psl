@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
+import cn.ryanalexander.alibaba.entity.Teacher;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @ApiModel("工号和邮箱")
-public class TidAndEmail {
+public class TidAndEmail implements ExcelEntity{
     @ExcelProperty(value = "职工号")
     public String t_id;
 
@@ -26,4 +27,9 @@ public class TidAndEmail {
 
     @ExcelProperty(value = "邮箱")
     public String t_email;
+
+    @Override
+    public Object transformAndSave(){
+        return new Teacher()
+    }
 }

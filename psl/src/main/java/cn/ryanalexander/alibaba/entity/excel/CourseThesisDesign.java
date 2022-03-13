@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("毕业设计")
-public class CourseThesisDesign extends ExcelEntity{
+public class CourseThesisDesign implements ExcelEntity{
     @ExcelProperty(value = "教师姓名")
     private String td_name;
 
