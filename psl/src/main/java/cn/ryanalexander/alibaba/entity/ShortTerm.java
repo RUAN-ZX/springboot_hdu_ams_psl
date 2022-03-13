@@ -1,6 +1,5 @@
 package cn.ryanalexander.alibaba.entity;
 
-import cn.ryanalexander.alibaba.entity.excel.ExcelEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

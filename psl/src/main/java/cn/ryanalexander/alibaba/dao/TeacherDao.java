@@ -17,7 +17,7 @@ public interface TeacherDao {
 	/* insert */
 
 	void TinsertByIdName(List<TeacherEntity_> list);
-	void TinsertByIdNameEmail(String Tid, String Tname, String Tmail);
+	void TinsertByIdNameEmail(List list);
 
 	void insert(TeacherEntity_ teacherEntity);
 	/* update */

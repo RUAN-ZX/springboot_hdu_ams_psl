@@ -4,6 +4,7 @@ package cn.ryanalexander.alibaba.controller;
 import cn.ryanalexander.alibaba.dao.AccountDao;
 import cn.ryanalexander.alibaba.dao.TeacherDao;
 import cn.ryanalexander.alibaba.entity.Teacher;
+import cn.ryanalexander.alibaba.entity.TidAndEmail;
 import cn.ryanalexander.alibaba.entity.excel.*;
 import cn.ryanalexander.alibaba.service.*;
 import cn.ryanalexander.alibaba.service.excel_ali.DataListener_T;
@@ -174,6 +175,7 @@ public class TController {
     private static HashMap<String, Class<?>> sheetAndExcelEntity = new HashMap<>();
     static{
         sheetAndExcelEntity.put("理论", CourseTheory.class);
+        sheetAndExcelEntity.put("工号和邮箱", TidAndEmail.class);
     }
     @ApiOperation("更新Excel")
     @GetMapping("/updateExcel")

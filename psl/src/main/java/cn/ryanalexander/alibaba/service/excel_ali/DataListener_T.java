@@ -30,7 +30,7 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
     private static Class<?> className;
     private static String[] s;
     private static final int BATCH_COUNT = 10;
-    private List<T> list = new ArrayList<T>();
+    private ArrayList<T> list = new ArrayList<T>();
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {

@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class Teacher {
 //一定要和数据表中的名字完全一样！ 用别名非常麻烦！！！
-//	private Integer t_id;
+	private Integer t_id;
 	private Integer t_d_id;
 	private String t_name;
 	private String t_mail; // 默认为Tid@hdu.edu.cn

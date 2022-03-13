@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ApiModel("工作量_实验课程")
 @ToString
-public class CourseExperiment implements ExcelEntity{
+public class CourseExperiment{
     @ExcelProperty(value = "学期")
     private String c_term;
 
@@ -81,8 +81,5 @@ public class CourseExperiment implements ExcelEntity{
     @ExcelProperty(value = "备注")
     private String c_note_2;
 
-    @Override
-    public Object transformAndSave() {
-        return new Course();
-    }
+
 }

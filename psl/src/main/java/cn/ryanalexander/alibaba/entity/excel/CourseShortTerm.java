@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ApiModel("工作量_短学期")
 @ToString
-public class CourseShortTerm implements ExcelEntity{
+public class CourseShortTerm{
     @ExcelProperty(value = "学期")
     private String c_term;
 
@@ -66,8 +66,4 @@ public class CourseShortTerm implements ExcelEntity{
     @ExcelProperty(value = "备注")
     private String c_note_2;
 
-    @Override
-    public Object transformAndSave() {
-        return new ShortTerm();
-    }
 }

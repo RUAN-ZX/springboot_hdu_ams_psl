@@ -7,8 +7,6 @@ package cn.ryanalexander.alibaba.entity.excel;
  * @Date 2022/3/10 19:08
  * @Version 1.0.0-Beta
  **/
-import cn.ryanalexander.alibaba.dao.CourseDao;
-import cn.ryanalexander.alibaba.entity.Course;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -16,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -90,7 +88,7 @@ public class CourseTheory implements ExcelEntity{
 
 
     @Override
-    public Object transformAndSave() {
-        return new Course();
+    public Object transformAndSave(List list, Object dao) {
+        return null;
     }
 }

@@ -2,17 +2,17 @@ package cn.ryanalexander.alibaba.service.excel_ali;
 
 
 import cn.ryanalexander.alibaba.dao.TeacherDao;
-import cn.ryanalexander.alibaba.entity.ShortTerm;
 import cn.ryanalexander.alibaba.entity.ThesisDesign;
-import cn.ryanalexander.alibaba.entity.Course;
+//import cn.ryanalexander.alibaba.service.excel_ali.entity.ExcelEntity;
+import cn.ryanalexander.alibaba.entity.excel.ExcelEntity;
 import cn.ryanalexander.alibaba.service.excel_ali.entity.EvaluationEntity_;
 import cn.ryanalexander.alibaba.service.excel_ali.entity.TeacherEntity_;
-import org.apache.poi.ss.formula.functions.T;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
+
+import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,14 +21,11 @@ import java.util.regex.Pattern;
 @Service
 public class EasyExcelService {
 
-    @Autowired
+
+    @Resource
     private TeacherDao teacherDao;
 
-
-//    private TDao tDao = (TDao) SpringUtil.getBean("TDao");
-//    private EDao eDao = (EDao) SpringUtil.getBean("EDao");
-//    private CDao cDao = (CDao) SpringUtil.getBean("CDao");
-//    private ADao aDao = (ADao) SpringUtil.getBean("ADao");
+//    @Resource
 
     public String CCidTrim(String ccid){
         Pattern r3 = Pattern.compile("^\\((.*?)\\)");
@@ -74,13 +71,22 @@ public class EasyExcelService {
             teacherDao.TinsertByIdName(temp_);
         }
     }
-    public void save(List list) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+//    private HashMap<String, ExcelSaveStrategy> ExcelEntityAndService = new HashMap<>();
+//    {
+//        ExcelEntityAndService.put("理论", teacherSaveStrategy);
+//        ExcelEntityAndService.put("工号和邮箱", teacherSaveStrategy);
+//    }
+
+    public void save(ArrayList list) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         System.out.println(list.toArray()[0]); // 每一批抽1个
-        for(Object o : list){
-            Method method = o.getClass().getMethod("transformAndSave");
-            method.setAccessible(false);
-            System.out.println(method.invoke(o));
-        }
+        ExcelEntity o1 = (ExcelEntity) list.get(0);
+        o1.transformAndSave(list, teacherDao);
+        // 这种方式是否合适？主要解决不了这个ExcelEntity能够获取dao的问题 注入不进去啊？？？
+        // 但这么传入 不符合多个dao的使用 实现不了service的效果啊。。
+
+            // 问题：怎么一次insert 多个！我感觉可以新建service 这个Entity保留service的引用 调用方法去处理整个list才行！
+
+//            System.out.println(method.invoke(o))
         switch ("f"){
             case "S1PostGraduate1":{
                 System.out.println("S1PostGraduate");

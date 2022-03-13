@@ -1,5 +1,7 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
+import cn.ryanalexander.alibaba.dao.TeacherDao;
+import cn.ryanalexander.alibaba.entity.Teacher;
 import cn.ryanalexander.alibaba.entity.ThesisDesign;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
@@ -7,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.annotation.Resource;
 
 /**
  * @ClassName: CourseThesisDesign
@@ -20,7 +24,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("毕业设计")
-public class CourseThesisDesign implements ExcelEntity{
+public class CourseThesisDesign{
+
+
     @ExcelProperty(value = "教师姓名")
     private String td_name;
 
@@ -50,8 +56,4 @@ public class CourseThesisDesign implements ExcelEntity{
     @ExcelProperty(value = "备注")
     private String td_note;
 
-    @Override
-    public Object transformAndSave() {
-        return new ThesisDesign();
-    }
 }
