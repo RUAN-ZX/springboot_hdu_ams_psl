@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+service:
+  excelUrl: F:\JAVA\workspace\alibaba\psl\src\main\resources\源数据.xlsx
+  mailUrl: F:\JAVA\workspace\alibaba\psl\src\main\resources\mail.html
+  captchaExpire: 10
+  accessExpire: 1
+  refreshExpire: 60

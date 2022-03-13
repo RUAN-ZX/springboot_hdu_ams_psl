@@ -1,0 +1,26 @@
+server:
+  port: 2003
+
+spring:
+  application:
+    name: seata-account-service
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: fuck_tx_group
+    nacos:
+      discovery:
+        server-addr: 1.15.235.161:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.15.235.161:3306/seata_account?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+    username: ryan
+    password: Rzx8170069:)
+
+logging:
+  level:
+    io:
+      seata: info
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml

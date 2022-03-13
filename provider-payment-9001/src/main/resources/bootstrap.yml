@@ -1,0 +1,21 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.15.235.161:8848 #配置Nacos地址
+      config:
+        server-addr: 1.15.235.161:8848 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: PROVIDER
+        namespace: fbfea518-7649-4464-8dd0-f29741416306
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

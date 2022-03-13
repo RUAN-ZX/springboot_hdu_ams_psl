@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="seata@1.15.235.161" uuid="d7dc1136-9aec-4b65-bdbe-e355b1d1fb31">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://1.15.235.161:3306/seata?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="seata_order@1.15.235.161" uuid="7aabee7f-70cf-4894-a4ec-b3b9f170b1c5">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://1.15.235.161:3306/seata_order?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="seata_storage@1.15.235.161" uuid="d59c0913-c97d-4f19-a3e5-9e734843f25c">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://1.15.235.161:3306/seata_storage?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="seata_account@1.15.235.161" uuid="d4e265ea-4914-4566-8f17-a1cec07f7e31">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://1.15.235.161:3306/seata_account?characterEncoding=utf8&amp;connectTimeout=1000&amp;socketTimeout=3000&amp;autoReconnect=true</jdbc-url>
+    </data-source>
+  </component>
+</project>
