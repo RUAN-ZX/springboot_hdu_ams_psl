@@ -8,19 +8,22 @@ package cn.ryanalexander.alibaba.entity.excel;
  * @Version 1.0.0-Beta
  **/
 import cn.ryanalexander.alibaba.dao.CourseDao;
+import cn.ryanalexander.alibaba.entity.Course;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.annotation.Resource;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("工作量_理论课程")
 @ToString
 public class CourseTheory extends ExcelEntity{
-    private CourseDao courseDao;
 
     @ExcelProperty(value = "学期")
     private String c_term;
@@ -55,8 +58,8 @@ public class CourseTheory extends ExcelEntity{
     @ExcelProperty(value = "班级规模系数")
     private Double c_cap_factor_1;
 
-    @ExcelProperty(value = "学分")
-    private Double c_points;
+//    @ExcelProperty(value = "学分")
+//    private Double c_points;
 
     @ExcelProperty(value = "上课时间")
     private String c_time;
@@ -85,12 +88,9 @@ public class CourseTheory extends ExcelEntity{
     @ExcelProperty(value = "备注")
     private String c_note_2;
 
-    public void saveExcel(){
-
-    }
 
     @Override
-    public void transformAndSave() {
-        super.transformAndSave();
+    public Object transformAndSave() {
+        return new Course();
     }
 }

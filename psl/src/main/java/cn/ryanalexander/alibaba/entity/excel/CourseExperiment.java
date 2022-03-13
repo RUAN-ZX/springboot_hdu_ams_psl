@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
+import cn.ryanalexander.alibaba.entity.Course;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -81,7 +82,7 @@ public class CourseExperiment extends ExcelEntity{
     private String c_note_2;
 
     @Override
-    public void transformAndSave() {
-        System.out.println(this.toString());
+    public Object transformAndSave() {
+        return new Course();
     }
 }

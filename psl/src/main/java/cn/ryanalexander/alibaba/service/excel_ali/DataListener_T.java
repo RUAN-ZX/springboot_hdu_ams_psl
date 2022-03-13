@@ -60,7 +60,17 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
 
     @Override // 最后一批
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        easyExcelService.save(list);
+        try {
+            easyExcelService.save(list);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -75,10 +75,11 @@ public class EasyExcelService {
         }
     }
     public void save(List list) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        System.out.println(list.toArray()[0]); // 每一批抽1个
         for(Object o : list){
             Method method = o.getClass().getMethod("transformAndSave");
             method.setAccessible(false);
-            method.invoke(o);
+            System.out.println(method.invoke(o));
         }
         switch ("f"){
             case "CourseTheory1": {

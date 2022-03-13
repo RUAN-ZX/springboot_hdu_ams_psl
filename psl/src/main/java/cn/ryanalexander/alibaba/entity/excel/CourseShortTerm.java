@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
+import cn.ryanalexander.alibaba.entity.ShortTerm;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -66,7 +67,7 @@ public class CourseShortTerm extends ExcelEntity{
     private String c_note_2;
 
     @Override
-    public void transformAndSave() {
-        super.transformAndSave();
+    public Object transformAndSave() {
+        return new ShortTerm();
     }
 }

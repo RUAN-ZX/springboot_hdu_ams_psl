@@ -3,11 +3,13 @@ package cn.ryanalexander.alibaba.entity;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ApiModel("毕设")
 @Data
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class ThesisDesign {
     private Integer td_id;

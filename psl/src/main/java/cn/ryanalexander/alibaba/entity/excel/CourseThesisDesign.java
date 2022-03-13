@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
+import cn.ryanalexander.alibaba.entity.ThesisDesign;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class CourseThesisDesign extends ExcelEntity{
     private String td_note;
 
     @Override
-    public void transformAndSave() {
-        super.transformAndSave();
+    public Object transformAndSave() {
+        return new ThesisDesign();
     }
 }

@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ApiModel("研究生理论课工作量")
 @ToString
-public class S1PostGraduate extends ExcelEntity{
+public class S1PostGraduate{
     @ExcelProperty(value = "姓名")
     private Integer pg_t_id;
 
@@ -28,8 +28,4 @@ public class S1PostGraduate extends ExcelEntity{
     @ExcelProperty(value = "研究生教学业绩点")
     private Double pg_gpa;
 
-    @Override
-    public void transformAndSave() {
-        super.transformAndSave();
-    }
 }

@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class TController {
@@ -168,7 +171,10 @@ public class TController {
 
     }
 
-
+    private static HashMap<String, Class<?>> sheetAndExcelEntity = new HashMap<>();
+    static{
+        sheetAndExcelEntity.put("理论", CourseTheory.class);
+    }
     @ApiOperation("更新Excel")
     @GetMapping("/updateExcel")
     public String updateExcel(){
@@ -177,10 +183,28 @@ public class TController {
         ExcelReader excelReader = EasyExcel.read(url).build();
 
         List<ReadSheet> sheets = excelReader.excelExecutor().sheetList();
+        String regex = "([\u4e00-\u9fa5]+)";
         // 多年的表 故需要匹配名字 然后执行对应的套路
         for (ReadSheet sheet : sheets) {
-            excelReader.read(sheet);
+            Matcher matcher = Pattern.compile(regex).matcher(sheet.getSheetName());
+            String matcherResult = null;
+            Class<?> hashResult = null;
+            if(matcher.find()) {
+                matcherResult = matcher.group(1);
+                hashResult = sheetAndExcelEntity.get(matcherResult);
+            }
+
+            if(hashResult != null){
+                ReadSheet readSheet1 = EasyExcel.readSheet(matcherResult)
+                        .headRowNumber(2)
+                        .head(hashResult)
+                        .registerReadListener(new DataListener_T<CourseTheory>(easyExcelService)).build();
+
+                excelReader.read(readSheet1);
+            }
+
         }
+        // 设计哈希表 实现关键字 对应 EmailEntity的类！ 另外最好迁移到EasyExcelService里边
         try {
             ReadSheet readSheet1 = EasyExcel.readSheet("理论")
                     .headRowNumber(2)
@@ -205,7 +229,7 @@ public class TController {
                             .head(CourseShortTerm.class)
                             .registerReadListener(new DataListener_T<CourseShortTerm>(easyExcelService)).build();
 
-            excelReader.read(readSheet3);
+//            excelReader.read(readSheet3);
 
             ReadSheet readSheet4 =
                     EasyExcel.readSheet("毕业设计")
@@ -213,7 +237,7 @@ public class TController {
                             .head(CourseThesisDesign.class)
                             .registerReadListener(new DataListener_T<CourseThesisDesign>(easyExcelService)).build();
 
-            excelReader.read(readSheet4);
+//            excelReader.read(readSheet4);
 
 
             ReadSheet readSheet5 =
@@ -222,7 +246,7 @@ public class TController {
                             .head(TidAndEmail.class)
                             .registerReadListener(new DataListener_T<TidAndEmail>(easyExcelService)).build();
 
-            excelReader.read(readSheet5);
+//            excelReader.read(readSheet5);
 
         } finally {
             if (excelReader != null) excelReader.finish();
