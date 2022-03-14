@@ -1,8 +1,8 @@
-package cn.ryanalexander.alibaba.entity;
+package cn.ryanalexander.alibaba.entity.excel;
 
-import cn.ryanalexander.alibaba.dao.TeacherDao;
+import cn.ryanalexander.alibaba.entity.Teacher;
 import cn.ryanalexander.alibaba.entity.excel.ExcelEntity;
-import cn.ryanalexander.alibaba.service.SpringUtil;
+import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import cn.ryanalexander.alibaba.service.TeacherService;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ClassName: Email
