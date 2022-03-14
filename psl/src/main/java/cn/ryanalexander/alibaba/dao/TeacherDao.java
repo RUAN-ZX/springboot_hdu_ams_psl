@@ -5,6 +5,7 @@ import cn.ryanalexander.alibaba.entity.Teacher;
 import cn.ryanalexander.alibaba.service.excel_ali.entity.TeacherEntity_;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,16 +17,16 @@ public interface TeacherDao {
 
 	/* insert */
 
-	void TinsertByIdName(List<TeacherEntity_> list);
-	void TinsertByIdNameEmail(List list);
+	void t_insertByIdName(List<TeacherEntity_> list);
+	void t_insertByIdNameEmail(ArrayList<?> list);
 
 	void insert(TeacherEntity_ teacherEntity);
 	/* update */
-	void TupdatePwd(String Tid, String Tpwd);
+	void t_updatePwd(String Tid, String Tpwd);
 
 
 
-	void TupdateDid(String TDid,String Tid);
+	void t_updateDid(String TDid,String Tid);
 
 	void TupdateEmail(String Tid, String Tmail);
 	/* select */

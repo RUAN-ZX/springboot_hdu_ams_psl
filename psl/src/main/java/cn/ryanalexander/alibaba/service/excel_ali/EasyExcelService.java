@@ -68,7 +68,7 @@ public class EasyExcelService {
             temp_.add(new TeacherEntity_(
                     Tid,
                     Tname));
-            teacherDao.TinsertByIdName(temp_);
+            teacherDao.t_insertByIdName(temp_);
         }
     }
 //    private HashMap<String, ExcelSaveStrategy> ExcelEntityAndService = new HashMap<>();
@@ -80,13 +80,8 @@ public class EasyExcelService {
     public void save(ArrayList list) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         System.out.println(list.toArray()[0]); // 每一批抽1个
         ExcelEntity o1 = (ExcelEntity) list.get(0);
-        o1.transformAndSave(list, teacherDao);
-        // 这种方式是否合适？主要解决不了这个ExcelEntity能够获取dao的问题 注入不进去啊？？？
-        // 但这么传入 不符合多个dao的使用 实现不了service的效果啊。。
+        o1.transformAndSave(list);
 
-            // 问题：怎么一次insert 多个！我感觉可以新建service 这个Entity保留service的引用 调用方法去处理整个list才行！
-
-//            System.out.println(method.invoke(o))
         switch ("f"){
             case "S1PostGraduate1":{
                 System.out.println("S1PostGraduate");
@@ -123,7 +118,7 @@ public class EasyExcelService {
                         if(teacherDao.TgetById(temp_s.get(1))==null){
                             List<TeacherEntity_> list1 = new ArrayList<>();
                             list1.add(new TeacherEntity_(temp_s.get(1),temp_s.get(6)));
-                            teacherDao.TinsertByIdName(list1);
+                            teacherDao.t_insertByIdName(list1);
                         }
                         System.out.println(temp_s);
                         list_.add(new EvaluationEntity_(
@@ -141,7 +136,7 @@ public class EasyExcelService {
                     // 每个老师的信息修改 这里补充其部门编号
                     if(temp_s.get(0).equals("电子信息学院（微电子学院）")){
                         try{
-                            if(teacherDao !=null) teacherDao.TupdateDid("01",temp_s.get(1));
+                            if(teacherDao !=null) teacherDao.t_updateDid("01",temp_s.get(1));
 
                         }
                         catch (Exception e){
@@ -168,7 +163,7 @@ public class EasyExcelService {
                     list_.add(new TeacherEntity_(temp_s.get(0), temp_s.get(1)));
                 }
                 try{
-                    if(teacherDao !=null) teacherDao.TinsertByIdName(list_);
+                    if(teacherDao !=null) teacherDao.t_insertByIdName(list_);
                 }
                 catch (Exception e){
                     System.out.println(e);

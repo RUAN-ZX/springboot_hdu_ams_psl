@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -88,7 +89,7 @@ public class CourseTheory implements ExcelEntity{
 
 
     @Override
-    public Object transformAndSave(List list, Object dao) {
+    public Object transformAndSave(ArrayList<?> list) {
         return null;
     }
 }

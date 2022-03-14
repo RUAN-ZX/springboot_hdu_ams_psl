@@ -25,10 +25,6 @@ public class DataListener_T<T> extends AnalysisEventListener<T> {
     }
     private static final Logger LOGGER = LoggerFactory.getLogger(DataListener_T.class);
 
-
-
-    private static Class<?> className;
-    private static String[] s;
     private static final int BATCH_COUNT = 10;
     private ArrayList<T> list = new ArrayList<T>();
 

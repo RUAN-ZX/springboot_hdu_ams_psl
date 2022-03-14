@@ -163,7 +163,7 @@ public class TController {
         ){
         JSONObject jsonObject = accountDao.TverifyAccess(Tid,access);
         if(jsonObject.getIntValue("code")==0){
-            tDao.TupdatePwd(Tid,Tpwd);
+            tDao.t_updatePwd(Tid,Tpwd);
             return ErrorService.getCode(0,"修改完成").toJSONString();
         }
         else return jsonObject.toJSONString();

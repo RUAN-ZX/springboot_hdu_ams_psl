@@ -3,15 +3,14 @@ package cn.ryanalexander.alibaba.entity;
 import cn.ryanalexander.alibaba.dao.TeacherDao;
 import cn.ryanalexander.alibaba.entity.excel.ExcelEntity;
 import cn.ryanalexander.alibaba.service.SpringUtil;
-import cn.ryanalexander.alibaba.service.excel_ali.entity.TeacherSaveStrategy;
+import cn.ryanalexander.alibaba.service.TeacherService;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,10 +37,10 @@ public class TidAndEmail implements ExcelEntity {
 
 
     @Override
-    public Object transformAndSave(List list, Object dao) {
-        TeacherDao teacherDao = (TeacherDao) SpringUtil.getBean("teacherDao");
+    public Object transformAndSave(ArrayList<?> list) {
+        TeacherService teacherService = (TeacherService) SpringUtil.getBean("teacherService");
         try{
-            teacherDao.TinsertByIdNameEmail(list);
+            teacherService.t_insertByIdNameEmail(list);
         }
         catch (Exception e){
             System.out.println(e);
