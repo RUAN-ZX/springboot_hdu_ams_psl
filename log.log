@@ -1,0 +1,31 @@
+INFO  2022-03-21 19:04:39 cn.ryanalexander.alibaba.Psl logStarting restartedMain Starting Psl on DESKTOP-DEJ4DAP with PID 21544 (F:\JAVA\workspace\LearnCloud\psl\target\classes started by ryan in F:\JAVA\workspace\LearnCloud)
+INFO  2022-03-21 19:04:39 cn.ryanalexander.alibaba.Psl logStartupProfileInfo restartedMain The following profiles are active: dev
+INFO  2022-03-21 19:04:39 org.springframework.boot.devtools.restart.ChangeableUrls logTo restartedMain The Class-Path manifest attribute in F:\JAVA\maven\repository\org\glassfish\jaxb\jaxb-runtime\2.3.2\jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/F:/JAVA/maven/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
+INFO  2022-03-21 19:04:39 org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor logTo restartedMain Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+INFO  2022-03-21 19:04:39 org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor logTo restartedMain For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+INFO  2022-03-21 19:04:40 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected restartedMain Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-21 19:04:40 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-21 19:04:40 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+INFO  2022-03-21 19:04:40 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization restartedMain Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  2022-03-21 19:04:40 org.springframework.boot.web.embedded.tomcat.TomcatWebServer initialize restartedMain Tomcat initialized with port(s): 8080 (http)
+INFO  2022-03-21 19:04:40 org.apache.coyote.http11.Http11NioProtocol log restartedMain Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-21 19:04:40 org.apache.catalina.core.StandardService log restartedMain Starting service [Tomcat]
+INFO  2022-03-21 19:04:40 org.apache.catalina.core.StandardEngine log restartedMain Starting Servlet engine: [Apache Tomcat/9.0.29]
+INFO  2022-03-21 19:04:40 org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] log restartedMain Initializing Spring embedded WebApplicationContext
+INFO  2022-03-21 19:04:40 org.springframework.web.context.ContextLoader prepareWebApplicationContext restartedMain Root WebApplicationContext: initialization completed in 1361 ms
+INFO  2022-03-21 19:04:41 org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init> restartedMain Exposing 13 endpoint(s) beneath base path '/actuator'
+INFO  2022-03-21 19:04:41 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor initialize restartedMain Initializing ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-21 19:04:41 org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer startServer restartedMain LiveReload server is running on port 35729
+INFO  2022-03-21 19:04:42 org.apache.coyote.http11.Http11NioProtocol log restartedMain Starting ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-21 19:04:42 org.springframework.boot.web.embedded.tomcat.TomcatWebServer start restartedMain Tomcat started on port(s): 8080 (http) with context path ''
+INFO  2022-03-21 19:04:42 cn.ryanalexander.alibaba.Psl logStarted restartedMain Started Psl in 3.031 seconds (JVM running for 3.93)
+INFO  2022-03-21 19:04:42 com.zaxxer.hikari.HikariDataSource getConnection RMI TCP Connection(3)-192.168.147.100 HikariPool-1 - Starting...
+INFO  2022-03-21 19:04:43 org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] log RMI TCP Connection(5)-192.168.147.100 Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  2022-03-21 19:04:43 org.springframework.web.servlet.DispatcherServlet initServletBean RMI TCP Connection(5)-192.168.147.100 Initializing Servlet 'dispatcherServlet'
+INFO  2022-03-21 19:04:43 org.springframework.web.servlet.DispatcherServlet initServletBean RMI TCP Connection(5)-192.168.147.100 Completed initialization in 4 ms
+INFO  2022-03-21 19:04:43 com.zaxxer.hikari.HikariDataSource getConnection RMI TCP Connection(3)-192.168.147.100 HikariPool-1 - Start completed.
+INFO  2022-03-21 19:04:43 io.lettuce.core.EpollProvider <clinit> boundedElastic-1 Starting without optional epoll library
+INFO  2022-03-21 19:04:43 io.lettuce.core.KqueueProvider <clinit> boundedElastic-1 Starting without optional kqueue library
+INFO  2022-03-21 19:05:39 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown SpringContextShutdownHook Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-21 19:05:39 com.zaxxer.hikari.HikariDataSource close SpringContextShutdownHook HikariPool-1 - Shutdown initiated...
+INFO  2022-03-21 19:05:39 com.zaxxer.hikari.HikariDataSource close SpringContextShutdownHook HikariPool-1 - Shutdown completed.

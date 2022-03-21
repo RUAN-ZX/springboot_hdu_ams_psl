@@ -64,4 +64,8 @@ feign:
 mybatis:
   type-aliases-package: cn.ryanalexander.alibaba.entity
   mapper-locations: classpath:mapper/*.xml
-  # type-aliases-package: cn.ryanalexander.alibaba.domain    # 不是很靠谱。、。。
+
+# 网络地址 统一配置 nacos！
+logging:
+#  config: classpath:log4j2.yml
+#  config: https://stea.ryanalexander.cn/psl/log4j2.yml

@@ -17,6 +17,16 @@
         <module name="provider-payment-9002" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="common" target="1.8" />
+      <module name="consumer-order-80" target="1.8" />
+      <module name="LearnCloud" target="1.8" />
+      <module name="provider-payment-9001" target="1.8" />
+      <module name="provider-payment-9002" target="1.8" />
+      <module name="psl" target="1.8" />
+      <module name="seata-account-2003" target="1.8" />
+      <module name="seata-storage-2002" target="1.8" />
+      <module name="sentinel-8401" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
