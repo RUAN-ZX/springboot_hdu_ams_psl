@@ -21,6 +21,7 @@
         <module>seata-storage-2002</module>
         <module>seata-account-2003</module>
         <module>psl</module>
+        <module>mybatisTest</module>
     </modules>
 
     <!-- 统一管理jar包版本 这里就是一个变量替换 子文件也可以用 但是推荐父亲文件里边用 -->
@@ -38,7 +39,7 @@
         <lombok.version>1.18.12</lombok.version>
         <mysql-connector.version>8.0.27</mysql-connector.version>
         <druid.version>1.1.16</druid.version>
-        <mybatis.version>1.3.0</mybatis.version>
+        <mybatis.version>2.2.2</mybatis.version>
         <swagger.version>3.0.0</swagger.version>
     </properties>
 
@@ -125,6 +126,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
         <!--mybatis-plus启动器-->
         <dependency>

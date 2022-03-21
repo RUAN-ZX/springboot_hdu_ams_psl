@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sentinel-8401" />
+        <module name="mybatisTest" />
         <module name="common" />
         <module name="consumer-order-80" />
         <module name="provider-payment-9001" />
@@ -21,6 +22,7 @@
       <module name="common" target="1.8" />
       <module name="consumer-order-80" target="1.8" />
       <module name="LearnCloud" target="1.8" />
+      <module name="mybatisTest" target="1.8" />
       <module name="provider-payment-9001" target="1.8" />
       <module name="provider-payment-9002" target="1.8" />
       <module name="psl" target="1.8" />
