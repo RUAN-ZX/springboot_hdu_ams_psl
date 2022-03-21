@@ -1,7 +1,6 @@
 package cn.ryanalexander.alibaba.entity.excel;
 
 import cn.ryanalexander.alibaba.entity.Teacher;
-import cn.ryanalexander.alibaba.entity.excel.ExcelEntity;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import cn.ryanalexander.alibaba.service.TeacherService;
 import com.alibaba.excel.annotation.ExcelProperty;

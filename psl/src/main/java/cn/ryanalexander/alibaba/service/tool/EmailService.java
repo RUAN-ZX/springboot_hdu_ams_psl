@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.service;
+package cn.ryanalexander.alibaba.service.tool;
 
 import cn.ryanalexander.alibaba.dao.TeacherDao;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -1,9 +1,9 @@
 package cn.ryanalexander.alibaba.dao;
 
-import cn.ryanalexander.alibaba.service.EmailService;
-import cn.ryanalexander.alibaba.service.ErrorService;
-import cn.ryanalexander.alibaba.service.StaticConfiguration;
 import cn.ryanalexander.alibaba.service.TService;
+import cn.ryanalexander.alibaba.service.tool.EmailService;
+import cn.ryanalexander.alibaba.service.tool.ErrorService;
+import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

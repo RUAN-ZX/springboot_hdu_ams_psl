@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.service;
+package cn.ryanalexander.alibaba.service.tool;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

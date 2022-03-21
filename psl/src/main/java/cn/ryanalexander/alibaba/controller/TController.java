@@ -4,11 +4,12 @@ package cn.ryanalexander.alibaba.controller;
 import cn.ryanalexander.alibaba.dao.AccountDao;
 import cn.ryanalexander.alibaba.dao.TeacherDao;
 import cn.ryanalexander.alibaba.entity.Teacher;
-import cn.ryanalexander.alibaba.entity.TidAndEmail;
 import cn.ryanalexander.alibaba.entity.excel.*;
 import cn.ryanalexander.alibaba.service.*;
-import cn.ryanalexander.alibaba.service.excel_ali.DataListener_T;
+import cn.ryanalexander.alibaba.service.excel_ali.DataListener;
 import cn.ryanalexander.alibaba.service.excel_ali.EasyExcelService;
+import cn.ryanalexander.alibaba.service.tool.EmailService;
+import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
@@ -37,7 +38,7 @@ public class TController {
     private TService tService;
 
     @Resource
-    private StaticConfiguration StaticConfiguration;
+    private cn.ryanalexander.alibaba.service.tool.StaticConfiguration StaticConfiguration;
 
     @Resource
     private AccountDao accountDao;
@@ -200,7 +201,7 @@ public class TController {
                 ReadSheet readSheet1 = EasyExcel.readSheet(matcherResult)
                         .headRowNumber(2)
                         .head(hashResult)
-                        .registerReadListener(new DataListener_T<CourseTheory>(easyExcelService)).build();
+                        .registerReadListener(new DataListener<CourseTheory>(easyExcelService)).build();
 
                 excelReader.read(readSheet1);
             }
@@ -210,7 +211,7 @@ public class TController {
             ReadSheet readSheet1 = EasyExcel.readSheet("理论")
                     .headRowNumber(2)
                     .head(CourseTheory.class)
-                    .registerReadListener(new DataListener_T<CourseTheory>(easyExcelService)).build();
+                    .registerReadListener(new DataListener<CourseTheory>(easyExcelService)).build();
 
 //            excelReader.read(readSheet1);
 
@@ -219,7 +220,7 @@ public class TController {
                     EasyExcel.readSheet("实验")
                             .headRowNumber(2)
                             .head(CourseExperiment.class)
-                            .registerReadListener(new DataListener_T<CourseExperiment>(easyExcelService)).build();
+                            .registerReadListener(new DataListener<CourseExperiment>(easyExcelService)).build();
 
 //            excelReader.read(readSheet2);
 
@@ -228,7 +229,7 @@ public class TController {
                     EasyExcel.readSheet("短学期")
                             .headRowNumber(2)
                             .head(CourseShortTerm.class)
-                            .registerReadListener(new DataListener_T<CourseShortTerm>(easyExcelService)).build();
+                            .registerReadListener(new DataListener<CourseShortTerm>(easyExcelService)).build();
 
 //            excelReader.read(readSheet3);
 
@@ -236,7 +237,7 @@ public class TController {
                     EasyExcel.readSheet("毕业设计")
                             .headRowNumber(2)
                             .head(CourseThesisDesign.class)
-                            .registerReadListener(new DataListener_T<CourseThesisDesign>(easyExcelService)).build();
+                            .registerReadListener(new DataListener<CourseThesisDesign>(easyExcelService)).build();
 
 //            excelReader.read(readSheet4);
 
@@ -245,7 +246,7 @@ public class TController {
                     EasyExcel.readSheet("工号和邮箱")
                             .headRowNumber(1)
                             .head(TidAndEmail.class)
-                            .registerReadListener(new DataListener_T<TidAndEmail>(easyExcelService)).build();
+                            .registerReadListener(new DataListener<TidAndEmail>(easyExcelService)).build();
 
 //            excelReader.read(readSheet5);
 

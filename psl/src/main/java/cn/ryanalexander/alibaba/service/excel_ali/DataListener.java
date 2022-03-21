@@ -8,22 +8,19 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class DataListener_T<T> extends AnalysisEventListener<T> {
+public class DataListener<T> extends AnalysisEventListener<T> {
 
 
 
     private EasyExcelService easyExcelService;
 
-    public DataListener_T(EasyExcelService easyExcelService) {
+    public DataListener(EasyExcelService easyExcelService) {
         // 这里是demo，所以随便new一个。实际使用如果到了spring,请使用下面的有参构造函数
         this.easyExcelService = easyExcelService;
     }
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataListener_T.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataListener.class);
 
     private static final int BATCH_COUNT = 10;
     private ArrayList<T> list = new ArrayList<T>();

@@ -3,12 +3,13 @@ package cn.ryanalexander.alibaba.service;
 import cn.ryanalexander.alibaba.dao.AccountDao;
 import cn.ryanalexander.alibaba.dao.TeacherDao;
 import cn.ryanalexander.alibaba.entity.Teacher;
+import cn.ryanalexander.alibaba.service.tool.ErrorService;
+import cn.ryanalexander.alibaba.service.tool.JwtService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.security.SecureRandom;
 import java.util.Random;

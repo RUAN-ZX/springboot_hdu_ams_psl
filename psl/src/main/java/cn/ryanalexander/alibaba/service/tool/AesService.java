@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.service;
+package cn.ryanalexander.alibaba.service.tool;
 
 import com.sun.istack.NotNull;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
