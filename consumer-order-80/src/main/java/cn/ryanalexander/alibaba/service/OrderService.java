@@ -1,10 +1,9 @@
 package cn.ryanalexander.alibaba.service;
 
-import cn.ryanalexander.alibaba.dao.OrderDao;
+import cn.ryanalexander.alibaba.mapper.OrderDao;
 import cn.ryanalexander.alibaba.domain.Order;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

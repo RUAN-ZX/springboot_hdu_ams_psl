@@ -8,7 +8,7 @@ spring:
     username: ryan
     password: Rzx8170069:)
 
-mybatis-plus:  n
+mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   # 设置MyBatis-Plus的全局配置

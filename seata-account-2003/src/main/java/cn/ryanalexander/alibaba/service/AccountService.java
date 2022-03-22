@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.service;
 
-import cn.ryanalexander.alibaba.dao.AccountDao;
+import cn.ryanalexander.alibaba.mapper.AccountDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

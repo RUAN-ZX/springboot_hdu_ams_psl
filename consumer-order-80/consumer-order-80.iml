@@ -135,8 +135,6 @@
     <orderEntry type="library" name="Maven: com.github.ben-manes.caffeine:caffeine:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.checkerframework:checker-qual:2.10.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.3" level="project" />
-    <orderEntry type="module" module-name="common" />
-    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-json:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.1" level="project" />

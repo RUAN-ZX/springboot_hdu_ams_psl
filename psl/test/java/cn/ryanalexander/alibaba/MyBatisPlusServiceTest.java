@@ -1,16 +1,14 @@
 package cn.ryanalexander.alibaba;
 
-import cn.ryanalexander.alibaba.enums.ErrorCodeEnum;
-import cn.ryanalexander.alibaba.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.service.TService;
+import cn.ryanalexander.alibaba.service.TeacherService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Date:2022/2/13
@@ -21,7 +19,7 @@ import java.util.List;
 public class MyBatisPlusServiceTest {
 
     @Autowired
-    private TService tService;
+    private TeacherService teacherService;
 
     private final Logger logger = LoggerFactory.getLogger(MyBatisPlusServiceTest.class);
 

@@ -1,8 +1,8 @@
 package cn.ryanalexander.alibaba.service;
 
-import cn.ryanalexander.alibaba.dao.AccountDao;
-import cn.ryanalexander.alibaba.dao.TeacherDao;
-import cn.ryanalexander.alibaba.entity.Teacher;
+import cn.ryanalexander.alibaba.mapper.AccountDao;
+import cn.ryanalexander.alibaba.mapper.TeacherDao;
+import cn.ryanalexander.alibaba.domain.po.Teacher;
 import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import cn.ryanalexander.alibaba.service.tool.JwtService;
 import com.alibaba.fastjson.JSONObject;

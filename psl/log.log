@@ -721,3 +721,167 @@ INFO  2022-03-21 19:53:46 org.springframework.scheduling.concurrent.ThreadPoolTa
 INFO  2022-03-21 19:53:47 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarted main Started MyBatisPlusServiceTest in 5.353 seconds (JVM running for 6.204)
 WARN  2022-03-21 19:53:47 cn.ryanalexander.alibaba.MyBatisPlusServiceTest testGetCount main dfgdfg
 INFO  2022-03-21 19:53:47 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown SpringContextShutdownHook Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-22 11:04:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper buildDefaultMergedContextConfiguration main Neither @ContextConfiguration nor @ContextHierarchy found for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest], using SpringBootContextLoader
+INFO  2022-03-22 11:04:55 org.springframework.test.context.support.AbstractContextLoader generateDefaultLocations main Could not detect default resource locations for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+INFO  2022-03-22 11:04:55 org.springframework.test.context.support.AnnotationConfigContextLoaderUtils detectDefaultConfigurationClasses main Could not detect default configuration classes for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: MyBatisPlusServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+INFO  2022-03-22 11:04:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getOrFindConfigurationClasses main Found @SpringBootConfiguration cn.ryanalexander.alibaba.Psl for test class cn.ryanalexander.alibaba.MyBatisPlusServiceTest
+INFO  2022-03-22 11:04:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getDefaultTestExecutionListenerClassNames main Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+INFO  2022-03-22 11:04:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getTestExecutionListeners main Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@18f20260, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@4ae33a11, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7a48e6e2, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@b40bb6e, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3a94964, org.springframework.test.context.transaction.TransactionalTestExecutionListener@5049d8b2, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6d0b5baf, org.springframework.test.context.event.EventPublishingTestExecutionListener@631e06ab, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2a3591c5, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@34a75079, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@346a361, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@107ed6fc, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@1643d68f]
+INFO  2022-03-22 11:04:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarting main Starting MyBatisPlusServiceTest on DESKTOP-DEJ4DAP with PID 4584 (started by ryan in F:\JAVA\workspace\LearnCloud\psl)
+INFO  2022-03-22 11:04:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStartupProfileInfo main The following profiles are active: dev
+INFO  2022-03-22 11:04:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected main Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-22 11:04:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-22 11:04:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Finished Spring Data repository scanning in 30ms. Found 0 Redis repository interfaces.
+INFO  2022-03-22 11:04:57 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization main Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  2022-03-22 11:04:59 org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init> main Exposing 13 endpoint(s) beneath base path '/actuator'
+INFO  2022-03-22 11:05:00 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor initialize main Initializing ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-22 11:05:00 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarted main Started MyBatisPlusServiceTest in 5.619 seconds (JVM running for 6.734)
+WARN  2022-03-22 11:05:01 cn.ryanalexander.alibaba.MyBatisPlusServiceTest testGetCount main dfgdfg
+INFO  2022-03-22 11:05:01 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown SpringContextShutdownHook Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-22 12:06:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper buildDefaultMergedContextConfiguration main Neither @ContextConfiguration nor @ContextHierarchy found for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest], using SpringBootContextLoader
+INFO  2022-03-22 12:06:55 org.springframework.test.context.support.AbstractContextLoader generateDefaultLocations main Could not detect default resource locations for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+INFO  2022-03-22 12:06:55 org.springframework.test.context.support.AnnotationConfigContextLoaderUtils detectDefaultConfigurationClasses main Could not detect default configuration classes for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: MyBatisPlusServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+INFO  2022-03-22 12:06:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getOrFindConfigurationClasses main Found @SpringBootConfiguration cn.ryanalexander.alibaba.Psl for test class cn.ryanalexander.alibaba.MyBatisPlusServiceTest
+INFO  2022-03-22 12:06:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getDefaultTestExecutionListenerClassNames main Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+INFO  2022-03-22 12:06:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getTestExecutionListeners main Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@18f20260, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@4ae33a11, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7a48e6e2, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@b40bb6e, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3a94964, org.springframework.test.context.transaction.TransactionalTestExecutionListener@5049d8b2, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6d0b5baf, org.springframework.test.context.event.EventPublishingTestExecutionListener@631e06ab, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2a3591c5, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@34a75079, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@346a361, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@107ed6fc, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@1643d68f]
+INFO  2022-03-22 12:06:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarting main Starting MyBatisPlusServiceTest on DESKTOP-DEJ4DAP with PID 40992 (started by ryan in F:\JAVA\workspace\LearnCloud\psl)
+INFO  2022-03-22 12:06:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStartupProfileInfo main The following profiles are active: dev
+INFO  2022-03-22 12:06:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected main Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-22 12:06:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-22 12:06:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Finished Spring Data repository scanning in 17ms. Found 0 Redis repository interfaces.
+INFO  2022-03-22 12:06:57 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization main Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  2022-03-22 12:06:59 org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init> main Exposing 13 endpoint(s) beneath base path '/actuator'
+INFO  2022-03-22 12:06:59 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor initialize main Initializing ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-22 12:07:00 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarted main Started MyBatisPlusServiceTest in 4.726 seconds (JVM running for 5.552)
+WARN  2022-03-22 12:07:00 cn.ryanalexander.alibaba.MyBatisPlusServiceTest testGetCount main dfgdfg
+INFO  2022-03-22 12:07:00 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown SpringContextShutdownHook Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-22 13:28:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper buildDefaultMergedContextConfiguration main Neither @ContextConfiguration nor @ContextHierarchy found for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest], using SpringBootContextLoader
+INFO  2022-03-22 13:28:55 org.springframework.test.context.support.AbstractContextLoader generateDefaultLocations main Could not detect default resource locations for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+INFO  2022-03-22 13:28:55 org.springframework.test.context.support.AnnotationConfigContextLoaderUtils detectDefaultConfigurationClasses main Could not detect default configuration classes for test class [cn.ryanalexander.alibaba.MyBatisPlusServiceTest]: MyBatisPlusServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+INFO  2022-03-22 13:28:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getOrFindConfigurationClasses main Found @SpringBootConfiguration cn.ryanalexander.alibaba.Psl for test class cn.ryanalexander.alibaba.MyBatisPlusServiceTest
+INFO  2022-03-22 13:28:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getDefaultTestExecutionListenerClassNames main Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+INFO  2022-03-22 13:28:55 org.springframework.boot.test.context.SpringBootTestContextBootstrapper getTestExecutionListeners main Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5049d8b2, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6d0b5baf, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@631e06ab, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@2a3591c5, org.springframework.test.context.support.DirtiesContextTestExecutionListener@34a75079, org.springframework.test.context.transaction.TransactionalTestExecutionListener@346a361, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@107ed6fc, org.springframework.test.context.event.EventPublishingTestExecutionListener@1643d68f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@186978a6, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@2e029d61, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@482d776b, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4052274f, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@132ddbab]
+INFO  2022-03-22 13:28:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStarting main Starting MyBatisPlusServiceTest on DESKTOP-DEJ4DAP with PID 17604 (started by ryan in F:\JAVA\workspace\LearnCloud\psl)
+INFO  2022-03-22 13:28:55 cn.ryanalexander.alibaba.MyBatisPlusServiceTest logStartupProfileInfo main The following profiles are active: dev
+INFO  2022-03-22 13:28:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected main Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-22 13:28:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-22 13:28:56 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn main Finished Spring Data repository scanning in 18ms. Found 0 Redis repository interfaces.
+WARN  2022-03-22 13:28:56 org.mybatis.spring.mapper.ClassPathMapperScanner warn main No MyBatis mapper was found in '[cn.ryanalexander.alibaba.dao]' package. Please check your configuration.
+INFO  2022-03-22 13:28:57 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization main Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+WARN  2022-03-22 13:28:57 org.springframework.web.context.support.GenericWebApplicationContext refresh main Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'TController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.ryanalexander.alibaba.mapper.TeacherDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup="", name="", description="", authenticationType=CONTAINER, type=java.lang.Object.class, mappedName="")}
+INFO  2022-03-22 13:28:57 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener logMessage main 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+ERROR 2022-03-22 13:28:57 org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter report main 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.ryanalexander.alibaba.mapper.TeacherDao' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.ryanalexander.alibaba.mapper.TeacherDao' in your configuration.
+
+ERROR 2022-03-22 13:28:57 org.springframework.test.context.TestContextManager prepareTestInstance main Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@5049d8b2] to prepare test instance [cn.ryanalexander.alibaba.MyBatisPlusServiceTest@1c31de5d]
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:132)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:123)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:244)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:98)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$5(ClassBasedTestDescriptor.java:337)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:342)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$6(ClassBasedTestDescriptor.java:337)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:177)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:336)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:259)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$2(ClassBasedTestDescriptor.java:252)
+	at java.base/java.util.Optional.orElseGet(Optional.java:369)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$3(ClassBasedTestDescriptor.java:251)
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:29)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:106)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:105)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$1(NodeTestTask.java:107)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:107)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:75)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:38)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$5(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$7(NodeTestTask.java:125)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:135)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:122)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:80)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:38)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$5(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$7(NodeTestTask.java:125)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:135)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:122)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:80)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:32)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:51)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:229)
+	at org.junit.platform.launcher.core.DefaultLauncher.lambda$execute$6(DefaultLauncher.java:197)
+	at org.junit.platform.launcher.core.DefaultLauncher.withInterceptedStreams(DefaultLauncher.java:211)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:191)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:128)
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:71)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:235)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'TController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.ryanalexander.alibaba.mapper.TeacherDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup="", name="", description="", authenticationType=CONTAINER, type=java.lang.Object.class, mappedName="")}
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:125)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:124)
+	... 65 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.ryanalexander.alibaba.mapper.TeacherDao' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup="", name="", description="", authenticationType=CONTAINER, type=java.lang.Object.class, mappedName="")}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1695)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1253)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:537)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:513)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:653)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:224)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:116)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:334)
+	... 81 common frames omitted

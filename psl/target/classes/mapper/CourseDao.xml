@@ -21,7 +21,7 @@
 		UPDATE teacher SET t_pwd = #{Tpwd} WHERE t_id = #{t_id}
 	</update>
 
-	<select id="TgetById" parameterType="String" resultType="cn.ryanalexander.alibaba.entity.Teacher">
+	<select id="TgetById" parameterType="String" resultType="cn.ryanalexander.alibaba.domain.po.Teacher">
 		select * from teacher where t_id=#{t_id}
 
 	</select>

@@ -45,8 +45,6 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pulsar:pulsar-client-messagecrypto-bc:2.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.pulsar:bouncy-castle-bc-shaded:2.6.1" level="project" />
-    <orderEntry type="module" module-name="common" />
-    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.2.2.RELEASE" level="project" />

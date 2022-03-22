@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>cn.ryanalexander.alibaba</groupId>
+    <artifactId>LearnCloud</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging><!-- 这里添加，注意不是jar或war -->
+
+    <modules>
+
+        <module>common</module>
+        <module>provider-payment-9001</module>
+        <module>provider-payment-9002</module>
+        <module>sentinel-8401</module>
+        <module>consumer-order-80</module>
+        <module>seata-storage-2002</module>
+        <module>seata-account-2003</module>
+        <module>psl</module>
+        <module>mybatisTest</module>
+    </modules>
+
+    <!-- 统一管理jar包版本 这里就是一个变量替换 子文件也可以用 但是推荐父亲文件里边用 -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <spring.version>2.2.2.RELEASE</spring.version>
+        <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
+        <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>
+
+        <junit.version>4.12</junit.version>
+
+        <lombok.version>1.18.12</lombok.version>
+        <mysql-connector.version>8.0.27</mysql-connector.version>
+        <druid.version>1.1.16</druid.version>
+        <mybatis.version>2.2.2</mybatis.version>
+        <swagger.version>3.0.0</swagger.version>
+    </properties>
+
+    <!-- 子模块继承之后，提供作用：
+        锁定版本+子module不用写groupId和version 这里这是提前配置一下 并没有任何dependency的引入！-->
+    <!--  这里牛逼的地方在于 特别适合配置dependencies 比如springboot的所有starter依赖的版本 比如springcloud所有的依赖版本！-->
+    <!--  其他的组件 如果存在少数几个用特殊版本 可以直接父组件直接import 然后子组件不喜欢那就新引入特殊的版本咯 -->
+    <dependencyManagement>
+        <dependencies>
+            <!--spring boot 2.2.2-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring cloud Hoxton.SR1-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring cloud alibaba 2.1.0.RELEASE-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+    <!--  常用工具可以不需要多版本控制了。。-->
+    <dependencies>
+        <!--    我们自己的公共组件！-->
+<!--        <dependency>-->
+<!--            <artifactId>common</artifactId>-->
+<!--            <groupId>cn.ryanalexander.alibaba</groupId>-->
+<!--            <version>1.0.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-logging</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>*</groupId>-->
+<!--                    <artifactId>*</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
+<!--        </dependency>-->
+        <!-- 加上这个才能让log4j2 辨认到log4j2.yml文件 -->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
+<!--            <artifactId>jackson-dataformat-yaml</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.lmax</groupId>-->
+<!--            <artifactId>disruptor</artifactId>-->
+<!--            <version>3.4.2</version>-->
+<!--        </dependency>-->
+
+
+        <!--mysql驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <!--mybatis-plus启动器-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--    数据库连接相关    -->
+
+        <!--druid-->
+        <!--    <dependency>-->
+        <!--      <groupId>com.alibaba</groupId>-->
+        <!--      <artifactId>druid</artifactId>-->
+        <!--      <version>${druid.version}</version>-->
+        <!--    </dependency>-->
+
+
+        <!--    工具类    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.18.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.79</version>
+        </dependency>
+
+        <!--swagger3-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <!-- API获取的包 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <!-- 官方UI包 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+
+        <!--    测试 开发 相关工具    -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+    <!--    为了添加热部署插件 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.3</version>
+                <configuration>
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

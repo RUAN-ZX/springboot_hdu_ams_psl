@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.service.tool;
 
-import cn.ryanalexander.alibaba.dao.TeacherDao;
+import cn.ryanalexander.alibaba.mapper.TeacherDao;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
