@@ -1,69 +1,69 @@
 package cn.ryanalexander.alibaba.domain.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
- *
+ * 
  * @TableName teacher
  */
 @TableName(value ="teacher")
 @Data
 public class Teacher implements Serializable {
     /**
-     *
+     * 
      */
     @TableId
-    private Integer t_id;
+    private Integer teacherId;
 
     /**
-     *
+     * 
      */
-    private String t_name;
+    private String teacherName;
 
     /**
-     *
+     * 
      */
-    private String t_mail;
+    private String teacherMail;
 
     /**
-     *
+     * 
      */
-    private String t_phone;
+    private String teacherPhone;
 
     /**
-     *
+     * 
      */
-    private String t_pwd;
+    private String teacherPwd;
 
     /**
-     *
+     * 
      */
-    private Integer t_ac_id;
+    private Integer teacherAcademyId;
 
     /**
-     *
+     * 
      */
-    private String t_team;
+    private String teacherTeam;
 
     /**
-     *
+     * 
      */
-    private String t_type;
+    private String teacherType;
 
     /**
-     *
+     * 
      */
-    private String t_title;
+    private String teacherTitle;
 
     /**
-     *
+     * 
      */
-    private Integer t_title_level;
+    private Integer teacherTitleLevel;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -80,32 +80,32 @@ public class Teacher implements Serializable {
             return false;
         }
         Teacher other = (Teacher) that;
-        return (this.getT_id() == null ? other.getT_id() == null : this.getT_id().equals(other.getT_id()))
-                && (this.getT_name() == null ? other.getT_name() == null : this.getT_name().equals(other.getT_name()))
-                && (this.getT_mail() == null ? other.getT_mail() == null : this.getT_mail().equals(other.getT_mail()))
-                && (this.getT_phone() == null ? other.getT_phone() == null : this.getT_phone().equals(other.getT_phone()))
-                && (this.getT_pwd() == null ? other.getT_pwd() == null : this.getT_pwd().equals(other.getT_pwd()))
-                && (this.getT_ac_id() == null ? other.getT_ac_id() == null : this.getT_ac_id().equals(other.getT_ac_id()))
-                && (this.getT_team() == null ? other.getT_team() == null : this.getT_team().equals(other.getT_team()))
-                && (this.getT_type() == null ? other.getT_type() == null : this.getT_type().equals(other.getT_type()))
-                && (this.getT_title() == null ? other.getT_title() == null : this.getT_title().equals(other.getT_title()))
-                && (this.getT_title_level() == null ? other.getT_title_level() == null : this.getT_title_level().equals(other.getT_title_level()));
+        return (this.getTeacherId() == null ? other.getTeacherId() == null : this.getTeacherId().equals(other.getTeacherId()))
+            && (this.getTeacherName() == null ? other.getTeacherName() == null : this.getTeacherName().equals(other.getTeacherName()))
+            && (this.getTeacherMail() == null ? other.getTeacherMail() == null : this.getTeacherMail().equals(other.getTeacherMail()))
+            && (this.getTeacherPhone() == null ? other.getTeacherPhone() == null : this.getTeacherPhone().equals(other.getTeacherPhone()))
+            && (this.getTeacherPwd() == null ? other.getTeacherPwd() == null : this.getTeacherPwd().equals(other.getTeacherPwd()))
+            && (this.getTeacherAcademyId() == null ? other.getTeacherAcademyId() == null : this.getTeacherAcademyId().equals(other.getTeacherAcademyId()))
+            && (this.getTeacherTeam() == null ? other.getTeacherTeam() == null : this.getTeacherTeam().equals(other.getTeacherTeam()))
+            && (this.getTeacherType() == null ? other.getTeacherType() == null : this.getTeacherType().equals(other.getTeacherType()))
+            && (this.getTeacherTitle() == null ? other.getTeacherTitle() == null : this.getTeacherTitle().equals(other.getTeacherTitle()))
+            && (this.getTeacherTitleLevel() == null ? other.getTeacherTitleLevel() == null : this.getTeacherTitleLevel().equals(other.getTeacherTitleLevel()));
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getT_id() == null) ? 0 : getT_id().hashCode());
-        result = prime * result + ((getT_name() == null) ? 0 : getT_name().hashCode());
-        result = prime * result + ((getT_mail() == null) ? 0 : getT_mail().hashCode());
-        result = prime * result + ((getT_phone() == null) ? 0 : getT_phone().hashCode());
-        result = prime * result + ((getT_pwd() == null) ? 0 : getT_pwd().hashCode());
-        result = prime * result + ((getT_ac_id() == null) ? 0 : getT_ac_id().hashCode());
-        result = prime * result + ((getT_team() == null) ? 0 : getT_team().hashCode());
-        result = prime * result + ((getT_type() == null) ? 0 : getT_type().hashCode());
-        result = prime * result + ((getT_title() == null) ? 0 : getT_title().hashCode());
-        result = prime * result + ((getT_title_level() == null) ? 0 : getT_title_level().hashCode());
+        result = prime * result + ((getTeacherId() == null) ? 0 : getTeacherId().hashCode());
+        result = prime * result + ((getTeacherName() == null) ? 0 : getTeacherName().hashCode());
+        result = prime * result + ((getTeacherMail() == null) ? 0 : getTeacherMail().hashCode());
+        result = prime * result + ((getTeacherPhone() == null) ? 0 : getTeacherPhone().hashCode());
+        result = prime * result + ((getTeacherPwd() == null) ? 0 : getTeacherPwd().hashCode());
+        result = prime * result + ((getTeacherAcademyId() == null) ? 0 : getTeacherAcademyId().hashCode());
+        result = prime * result + ((getTeacherTeam() == null) ? 0 : getTeacherTeam().hashCode());
+        result = prime * result + ((getTeacherType() == null) ? 0 : getTeacherType().hashCode());
+        result = prime * result + ((getTeacherTitle() == null) ? 0 : getTeacherTitle().hashCode());
+        result = prime * result + ((getTeacherTitleLevel() == null) ? 0 : getTeacherTitleLevel().hashCode());
         return result;
     }
 
@@ -115,16 +115,16 @@ public class Teacher implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", t_id=").append(t_id);
-        sb.append(", t_name=").append(t_name);
-        sb.append(", t_mail=").append(t_mail);
-        sb.append(", t_phone=").append(t_phone);
-        sb.append(", t_pwd=").append(t_pwd);
-        sb.append(", t_ac_id=").append(t_ac_id);
-        sb.append(", t_team=").append(t_team);
-        sb.append(", t_type=").append(t_type);
-        sb.append(", t_title=").append(t_title);
-        sb.append(", t_title_level=").append(t_title_level);
+        sb.append(", teacherId=").append(teacherId);
+        sb.append(", teacherName=").append(teacherName);
+        sb.append(", teacherMail=").append(teacherMail);
+        sb.append(", teacherPhone=").append(teacherPhone);
+        sb.append(", teacherPwd=").append(teacherPwd);
+        sb.append(", teacherAcademyId=").append(teacherAcademyId);
+        sb.append(", teacherTeam=").append(teacherTeam);
+        sb.append(", teacherType=").append(teacherType);
+        sb.append(", teacherTitle=").append(teacherTitle);
+        sb.append(", teacherTitleLevel=").append(teacherTitleLevel);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

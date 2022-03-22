@@ -6,7 +6,7 @@
         <option name="generateConfig">
           <GenerateConfig>
             <option name="annotationType" value="MYBATIS_PLUS3" />
-            <option name="basePackage" value="generator" />
+            <option name="basePackage" value="ge" />
             <option name="basePath" value="src/main/java" />
             <option name="classNameStrategy" value="camel" />
             <option name="encoding" value="UTF-8" />
@@ -59,7 +59,7 @@
             </option>
             <option name="needToStringHashcodeEquals" value="true" />
             <option name="needsComment" value="true" />
-            <option name="relativePackage" value="domain" />
+            <option name="relativePackage" value="domain.po" />
             <option name="superClass" value="" />
             <option name="tableUIInfoList">
               <list>
@@ -70,7 +70,6 @@
               </list>
             </option>
             <option name="templatesName" value="mybatis-plus3" />
-            <option name="useActualColumns" value="true" />
             <option name="useLombokPlugin" value="true" />
           </GenerateConfig>
         </option>

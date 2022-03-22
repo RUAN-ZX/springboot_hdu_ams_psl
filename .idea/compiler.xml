@@ -18,7 +18,7 @@
         <module name="provider-payment-9002" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
+    <bytecodeTargetLevel target="11">
       <module name="common" target="1.8" />
       <module name="consumer-order-80" target="1.8" />
       <module name="LearnCloud" target="1.8" />

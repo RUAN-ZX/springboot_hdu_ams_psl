@@ -2,50 +2,25 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="generator.mapper.TeacherMapper">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.TeacherMapper">
 
-    <resultMap id="BaseResultMap" type="generator.domain.Teacher">
-            <id property="t_id" column="t_id" jdbcType="INTEGER"/>
-            <result property="t_name" column="t_name" jdbcType="VARCHAR"/>
-            <result property="t_mail" column="t_mail" jdbcType="VARCHAR"/>
-            <result property="t_phone" column="t_phone" jdbcType="CHAR"/>
-            <result property="t_pwd" column="t_pwd" jdbcType="VARCHAR"/>
-            <result property="t_ac_id" column="t_ac_id" jdbcType="INTEGER"/>
-            <result property="t_team" column="t_team" jdbcType="VARCHAR"/>
-            <result property="t_type" column="t_type" jdbcType="VARCHAR"/>
-            <result property="t_title" column="t_title" jdbcType="VARCHAR"/>
-            <result property="t_title_level" column="t_title_level" jdbcType="TINYINT"/>
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.Teacher">
+            <id property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+            <result property="teacherMail" column="teacher_mail" jdbcType="VARCHAR"/>
+            <result property="teacherPhone" column="teacher_phone" jdbcType="CHAR"/>
+            <result property="teacherPwd" column="teacher_pwd" jdbcType="VARCHAR"/>
+            <result property="teacherAcademyId" column="teacher_academy_id" jdbcType="INTEGER"/>
+            <result property="teacherTeam" column="teacher_team" jdbcType="VARCHAR"/>
+            <result property="teacherType" column="teacher_type" jdbcType="VARCHAR"/>
+            <result property="teacherTitle" column="teacher_title" jdbcType="VARCHAR"/>
+            <result property="teacherTitleLevel" column="teacher_title_level" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        t_id,t_name,t_mail,
-        t_phone,t_pwd,t_ac_id,
-        t_team,t_type,t_title,
-        t_title_level
+        teacher_id,teacher_name,teacher_mail,
+        teacher_phone,teacher_pwd,teacher_academy_id,
+        teacher_team,teacher_type,teacher_title,
+        teacher_title_level
     </sql>
-    <insert id="insertByIdName" parameterType="java.util.List">
-        insert into teacher(t_id, t_name) values
-        <foreach collection ="list" item="t" separator =",">
-            (#{t.t_id}, #{t.t_name})
-        </foreach>
-    </insert>
-
-    <insert id="insertByIdNameEmail" parameterType="java.util.List">
-        insert into teacher (t_id, t_name, t_mail)
-        values
-        <foreach collection="list" item="item" index="index" separator="," >
-            (#{item.t_id}, #{item.t_name}, #{item.t_mail})
-        </foreach>
-    </insert>
-    <update id="updateEmail" parameterType="String">
-        UPDATE teacher SET t_mail = #{t_mail} WHERE t_id = #{t_id}
-    </update>
-
-    <update id="updatePwd" parameterType="String">
-        UPDATE teacher SET t_pwd = #{Tpwd} WHERE t_id = #{t_id}
-    </update>
-
-    <select id="getById" parameterType="String" resultType="cn.ryanalexander.alibaba.domain.po.Teacher">
-        select * from teacher where t_id=#{t_id}
-    </select>
 </mapper>

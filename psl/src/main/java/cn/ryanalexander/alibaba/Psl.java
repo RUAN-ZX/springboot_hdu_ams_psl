@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version 1.0.0-Beta
  **/
 @SpringBootApplication()
-@MapperScan(basePackages = "cn.ryanalexander.alibaba.dao")
+@MapperScan(basePackages = "cn.ryanalexander.alibaba.mapper")
 public class Psl {
     public static void main(String[] args) {
         SpringApplication.run(Psl.class, args);

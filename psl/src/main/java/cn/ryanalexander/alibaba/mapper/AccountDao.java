@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.mapper;
 
-import cn.ryanalexander.alibaba.service.TService;
+import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
 import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
@@ -25,7 +25,7 @@ public class AccountDao {
     private RedisTemplate<String, Object> ryanRedisTemplate;
 
     @Autowired
-    TeacherDao tDao;
+    TeacherMapper tDao;
 
     @Resource
     EmailService emailService;
@@ -107,7 +107,7 @@ public class AccountDao {
     public void getCaptcha_async(String Tid, String Tname, String Tmail) throws Exception{
 
 
-        String Tcaptcha = TService.generateVerCode(Tid);
+        String Tcaptcha = AccountService.generateVerCode(Tid);
         emailService.sendCaptchaMails(Tid,Tcaptcha, Tname, Tmail);
 
         TupdateCaptcha(Tcaptcha,Tid);

@@ -1,6 +1,5 @@
 package cn.ryanalexander.alibaba.controller;
 
-import cn.ryanalexander.alibaba.entities.ResponseStatusCode;
 import cn.ryanalexander.alibaba.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import cn.ryanalexander.alibaba.domain.dto.Result;
 import java.math.BigDecimal;
 
 /**
@@ -28,8 +28,8 @@ public class AccountController {
      * 扣减账户余额
      */
     @PostMapping("/account/decrease")
-    public ResponseStatusCode decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money){
+    public Result<String> decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money){
         accountService.decrease(userId,money);
-        return new ResponseStatusCode(200,"扣减账户余额成功！");
+        return new Result<String>(200,"扣减账户余额成功！");
     }
 }

@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.processor;
 
-import cn.ryanalexander.alibaba.domain.po.Result;
+import cn.ryanalexander.alibaba.domain.dto.Result;
 import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import lombok.extern.slf4j.Slf4j;
