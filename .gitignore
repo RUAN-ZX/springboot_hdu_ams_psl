@@ -1,10 +1,8 @@
-# resources
-/resources/
-
 # Config
 *.yml
 *.yaml
 *.properties
+*.xlsx
 
 # Compiled class file
 *.class
