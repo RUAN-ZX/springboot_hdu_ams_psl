@@ -12,7 +12,7 @@ spring:
   mail:
     port: 465
     username: ryan_innerpeace@foxmail.com
-    password: nnpkbifbyunigceh
+    password: aeltjnculxukhjcg
     host: smtp.qq.com
     default-encoding: UTF-8
     properties:

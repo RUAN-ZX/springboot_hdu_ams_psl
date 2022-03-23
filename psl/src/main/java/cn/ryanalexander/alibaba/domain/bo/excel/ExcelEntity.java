@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * <p>2022-03-23 去掉ExcelEntity<T, E> E transform();
  * 因为没必要转换为真正数据库实体类 浪费性能 无端增大binlog 且不优雅</p>
- *
+ * <p>2022-03-23 设计isValidated 各个实体类负责自己的自检 防止excel读取null数据造成NPE</p>
  * @since 1.0.0
  * @author RyanAlexander 2022-03-23 11:09
  */

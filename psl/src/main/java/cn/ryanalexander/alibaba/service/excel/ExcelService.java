@@ -47,7 +47,4 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         saveList();
     }
-
-
-
 }
