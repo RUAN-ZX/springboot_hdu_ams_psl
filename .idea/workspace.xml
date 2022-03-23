@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.log" beforeDir="false" afterPath="$PROJECT_DIR$/log.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psl/target/classes/~$源数据.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,6 +305,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OrderMain80" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="consumer-order-80" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cn.ryanalexander.alibaba.OrderMain80" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Payment9001" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="provider-payment-9001" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="cn.ryanalexander.alibaba.Payment9001" />
@@ -364,6 +368,7 @@
       <item itemvalue="JUnit.MyBatisPlusServiceTest.testSelect" />
       <item itemvalue="Spring Boot.Payment9001" />
       <item itemvalue="JUnit.MyBatisPlusServiceTest.getTime" />
+      <item itemvalue="Spring Boot.OrderMain80" />
     </list>
     <recent_temporary>
       <list>
@@ -431,7 +436,7 @@
       <workItem from="1647859943387" duration="468000" />
       <workItem from="1647860434891" duration="302000" />
       <workItem from="1647860760484" duration="4714000" />
-      <workItem from="1647918192632" duration="44251000" />
+      <workItem from="1647918192632" duration="44665000" />
     </task>
     <servers />
   </component>

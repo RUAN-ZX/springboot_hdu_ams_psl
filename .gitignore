@@ -1,3 +1,5 @@
-.*/resources/
-/.gitignore
-/log.log
+*/resources/*
+*.gitignore*
+*.log*
+*.iml*
+*.yml*
