@@ -4,6 +4,7 @@
 # Config
 *.yml
 *.yaml
+*.properties
 
 # Compiled class file
 *.class
@@ -44,9 +45,7 @@ target
 *.diff
 *.patch
 *.tmp
+*.versionsBackup
 
 # Maven ignore
 .flattened-pom.xml
-
-# AsciiDoc
-spring-cloud-alibaba-docs/**/*.html
