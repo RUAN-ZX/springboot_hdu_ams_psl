@@ -7,17 +7,13 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.T;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 @Slf4j
-public class DataListener extends AnalysisEventListener<ExcelEntity> {
+public class ExcelService extends AnalysisEventListener<ExcelEntity> {
 
-    public DataListener() {
+    public ExcelService() {
 
     }
     private static final int BATCH_COUNT = 64;
@@ -42,7 +38,7 @@ public class DataListener extends AnalysisEventListener<ExcelEntity> {
     }
     @Override
     public void invoke(ExcelEntity data, AnalysisContext context) {
-        list.add(data);
+        if(data.isValidated()) list.add(data);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (list.size() >= BATCH_COUNT) saveList();
     }

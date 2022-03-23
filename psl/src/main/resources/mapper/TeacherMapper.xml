@@ -23,4 +23,14 @@
         teacher_team,teacher_type,teacher_title,
         teacher_title_level
     </sql>
+    <insert id="saveOrUpdateBatchByMail" parameterType="java.util.List">
+        insert into teacher(teacher_id, teacher_name, teacher_mail) values
+        <foreach collection="items" item="i" separator=",">
+           (#{i.teacherId},#{i.teacherName},#{i.teacherMail})
+        </foreach>
+        AS t1(r1, r2, r3) ON DUPLICATE KEY UPDATE
+            teacher_mail = r3, teacher_name = r2
+    </insert>
+
+
 </mapper>

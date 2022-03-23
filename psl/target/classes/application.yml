@@ -62,8 +62,8 @@ feign:
     enabled: true
 
 mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    map-underscore-to-camel-case: false # 必须！
   type-aliases-package: cn.ryanalexander.alibaba.domain
   mapper-locations: classpath:mapper/*.xml

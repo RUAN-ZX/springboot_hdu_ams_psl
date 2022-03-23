@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @ApiModel("工作量_理论课程")
 @ToString
-public class CourseTheory implements ExcelEntity<CourseTheory, CoursePO>{
+public class CourseTheory implements ExcelEntity<CourseTheory>{
 
     @ExcelProperty(value = "学期")
     private String c_term;
@@ -88,8 +88,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory, CoursePO>{
     private String c_note_2;
 
     @Override
-    public CoursePO transform(){
-        return new CoursePO();
+    public boolean isValidated(){
+        return c_cid != null;
     }
 
     @Override

@@ -3,16 +3,12 @@ package cn.ryanalexander.alibaba.controller;
 import cn.ryanalexander.alibaba.domain.bo.excel.*;
 import cn.ryanalexander.alibaba.domain.dto.Result;
 import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
-import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.service.excel.DataListener;
-import cn.ryanalexander.alibaba.service.excel.EasyExcelService;
-import cn.ryanalexander.alibaba.service.tool.ErrorService;
+import cn.ryanalexander.alibaba.service.excel.ExcelService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,7 +61,7 @@ public class ExcelController {
                     ReadSheet readSheet = EasyExcel.readSheet(matcherResult)
                             .headRowNumber(2)
                             .head(excelEntity)
-                            .registerReadListener(new DataListener()).build();
+                            .registerReadListener(new ExcelService()).build();
 
                     excelReader.read(readSheet);
                 }

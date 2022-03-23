@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.service;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.TidAndEmail;
 import cn.ryanalexander.alibaba.domain.po.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 

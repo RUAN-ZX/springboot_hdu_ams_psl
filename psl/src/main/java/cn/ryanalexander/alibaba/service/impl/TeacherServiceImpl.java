@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.service.impl;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.TidAndEmail;
 import cn.ryanalexander.alibaba.domain.exceptions.InjectionException;
 import cn.ryanalexander.alibaba.domain.exceptions.UnKnownException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
