@@ -6,23 +6,23 @@
 
 
 	<insert id="c_insert" parameterType="java.util.List">
-		insert into teacher (t_id, t_name, t_mail)
+		insert into accountPO (t_id, t_name, t_mail)
 		values
 		<foreach collection="list" item="item" index="index" separator="," >
 			(#{item.t_id}, #{item.t_name}, #{item.t_mail})
 		</foreach>
 	</insert>
 	<update id="TupdateEmail" parameterType="String">
-		UPDATE teacher SET t_mail = #{t_mail} WHERE t_id = #{t_id}
+		UPDATE accountPO SET t_mail = #{t_mail} WHERE t_id = #{t_id}
 	</update>
 
 
 	<update id="TupdatePwd" parameterType="String">
-		UPDATE teacher SET t_pwd = #{Tpwd} WHERE t_id = #{t_id}
+		UPDATE accountPO SET t_pwd = #{Tpwd} WHERE t_id = #{t_id}
 	</update>
 
-	<select id="TgetById" parameterType="String" resultType="cn.ryanalexander.alibaba.domain.po.Teacher">
-		select * from teacher where t_id=#{t_id}
+	<select id="TgetById" parameterType="String" resultType="cn.ryanalexander.alibaba.domain.po.AccountPO">
+		select * from accountPO where t_id=#{t_id}
 
 	</select>
 

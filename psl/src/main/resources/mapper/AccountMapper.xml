@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.AccountPO">
+            <id property="accountId" column="account_id" jdbcType="INTEGER"/>
+            <result property="accountName" column="account_name" jdbcType="VARCHAR"/>
+            <result property="accountMail" column="account_mail" jdbcType="VARCHAR"/>
+            <result property="accountPhone" column="account_phone" jdbcType="CHAR"/>
+            <result property="accountPwd" column="account_pwd" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        account_id,account_name,account_mail,
+        account_phone,account_pwd
+    </sql>
+
+    <insert id="saveOrUpdateBatchByMail" parameterType="java.util.List">
+        insert into account(account_id, account_name, account_mail) values
+        <foreach collection="items" item="i" separator=",">
+            (#{i.accountId},#{i.accountName},#{i.accountMail})
+        </foreach>
+        AS t1(r1, r2, r3) ON DUPLICATE KEY UPDATE
+        account_mail = r3, account_name = r2
+    </insert>
+
+    <insert id="saveOrUpdateBatchByTitle" parameterType="java.util.List">
+        insert into account(account_id, account_name, account_mail) values
+        <foreach collection="items" item="i" separator=",">
+            (#{i.accountId},#{i.accountName},#{i.accountMail})
+        </foreach>
+        AS t1(r1, r2, r3) ON DUPLICATE KEY UPDATE
+        account_mail = r3, account_name = r2
+    </insert>
+</mapper>

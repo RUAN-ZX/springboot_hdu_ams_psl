@@ -1,10 +1,7 @@
 package cn.ryanalexander.alibaba;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
-import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.domain.po.Teacher;
-import cn.ryanalexander.alibaba.mapper.TeacherMapper;
-import cn.ryanalexander.alibaba.service.TeacherService;
+import cn.ryanalexander.alibaba.domain.po.AccountPO;
+import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
@@ -13,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -26,21 +21,21 @@ import java.util.*;
 public class MyBatisPlusServiceTest {
 
     @Autowired
-    private TeacherService teacherService;
+    private AccountService accountService;
 
     private final Logger logger = LoggerFactory.getLogger(MyBatisPlusServiceTest.class);
 
     @Test
     public void testGetCount(){
         logger.warn("dfgdfg");
-        teacherService.updatePwdById("40028", "sdf");
+        accountService.updatePwdById("40028", "sdf");
     }
 
     @Test
     public void testSelect(){
-        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<AccountPO> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("teacher_name", "高");
-        List<Teacher> list = teacherService.getBaseMapper().selectList(queryWrapper);
+        List<AccountPO> list = accountService.getBaseMapper().selectList(queryWrapper);
         list.forEach(System.out::println);
     }
 

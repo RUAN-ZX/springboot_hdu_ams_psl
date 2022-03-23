@@ -1,26 +1,37 @@
 CREATE DATABASE IF NOT EXISTS `teacher_data` DEFAULT CHARACTER SET utf8 ;
 
 USE `teacher_data`;
+# 设定几种表 source表 源数据 derived表 导出表 派生表
 
-# teacher 教师 
-DROP TABLE IF EXISTS `teacher`;
-CREATE TABLE `teacher` (
-  `teacher_id` INT(8) NOT NULL,
-  `teacher_name` VARCHAR(25) NOT NULL,
-  `teacher_mail` VARCHAR(50) DEFAULT NULL,
-	`teacher_phone` CHAR(11) DEFAULT NULL, # 13713524786
-  `teacher_pwd` VARCHAR(20) DEFAULT NULL, 
-  `teacher_academy_id` INT(2) DEFAULT 1, # 学院
-	
-	`teacher_team` varchar(30) DEFAULT NULL,
-	`teacher_type` VARCHAR(10) DEFAULT NULL,  # 专职教师
-	`teacher_title` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学）
-	`teacher_title_level` TINYINT(1) DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3
-	
-  PRIMARY KEY (`teacher_id`)
+# account 教师 
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+  `account_id` INT(8) NOT NULL,
+  `account_name` VARCHAR(25) NOT NULL,
+  `account_mail` VARCHAR(50) DEFAULT NULL, # 保持最新状态就行了！
+	`account_phone` CHAR(11) DEFAULT NULL, # 13713524786
+  `account_pwd` VARCHAR(20) DEFAULT NULL, 
+  PRIMARY KEY (`account_id`)
 --   CONSTRAINT `tdid_did_fk` FOREIGN KEY (`TDid`) REFERENCES `D` (`Did`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+# 不一定所有的账户都有teacher title！！！
+DROP TABLE IF EXISTS `teacher_title`;
+CREATE TABLE `teacher_title` (
+  `title_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`title_teacher_id` INT(8) NOT NULL,
+	`title_academy_id` INT(2) DEFAULT 1, # 学院
+	`title_team` varchar(30) DEFAULT NULL,
+	`title_type` VARCHAR(10) DEFAULT NULL,  # 专职教师
+	`title_name` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学）
+	`title_level` TINYINT(1) DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
+	`title_year` INT(4) NOT NULL,
+	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
+	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 直接null就好了！ 因为每次更改会自动更新
+	# 前后端去实现时区转换
+	
+  PRIMARY KEY (`title_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
 ## -------------课程 理论+实践 专门用于统计主讲课时的!

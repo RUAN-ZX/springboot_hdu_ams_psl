@@ -17,7 +17,7 @@ import java.math.BigDecimal;
  **/
 @Service
 public class AccountService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService__.class);
 
     @Resource
     AccountDao accountDao;

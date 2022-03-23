@@ -2,10 +2,10 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
 
 import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.domain.po.Teacher;
-import cn.ryanalexander.alibaba.mapper.TeacherMapper;
+import cn.ryanalexander.alibaba.domain.po.AccountPO;
+import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
-import cn.ryanalexander.alibaba.service.TeacherService;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,26 +28,26 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 //@ApiModel("工号和邮箱")
-public class TidAndEmail implements ExcelEntity<TidAndEmail> {
+public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
     @ExcelProperty(value = "职工号")
-    public Integer teacherId;
+    public Integer accountId;
 
     @ExcelProperty(value = "姓名")
-    public String teacherName;
+    public String accountName;
 
     @ExcelProperty(value = "邮箱")
-    public String teacherMail;
+    public String accountMail;
 
     @Override
     public boolean isValidated() {
-        return teacherId != null && teacherMail != null;
+        return accountId != null && accountMail != null;
     }
 
     @Override
-    public void transformAndSave(ArrayList<TidAndEmail> list, int size) {
-        TeacherService teacherService = (TeacherService) SpringUtil.getBean("teacherServiceImpl");
-        TeacherMapper teacherMapper = (TeacherMapper) SpringUtil.getBean("teacherMapper");
-        ArrayList<Teacher> afterTransform = new ArrayList<>(size);
+    public void transformAndSave(ArrayList<AccountIdAndEmail> list, int size) {
+        AccountService accountService = (AccountService) SpringUtil.getBean("accountServiceImpl");
+        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
+        ArrayList<AccountPO> afterTransform = new ArrayList<>(size);
 
 //        for (TidAndEmail item : list) {
 //            Teacher transformItem = new Teacher();
@@ -64,7 +64,7 @@ public class TidAndEmail implements ExcelEntity<TidAndEmail> {
 
 //            afterTransform.forEach(System.out::println);
             // 不必要传size 因为easyexcel的batch明显远小于默认的1000！
-            teacherMapper.saveOrUpdateBatchByMail(list);
+            accountMapper.saveOrUpdateBatchByMail(list);
 //            teacherService.saveBatch(afterTransform);
         }
         catch (Exception e){

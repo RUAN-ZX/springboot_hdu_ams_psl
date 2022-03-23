@@ -1,9 +1,7 @@
 package cn.ryanalexander.alibaba.controller;
 
-import cn.ryanalexander.alibaba.service.AccountService;
-import org.springframework.stereotype.Controller;
+import cn.ryanalexander.alibaba.service.AccountService__;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +20,7 @@ import java.math.BigDecimal;
 // 否则微服务 Feigh不承认 这样会导致执行操作但是返回的东西不被承认 最终导致consumer那边的失败
 public class AccountController {
     @Resource
-    AccountService accountService;
+    AccountService__ accountService;
 
     /**
      * 扣减账户余额

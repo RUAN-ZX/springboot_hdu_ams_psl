@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.service.tool;
 
-import cn.ryanalexander.alibaba.mapper.TeacherMapper;
+import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class EmailService {
     @Resource
     private StaticConfiguration StaticConfiguration;
     @Resource
-    private TeacherMapper tDao;
+    private AccountMapper tDao;
 
     public static String readFile(String fileName) {
         File file = new File(fileName);

@@ -32,7 +32,7 @@ public class ExcelController {
 
     private static final HashMap<String, Class<?>> sheetAndExcelEntity = new HashMap<>();
     static{
-        sheetAndExcelEntity.put("工号和邮箱", TidAndEmail.class);
+        sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
 //        sheetAndExcelEntity.put("理论", CourseTheory.class);
 //        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
 //        sheetAndExcelEntity.put("毕业设计", CourseThesisDesign.class);

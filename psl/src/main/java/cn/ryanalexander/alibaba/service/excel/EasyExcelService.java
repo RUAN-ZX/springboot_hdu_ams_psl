@@ -1,9 +1,8 @@
 package cn.ryanalexander.alibaba.service.excel;
 
 
-import cn.ryanalexander.alibaba.mapper.TeacherMapper;
+import cn.ryanalexander.alibaba.mapper.AccountMapper;
 //import cn.ryanalexander.alibaba.service.excel_ali.entity.ExcelEntity;
-import cn.ryanalexander.alibaba.domain.bo.excel.ExcelEntity;
 
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class EasyExcelService {
 
 
     @Resource
-    private TeacherMapper teacherMapper;
+    private AccountMapper accountMapper;
 
 //    @Resource
 
