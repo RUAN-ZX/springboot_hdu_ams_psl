@@ -10933,3 +10933,47 @@ INFO  2022-03-23 12:08:04 org.apache.coyote.http11.Http11NioProtocol log restart
 INFO  2022-03-23 12:08:04 org.springframework.boot.web.embedded.tomcat.TomcatWebServer start restartedMain Tomcat started on port(s): 8080 (http) with context path ''
 INFO  2022-03-23 12:08:04 cn.ryanalexander.alibaba.Psl logStarted restartedMain Started Psl in 1.014 seconds (JVM running for 2305.75)
 INFO  2022-03-23 12:08:04 org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener onApplicationEvent restartedMain Condition evaluation unchanged
+INFO  2022-03-23 12:13:02 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown Thread-65 Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-23 12:13:03 cn.ryanalexander.alibaba.Psl logStarting restartedMain Starting Psl on DESKTOP-DEJ4DAP with PID 52984 (F:\JAVA\workspace\LearnCloud\psl\target\classes started by ryan in F:\JAVA\workspace\LearnCloud)
+INFO  2022-03-23 12:13:03 cn.ryanalexander.alibaba.Psl logStartupProfileInfo restartedMain The following profiles are active: dev
+INFO  2022-03-23 12:13:03 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected restartedMain Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-23 12:13:03 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-23 12:13:03 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Finished Spring Data repository scanning in 7ms. Found 0 Redis repository interfaces.
+INFO  2022-03-23 12:13:03 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization restartedMain Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+WARN  2022-03-23 12:13:03 org.apache.tomcat.util.modeler.Registry log restartedMain The MBean registry cannot be disabled because it has already been initialised
+INFO  2022-03-23 12:13:03 org.springframework.boot.web.embedded.tomcat.TomcatWebServer initialize restartedMain Tomcat initialized with port(s): 8080 (http)
+INFO  2022-03-23 12:13:03 org.apache.coyote.http11.Http11NioProtocol log restartedMain Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-23 12:13:03 org.apache.catalina.core.StandardService log restartedMain Starting service [Tomcat]
+INFO  2022-03-23 12:13:03 org.apache.catalina.core.StandardEngine log restartedMain Starting Servlet engine: [Apache Tomcat/9.0.29]
+INFO  2022-03-23 12:13:03 org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] log restartedMain Initializing Spring embedded WebApplicationContext
+INFO  2022-03-23 12:13:03 org.springframework.web.context.ContextLoader prepareWebApplicationContext restartedMain Root WebApplicationContext: initialization completed in 351 ms
+INFO  2022-03-23 12:13:04 org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init> restartedMain Exposing 13 endpoint(s) beneath base path '/actuator'
+INFO  2022-03-23 12:13:04 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor initialize restartedMain Initializing ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-23 12:13:04 org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer startServer restartedMain LiveReload server is running on port 35729
+INFO  2022-03-23 12:13:04 org.apache.coyote.http11.Http11NioProtocol log restartedMain Starting ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-23 12:13:04 org.springframework.boot.web.embedded.tomcat.TomcatWebServer start restartedMain Tomcat started on port(s): 8080 (http) with context path ''
+INFO  2022-03-23 12:13:04 cn.ryanalexander.alibaba.Psl logStarted restartedMain Started Psl in 1.047 seconds (JVM running for 2605.131)
+INFO  2022-03-23 12:13:04 org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener onApplicationEvent restartedMain Condition evaluation unchanged
+INFO  2022-03-23 12:17:23 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown Thread-72 Shutting down ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-23 12:17:24 cn.ryanalexander.alibaba.Psl logStarting restartedMain Starting Psl on DESKTOP-DEJ4DAP with PID 52984 (F:\JAVA\workspace\LearnCloud\psl\target\classes started by ryan in F:\JAVA\workspace\LearnCloud)
+INFO  2022-03-23 12:17:24 cn.ryanalexander.alibaba.Psl logStartupProfileInfo restartedMain The following profiles are active: dev
+INFO  2022-03-23 12:17:25 org.springframework.data.repository.config.RepositoryConfigurationDelegate multipleStoresDetected restartedMain Multiple Spring Data modules found, entering strict repository configuration mode!
+INFO  2022-03-23 12:17:25 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+INFO  2022-03-23 12:17:25 org.springframework.data.repository.config.RepositoryConfigurationDelegate registerRepositoriesIn restartedMain Finished Spring Data repository scanning in 1ms. Found 0 Redis repository interfaces.
+WARN  2022-03-23 12:17:25 org.mybatis.spring.mapper.ClassPathMapperScanner warn restartedMain No MyBatis mapper was found in '[cn.ryanalexander.alibaba.mapper]' package. Please check your configuration.
+INFO  2022-03-23 12:17:26 org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker postProcessAfterInitialization restartedMain Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+WARN  2022-03-23 12:17:26 org.apache.tomcat.util.modeler.Registry log restartedMain The MBean registry cannot be disabled because it has already been initialised
+INFO  2022-03-23 12:17:26 org.springframework.boot.web.embedded.tomcat.TomcatWebServer initialize restartedMain Tomcat initialized with port(s): 8080 (http)
+INFO  2022-03-23 12:17:26 org.apache.coyote.http11.Http11NioProtocol log restartedMain Initializing ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-23 12:17:26 org.apache.catalina.core.StandardService log restartedMain Starting service [Tomcat]
+INFO  2022-03-23 12:17:26 org.apache.catalina.core.StandardEngine log restartedMain Starting Servlet engine: [Apache Tomcat/9.0.29]
+INFO  2022-03-23 12:17:26 org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] log restartedMain Initializing Spring embedded WebApplicationContext
+INFO  2022-03-23 12:17:26 org.springframework.web.context.ContextLoader prepareWebApplicationContext restartedMain Root WebApplicationContext: initialization completed in 1422 ms
+INFO  2022-03-23 12:17:26 org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver <init> restartedMain Exposing 13 endpoint(s) beneath base path '/actuator'
+INFO  2022-03-23 12:17:26 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor initialize restartedMain Initializing ExecutorService 'applicationTaskExecutor'
+INFO  2022-03-23 12:17:26 org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer startServer restartedMain LiveReload server is running on port 35729
+INFO  2022-03-23 12:17:27 org.apache.coyote.http11.Http11NioProtocol log restartedMain Starting ProtocolHandler ["http-nio-8080"]
+INFO  2022-03-23 12:17:27 org.springframework.boot.web.embedded.tomcat.TomcatWebServer start restartedMain Tomcat started on port(s): 8080 (http) with context path ''
+INFO  2022-03-23 12:17:27 cn.ryanalexander.alibaba.Psl logStarted restartedMain Started Psl in 2.956 seconds (JVM running for 2868.355)
+INFO  2022-03-23 12:17:27 org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener onApplicationEvent restartedMain Condition evaluation unchanged
+INFO  2022-03-23 12:17:29 org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor shutdown SpringContextShutdownHook Shutting down ExecutorService 'applicationTaskExecutor'

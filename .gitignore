@@ -1,1 +1,3 @@
-/psl/src/main/resources/
+.*/resources/
+/.gitignore
+/log.log
