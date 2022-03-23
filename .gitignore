@@ -1,3 +1,10 @@
+# resources
+/resources/
+
+# Config
+*.yml
+*.yaml
+
 # Compiled class file
 *.class
 *.classpath
