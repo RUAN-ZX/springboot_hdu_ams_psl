@@ -1,6 +1,5 @@
 package cn.ryanalexander.alibaba.service.impl;
 
-import cn.ryanalexander.alibaba.domain.dto.Result;
 import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.enumable.KeyEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.*;
@@ -8,7 +7,6 @@ import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
-import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import cn.ryanalexander.alibaba.service.tool.JwtService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
 import com.alibaba.fastjson.JSONObject;
@@ -72,14 +70,14 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         if(code.equals(value)) return true;
         else throw new AppException(new ExceptionInfo(eventName, "redis key 错误", "code.equals"), ErrorCodeEnum.INVALID);
     }
-    public Boolean verifyAccess(String accountId, String access){
-        return verifyKey(accountId, KeyEnum.ACCESS, access);
+    public void verifyAccess(String accountId, String access){
+        verifyKey(accountId, KeyEnum.ACCESS, access);
     }
-    public Boolean verifyRefresh(String accountId, String refresh){
-        return verifyKey(accountId, KeyEnum.REFRESH, refresh);
+    public void verifyRefresh(String accountId, String refresh){
+        verifyKey(accountId, KeyEnum.REFRESH, refresh);
     }
-    public Boolean verifyCaptcha(String accountId, String captcha){
-        return verifyKey(accountId,KeyEnum.CAPTCHA,captcha);
+    public void verifyCaptcha(String accountId, String captcha){
+        verifyKey(accountId, KeyEnum.CAPTCHA, captcha);
     }
 
     @Async
@@ -134,14 +132,16 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         this.accountMapper.updateById(accountPO);
     }
 
-    public JSONObject getEmailById(String Tid){
-        try {
-            AccountPO t = accountMapper.selectById(Tid);
-            return ErrorService.getCode(0, t.getAccountMail());
-        }
-        catch (Exception e){
-            return ErrorService.getCode(1,"您的教工号可能输错了");
-        }
+    public String getEmailById(String Tid) {
+        Optional<AccountPO> accountOptional =
+                Optional.ofNullable(accountMapper.selectById(Integer.valueOf(Tid)));
+
+        AccountPO accountPO = accountOptional.orElseThrow(
+                () -> new NotFoundException(AccountPO.class, "accountMapper.selectById")
+        );
+        // TODO: 2022/3/23 应当重写这种select方法为好 主要是service层需要添加Optional 省的每次调用都要头疼是否捕获成功的问题！
+
+        return accountPO.getAccountMail();
     }
 }
 

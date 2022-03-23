@@ -6,8 +6,6 @@ import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.enumable.KeyEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.InvalidException;
 import cn.ryanalexander.alibaba.domain.exceptions.NotFoundException;
-import cn.ryanalexander.alibaba.domain.exceptions.UnKnownException;
-import cn.ryanalexander.alibaba.mapper.AccountDao;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.service.*;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
@@ -31,14 +29,11 @@ public class AccountController {
     @Resource
     private EmailService emailservice;
 
-    @Resource
-    private AccountDao accountDao;
-
 
     @ApiOperation("通过token验证")
     @PostMapping("/loginByAccess")
     public Result loginByaccess(String Tid, String access){
-        accountService.verifyAccess(Tid,access)
+        accountService.verifyAccess(Tid,access);
         JSONObject jsonObject = accountService.refreshBothToken(Tid);
         jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
         return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
@@ -138,9 +133,8 @@ public class AccountController {
     @ApiOperation("获取Email地址")
     @PostMapping("/getEmailById")
     public Result getEmailById(String accountId, String access){
-        accountService.verifyAccess(
-                accountService.getEmailById(accountId), accountId, access)
-        return new Result(ErrorCodeEnum.SUCCESS, "修改完成");
+        accountService.verifyAccess(accountId, access);
+        return new Result(ErrorCodeEnum.SUCCESS, accountService.getEmailById(accountId));
     }
 }
 
