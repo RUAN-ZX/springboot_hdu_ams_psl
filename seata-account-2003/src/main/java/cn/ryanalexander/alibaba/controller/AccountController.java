@@ -26,8 +26,8 @@ public class AccountController {
      * 扣减账户余额
      */
     @PostMapping("/account/decrease")
-    public Result<String> decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money){
+    public Result decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money){
         accountService.decrease(userId,money);
-        return new Result<String>(200,"扣减账户余额成功！");
+        return new Result("扣减账户余额成功！");
     }
 }

@@ -70,6 +70,6 @@ public class ExcelController {
         finally {
             if(excelReader != null) excelReader.finish();
         }
-        return new Result<String>(ErrorCodeEnum.OK, "good").toString();
+        return new Result(ErrorCodeEnum.SUCCESS, "good").toString();
     }
 }

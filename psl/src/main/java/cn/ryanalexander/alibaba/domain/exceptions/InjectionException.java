@@ -11,6 +11,7 @@ import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 public class InjectionException extends AppException{
 
     public InjectionException(Class<?> clazz) {
-        super(ErrorCodeEnum.FAIL, clazz.getName() +" Injection Failed");
+        super(ErrorCodeEnum.INJECTION_FAIL,
+                clazz.getName() +" Injection Failed");
     }
 }

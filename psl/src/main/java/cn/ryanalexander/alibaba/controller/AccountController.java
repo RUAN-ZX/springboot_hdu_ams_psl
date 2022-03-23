@@ -1,6 +1,11 @@
 package cn.ryanalexander.alibaba.controller;
 
 
+import cn.ryanalexander.alibaba.domain.dto.Result;
+import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.enumable.KeyEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.InvalidException;
+import cn.ryanalexander.alibaba.domain.exceptions.NotFoundException;
 import cn.ryanalexander.alibaba.domain.exceptions.UnKnownException;
 import cn.ryanalexander.alibaba.mapper.AccountDao;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
@@ -9,6 +14,7 @@ import cn.ryanalexander.alibaba.service.tool.EmailService;
 import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,26 +37,26 @@ public class AccountController {
 
     @ApiOperation("通过token验证")
     @PostMapping("/loginByAccess")
-    public String loginByaccess(String Tid, String access){
-        JSONObject result = accountDao.TverifyAccess(Tid,access);
-        if(result.getIntValue("code")==0){
-            JSONObject jsonObject = accountService.refreshBothToken(Tid);
-            jsonObject.put("Tname", accountService.getById(Tid).getAccountName());
-            return ErrorService.getCode(0, jsonObject).toJSONString();
-        }
-        return result.toJSONString();
+    public Result loginByaccess(String Tid, String access){
+        accountService.verifyAccess(Tid,access)
+        JSONObject jsonObject = accountService.refreshBothToken(Tid);
+        jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
     }
 
     @ApiOperation("通过refresh token更新access token")
     @PostMapping("/refresh")
-    public String refresh(String Tid, String refresh){
-        JSONObject result = accountDao.TverifyRefresh(Tid,refresh);
-        if(result.getIntValue("code")==0){
-            JSONObject jsonObject = accountService.refreshBothToken(Tid);
-            jsonObject.put("Tname", accountService.getById(Tid).getAccountName());
-            return ErrorService.getCode(0, jsonObject).toJSONString();
-        }
-        return result.toJSONString();
+    public Result refresh(String Tid, String refresh){
+//        if(accountService.verifyRefresh(Tid,refresh)){
+//            JSONObject jsonObject = accountService.refreshBothToken(Tid);
+//            jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+//            return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
+//        }
+//        else throw new UnKnownException(AccountController.class, "refresh");
+        accountService.verifyRefresh(Tid,refresh); // 如果有问题 里边就排除完毕 不需要外边看了
+        JSONObject jsonObject = accountService.refreshBothToken(Tid);
+        jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
     }
 
     /**
@@ -65,79 +71,76 @@ public class AccountController {
      */
 
     /**
-     * 1 用户登录 传输使用jwt生成的info token [token(Tid Tpwd)]
-     * 2 服务器生成access token与refresh token 【token(Tid)】
+     * 1 用户登录 传输使用jwt生成的info token [token(accountId accountPwd)]
+     * 2 服务器生成access token与refresh token 【token(accountId)】
      *
      */
     @ApiOperation("登录 或者说注册 反正验证一波")
     @PostMapping("/loginByPwd")
-    public String loginByPwd(String Tid, String Tpwd) throws Exception {
-//        String Tid = JSONObject.parseObject(AesService.decrypt(temp))
-//                .getString("Tid");
+    public Result loginByPwd(String accountId, String accountPwd) throws Exception {
+//        String accountId = JSONObject.parseObject(AesService.decrypt(temp))
+//                .getString("accountId");
 //
-//        String pwd = JSONObject.parseObject(AesService.decrypt(temp))
-//                .getString("Tpwd");
+//        String accountPwd = JSONObject.parseObject(AesService.decrypt(temp))
+//                .getString("accountPwd");
+        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
+        AccountPO accountPO = accountNullable.orElseThrow(() ->
+                new InvalidException(AccountPO.class, "getById", "Wrong Account id"));
 
-        try{
-            AccountPO t =  accountService.getById(Tid);
-            // 密码不允许纯数字！！ 8位以上
-            if(AccountService.isCaptcha(Tpwd)){
-                JSONObject jsonObject = accountDao.TverifyCaptcha(Tid,Tpwd);
-                if(jsonObject.getIntValue("code")!=0) return jsonObject.toJSONString();
-            }// 普通密码
-            else{
-                if(t.getAccountPwd()==null){
-                    return ErrorService.getCode(2,"请设置自己的密码 否则均需要验证码登录").toJSONString();
-                }
-                else if(!t.getAccountPwd().equals(Tpwd)){
-                    return ErrorService.getCode(5,"密码错误").toJSONString();
-                }
-            }
+//        boolean isWrongCaptcha = AccountService.isCaptcha(accountPwd) &&
+//                !accountService.verifyCaptcha(accountId,accountPwd);
+//        // 如果verify里边显示为true 但是这里却炸了 只能说不可能。
+//        if(isWrongCaptcha){
+//            throw new UnKnownException(AccountController.class, "loginByPwd");
+//        }// 普通密码
 
-            JSONObject jsonObject = accountService.refreshBothToken(Tid);
-            jsonObject.put("Tname", accountService.getById(Tid).getAccountName());
-            return ErrorService.getCode(0, jsonObject).toJSONString();
+        if(AccountService.isCaptcha(accountPwd)){
+            accountService.verifyCaptcha(accountId,accountPwd);
         }
-        catch (Exception e){
-            System.out.println(e);
-            //用户名找不到
-            return ErrorService.getCode(1,"您的教工号可能输错了").toJSONString();
+        else if(accountPO.getAccountPwd() == null){
+            throw new NotFoundException(AccountController.class, "loginByPwd", "pwd not found!");
         }
+        else if(!accountPO.getAccountPwd().equals(accountPwd)){
+            throw new InvalidException(AccountController.class, "loginByPwd", "pwd not right");
+        }
+
+        JSONObject jsonObject = accountService.refreshBothToken(accountId);
+        jsonObject.put(KeyEnum.ACCOUNT.key, accountPO.getAccountName());
+        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
     }
     @ApiOperation("获取验证码")
     @PostMapping("/getCaptcha")
-    public String getCaptcha(String Tid) throws Exception {
+    public Result getCaptcha(String Tid) throws Exception {
         try{
             Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(Tid));
-            AccountPO accountPO = accountNullable.orElseThrow(() -> new UnKnownException(AccountPO.class));
+            AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
             String Tname = accountPO.getAccountName();
             String Temail = accountPO.getAccountMail();
 
-            accountDao.getCaptcha_async(Tid, Tname, Temail);
-            return ErrorService.getCode(0,"验证码已发送到您的邮箱"+Temail+" 10分钟内有效").toJSONString();
+            accountService.getCaptcha(Tid, Tname, Temail);
+            return new Result(ErrorCodeEnum.SUCCESS, "验证码已发送到您的邮箱"+Temail+" 10分钟内有效");
         }
         catch (Exception e){
-            return ErrorService.getCode(-1,"您的教工号可能输错了").toJSONString();
+            return new Result(ErrorCodeEnum.FAIL, "您的教工号可能输错了");
         }
     }
+
+
     @ApiOperation("更改密码")
     @PostMapping("/updatePwd")
-    public String updatePwd(
-            String Tid,
-            String Tpwd,
-            String access
-        ){
-        JSONObject jsonObject = accountDao.TverifyAccess(Tid,access);
-        if(jsonObject.getIntValue("code")==0){
-            accountService.updatePwdById(Tid,Tpwd);
-            return ErrorService.getCode(0,"修改完成").toJSONString();
-        }
-        else return jsonObject.toJSONString();
+    public Result updatePwd(String accountId, String accountPwd, String access){
+        // TODO: 2022/3/23 迟早需要设计成 打了注解的标注必须verify access token 没打的不用 这种形式！
+        // 现在已经实现了 只要verify出了问题 里边直接throw异常就好 所以解耦的差不多了
+        accountService.verifyAccess(accountId,access);
+        accountService.updatePwdById(accountId,accountPwd);
+        return new Result(ErrorCodeEnum.SUCCESS, "修改完成");
     }
-    @ApiOperation("getEmailById")
+    @ApiOperation("获取Email地址")
     @PostMapping("/getEmailById")
-    public String getEmailById(String Tid, String access){
-        return accountService.verifyAccess(accountService.getEmailById(Tid),Tid,access).toJSONString();
+    public Result getEmailById(String accountId, String access){
+        accountService.verifyAccess(
+                accountService.getEmailById(accountId), accountId, access)
+        return new Result(ErrorCodeEnum.SUCCESS, "修改完成");
     }
 }
 

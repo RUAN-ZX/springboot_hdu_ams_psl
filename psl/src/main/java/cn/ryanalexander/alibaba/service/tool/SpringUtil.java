@@ -1,5 +1,8 @@
 package cn.ryanalexander.alibaba.service.tool;
 
+import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -49,7 +52,15 @@ public class SpringUtil implements ApplicationContextAware {
     }
 
     public static final Object getBean(String beanName) {
-        return getApplicationContext().getBean(beanName);
+        try{
+            return getApplicationContext().getBean(beanName);
+        }
+        catch (Exception e){
+            ExceptionInfo exceptionInfo = new ExceptionInfo(
+                    beanName, "bean Name invalid",
+                    "SpringUtil.getBean");
+            throw new AppException(exceptionInfo, ErrorCodeEnum.INJECTION_FAIL);
+        }
     }
 
     public static final Object getBean(String beanName, String className) throws ClassNotFoundException {

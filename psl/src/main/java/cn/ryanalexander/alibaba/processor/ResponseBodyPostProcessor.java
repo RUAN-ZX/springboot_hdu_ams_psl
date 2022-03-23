@@ -29,7 +29,17 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
 	
 	
 	//定义不走控制器增强器的返回类型
-    private static final List<Class<?>> notSupports = Arrays.asList(String.class, void.class, Result.class, ServletResponse.class, ResponseEntity.class);
+    /**
+     * <p><b>定义不走控制器增强器的返回类型</b></p>
+     * 如果是Result对象 很可能是Exception跑出来的 我们不需要再包装
+     *
+     * 如果各种DTO 可以包装
+     *
+     * String 我想包装
+     * <p>todo 2022-03-23 </p>
+     * @since 1.0.0
+    */
+    private static final List<Class<?>> notSupports = Arrays.asList( void.class, Result.class, ServletResponse.class, ResponseEntity.class);
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -42,9 +52,9 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
 	
 	//封装返回数据
     @Override
-    public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+    public Result beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (o != null) {
-            return new Result<>(o);
+            return new Result(o);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
 
 import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.AccountService;
@@ -45,30 +46,15 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
 
     @Override
     public void transformAndSave(ArrayList<AccountIdAndEmail> list, int size) {
-        AccountService accountService = (AccountService) SpringUtil.getBean("accountServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
-        ArrayList<AccountPO> afterTransform = new ArrayList<>(size);
-
-//        for (TidAndEmail item : list) {
-//            Teacher transformItem = new Teacher();
-//            if(item.teacherId == null) continue;
-//            Integer teacherId = Integer.valueOf(item.teacherId);
-//            if(teacherId == null) continue;
-//            transformItem.setTeacherId(teacherId);
-//            transformItem.setTeacherName(item.teacherName);
-//            transformItem.setTeacherMail(item.teacherMail);
-//            afterTransform.add(transformItem);
-//        }
-
         try{
-
-//            afterTransform.forEach(System.out::println);
-            // 不必要传size 因为easyexcel的batch明显远小于默认的1000！
             accountMapper.saveOrUpdateBatchByMail(list);
-//            teacherService.saveBatch(afterTransform);
         }
         catch (Exception e){
-            throw new AppException(ErrorCodeEnum.FAIL, e.getMessage());
+            ExceptionInfo exceptionInfo = new ExceptionInfo(
+                    "saveOrUpdateBatchByMail", "MySQL disconnected? NPE?",
+                    "accountMapper.saveOrUpdateBatchByMail");
+            throw new AppException(exceptionInfo, ErrorCodeEnum.SQL_EXEC_FAIL);
         }
     }
 }

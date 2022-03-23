@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.service;
 
+import cn.ryanalexander.alibaba.domain.dto.Result;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -29,4 +30,9 @@ public interface AccountService extends IService<AccountPO> {
         }
         return true;
     }
+
+    Boolean verifyRefresh(String accountId, String refresh);
+    Boolean verifyAccess(String accountId, String refresh);
+    Boolean verifyCaptcha(String accountId, String captcha);
+    void getCaptcha(String accountId, String accountName, String accountMail);
 }

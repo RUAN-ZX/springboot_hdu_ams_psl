@@ -60,7 +60,7 @@ public class EmailService {
     }
 
 
-    public void sendCaptchaMails(String Tid, String Tcaptcha, String Tname, String Tmail) throws MessagingException {
+    public void sendCaptchaMails(String Tcaptcha, String Tname, String Tmail) throws MessagingException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
