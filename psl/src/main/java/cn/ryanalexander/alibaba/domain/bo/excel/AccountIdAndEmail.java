@@ -1,11 +1,11 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
-import cn.ryanalexander.alibaba.domain.po.AccountPO;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
@@ -50,11 +50,11 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
         try{
             accountMapper.saveOrUpdateBatchByMail(list);
         }
-        catch (Exception e){
+        catch (AppException e){
             ExceptionInfo exceptionInfo = new ExceptionInfo(
                     "saveOrUpdateBatchByMail", "MySQL disconnected? NPE?",
                     "accountMapper.saveOrUpdateBatchByMail");
-            throw new AppException(exceptionInfo, ErrorCodeEnum.SQL_EXEC_FAIL);
+            throw new AppException(e, exceptionInfo, new ErrorCode(SubjectEnum.USER));
         }
     }
 }

@@ -1,8 +1,13 @@
 package cn.ryanalexander.alibaba.service.tool;
 
+import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +30,7 @@ public class EmailService {
     @Resource
     private AccountMapper tDao;
 
-    public static String readFile(String fileName) {
+    public static String readFile(String fileName) throws IOException {
         File file = new File(fileName);
         BufferedReader reader = null;
         String allString = null;
@@ -41,44 +46,40 @@ public class EmailService {
                 // 显示行号
 //                System.out.println(tempString);
 //                line++;
-                if (tempString != null && allString != null) allString = allString.concat(tempString);
+                if (allString != null) allString = allString.concat(tempString);
             }
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new AppException(null,
+                    new ExceptionInfo("mail.html","readFile","file url invalid"),
+                    new ErrorCode(SubjectEnum.INTERNAL));
         } finally {
-            if (reader != null) {
-                try {
-
-                    reader.close();
-
-                } catch (IOException e1) {
-                }
-            }
+            if(reader!= null) reader.close();
         }
         return allString;
     }
 
-
-    public void sendCaptchaMails(String Tcaptcha, String Tname, String Tmail) throws MessagingException {
+    @Async
+    public void sendCaptchaMails(String Tcaptcha, String Tname, String Tmail) throws MessagingException, IOException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
-
         String content = readFile(StaticConfiguration.getMailUrl());
+
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Tcaptcha),
                 true);
 
         String mailTitle = "[教务查系统] 验证码："+Tcaptcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
-        helper.setTo(Tmail);
+//        helper.setTo(Tmail); todo 系统上线再说！
+        helper.setTo(mailFrom);
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
 
 
     }
-    public void sendFeedbackMails(String Tid, String Tname, String Tmail, String Fcontent) throws MessagingException {
+    public void sendFeedbackMails(String Tid, String Tname, String Tmail, String Fcontent) throws MessagingException, IOException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
@@ -86,7 +87,7 @@ public class EmailService {
         String content = readFile(StaticConfiguration.getMailUrl());
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Fcontent),
                 true);
-        // 怎么弄 怎么设计title
+        // todo 怎么弄 怎么设计title
         String mailTitle = "处理结果"+Fcontent+" [ "+Tname+"老师 (职工号:"+Tid+") ]";
         String mailFrom = "ryan_innerpeace@foxmail.com";
         helper.setTo(Tmail);

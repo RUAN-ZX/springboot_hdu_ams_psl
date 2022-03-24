@@ -1,6 +1,8 @@
 package cn.ryanalexander.alibaba.domain.exceptions;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 
 /**
  * @author ryan
@@ -9,9 +11,9 @@ import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
  * @Version 1.0.0-Beta
  */
 public class NotFoundException extends AppException{
-
+    // TODO: 2022/3/24
     public NotFoundException(Class<?> clazz, String queryMethod, String cause) {
-        super(ErrorCodeEnum.NOT_Found, new ExceptionInfo(clazz.getName(), queryMethod, cause));
+        super(null, new ExceptionInfo(clazz.getName(), queryMethod, cause), new ErrorCode(SubjectEnum.FAIL));
     }
     /**
      * <p><b>简化版本</b></p>
@@ -22,7 +24,7 @@ public class NotFoundException extends AppException{
      * @since 1.0.0
     */
     public NotFoundException(Class<?> clazz, String queryMethod) {
-        super(ErrorCodeEnum.NOT_Found, new ExceptionInfo(clazz.getName(), queryMethod, queryMethod));
+        super(null, new ExceptionInfo(clazz.getName(), queryMethod, queryMethod), new ErrorCode(SubjectEnum.FAIL));
     }
 
 }

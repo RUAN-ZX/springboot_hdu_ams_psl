@@ -2,17 +2,17 @@ package cn.ryanalexander.alibaba.controller;
 
 
 import cn.ryanalexander.alibaba.domain.dto.Result;
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
-import cn.ryanalexander.alibaba.domain.enumable.KeyEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.config.redis.RedisKeyEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.InvalidException;
 import cn.ryanalexander.alibaba.domain.exceptions.NotFoundException;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.service.*;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
-import cn.ryanalexander.alibaba.service.tool.ErrorService;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +35,8 @@ public class AccountController {
     public Result loginByaccess(String Tid, String access){
         accountService.verifyAccess(Tid,access);
         JSONObject jsonObject = accountService.refreshBothToken(Tid);
-        jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
-        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
+        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+        return new Result(jsonObject);
     }
 
     @ApiOperation("通过refresh token更新access token")
@@ -50,8 +50,8 @@ public class AccountController {
 //        else throw new UnKnownException(AccountController.class, "refresh");
         accountService.verifyRefresh(Tid,refresh); // 如果有问题 里边就排除完毕 不需要外边看了
         JSONObject jsonObject = accountService.refreshBothToken(Tid);
-        jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
-        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
+        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+        return new Result(jsonObject);
     }
 
     /**
@@ -100,24 +100,20 @@ public class AccountController {
         }
 
         JSONObject jsonObject = accountService.refreshBothToken(accountId);
-        jsonObject.put(KeyEnum.ACCOUNT.key, accountPO.getAccountName());
-        return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
+        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
+        return new Result(jsonObject);
     }
     @ApiOperation("获取验证码")
     @PostMapping("/getCaptcha")
     public Result getCaptcha(String Tid) throws Exception {
-        try{
-            Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(Tid));
-            AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
-            String Tname = accountPO.getAccountName();
-            String Temail = accountPO.getAccountMail();
 
-            accountService.getCaptcha(Tid, Tname, Temail);
-            return new Result(ErrorCodeEnum.SUCCESS, "验证码已发送到您的邮箱"+Temail+" 10分钟内有效");
-        }
-        catch (Exception e){
-            return new Result(ErrorCodeEnum.FAIL, "您的教工号可能输错了");
-        }
+        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(Tid));
+        AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
+        String Tname = accountPO.getAccountName();
+        String Temail = accountPO.getAccountMail();
+
+        accountService.getCaptcha(Tid, Tname, Temail);
+        return new Result("验证码已发送到您的邮箱"+Temail+" 10分钟内有效");
     }
 
 
@@ -128,13 +124,13 @@ public class AccountController {
         // 现在已经实现了 只要verify出了问题 里边直接throw异常就好 所以解耦的差不多了
         accountService.verifyAccess(accountId,access);
         accountService.updatePwdById(accountId,accountPwd);
-        return new Result(ErrorCodeEnum.SUCCESS, "修改完成");
+        return new Result("修改完成");
     }
     @ApiOperation("获取Email地址")
     @PostMapping("/getEmailById")
     public Result getEmailById(String accountId, String access){
         accountService.verifyAccess(accountId, access);
-        return new Result(ErrorCodeEnum.SUCCESS, accountService.getEmailById(accountId));
+        return new Result(accountService.getEmailById(accountId));
     }
 }
 

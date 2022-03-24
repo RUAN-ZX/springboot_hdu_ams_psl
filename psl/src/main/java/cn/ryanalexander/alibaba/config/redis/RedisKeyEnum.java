@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.domain.enumable;
+package cn.ryanalexander.alibaba.config.redis;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum KeyEnum {
+public enum RedisKeyEnum {
     ACCESS("access"),
     REFRESH("refresh"),
     CAPTCHA("captcha"),

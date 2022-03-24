@@ -30,5 +30,10 @@ public class ExceptionInfo {
      * <p><b>什么方式导致错误</b></p>
      *  比如selectById 因为id不存在
      */
+    public ExceptionInfo(Class<?> clazz, String method, String cause){
+        this.item = clazz.getSimpleName();
+        this.method = method;
+        this.cause = cause;
+    }
 //    private String eStackTrace;
 }

@@ -2,7 +2,7 @@ package cn.ryanalexander.alibaba.controller;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.*;
 import cn.ryanalexander.alibaba.domain.dto.Result;
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.service.excel.ExcelService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
 import com.alibaba.excel.EasyExcel;
@@ -39,7 +39,7 @@ public class ExcelController {
     }
     @ApiOperation("更新Excel")
     @GetMapping("/updateExcel")
-    public String updateExcel(){
+    public Result updateExcel(){
         String url = StaticConfiguration.getExcelUrl();
         ExcelReader excelReader = null;
         String chineseRegex = "([\u4e00-\u9fa5]+)";
@@ -70,6 +70,6 @@ public class ExcelController {
         finally {
             if(excelReader != null) excelReader.finish();
         }
-        return new Result(ErrorCodeEnum.SUCCESS, "good").toString();
+        return new Result();
     }
 }

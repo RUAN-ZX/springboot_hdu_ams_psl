@@ -1,8 +1,9 @@
 package cn.ryanalexander.alibaba.service.impl;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
-import cn.ryanalexander.alibaba.domain.enumable.KeyEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.config.redis.RedisKeyEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.*;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.AccountService;
@@ -13,10 +14,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.Random;
@@ -34,7 +36,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
     @Resource
     AccountMapper accountMapper;
     @Resource
-    private RedisTemplate<String, Object> ryanRedisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private AccountMapper accountService;
     @Resource
@@ -48,9 +50,15 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
      */
     private static final Random RANDOM = new SecureRandom();
 
-    private void updateKey(String accountId, KeyEnum key,
+    // TODO: 2022/3/24 这里的逻辑还有大问题 如果redis主键更新了 mail炸了 或者反之 这个rollback是个大问题！
+    private void updateKey(String accountId, RedisKeyEnum key,
                            String value, int nums, TimeUnit timeUnit){
-        ryanRedisTemplate.opsForValue().set(accountId+":" + key.key, value, nums, timeUnit);
+        try{
+            redisTemplate.opsForValue().set(accountId+":" + key.key, value, nums, timeUnit);
+        }
+        catch (Exception e){
+            throw new AppException(e, RedisTemplate.class.getSimpleName(), "updateKey");
+        }
     }
 
     private String generateVerCode(String Tid) {
@@ -60,39 +68,42 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         }
         return new String(nonceChars);
     }
-    private Boolean verifyKey(String Tid, KeyEnum event, String value){
+    private Boolean verifyKey(String Tid, RedisKeyEnum event, String value){
         String eventName = event.getKey();
         Optional<Object> codeNullable = Optional.ofNullable(
-                ryanRedisTemplate.opsForValue().get(Tid + ":" + eventName));
+                redisTemplate.opsForValue().get(Tid + ":" + eventName));
         Object code = codeNullable.orElseThrow(() ->
-                new AppException(new ExceptionInfo(eventName, "redis key 过期 或者压根就没有", "ryanRedisTemplate.opsForValue().get"), ErrorCodeEnum.NOT_Found));
+                new AppException(null,
+                        new ExceptionInfo(eventName, "redis key 过期 或者压根就没有", "ryanRedisTemplate.opsForValue().get"),
+                        new ErrorCode(SubjectEnum.USER)));
 
         if(code.equals(value)) return true;
-        else throw new AppException(new ExceptionInfo(eventName, "redis key 错误", "code.equals"), ErrorCodeEnum.INVALID);
+        else throw new AppException(null, new ExceptionInfo(eventName, "redis key 错误", "code.equals"), new ErrorCode(SubjectEnum.USER));
     }
     public void verifyAccess(String accountId, String access){
-        verifyKey(accountId, KeyEnum.ACCESS, access);
+        verifyKey(accountId, RedisKeyEnum.ACCESS, access);
     }
     public void verifyRefresh(String accountId, String refresh){
-        verifyKey(accountId, KeyEnum.REFRESH, refresh);
+        verifyKey(accountId, RedisKeyEnum.REFRESH, refresh);
     }
     public void verifyCaptcha(String accountId, String captcha){
-        verifyKey(accountId, KeyEnum.CAPTCHA, captcha);
+        verifyKey(accountId, RedisKeyEnum.CAPTCHA, captcha);
     }
 
-    @Async
+//    @Transactional
+    // todo 这里的transactional设计是个问题！
     public void getCaptcha(String accountId, String accountName, String accountMail){
         String captcha = this.generateVerCode(accountId);
+
         try{// TODO: 2022/3/23 这里还需要改进异步调用 以及异步成功回调updateKey的逻辑！
             emailService.sendCaptchaMails(captcha, accountName, accountMail);
+            int captchaExpire = staticConfiguration.getCaptchaExpire();
+            updateKey(accountId, RedisKeyEnum.CAPTCHA,
+                    captcha, captchaExpire, TimeUnit.MINUTES);
         }
-        catch (Exception e){
-            log.warn(e.getMessage());
+        catch (MessagingException | IOException e){
+            throw new AppException(e, "Captcha", "getCaptcha");
         }
-
-        int captchaExpire = staticConfiguration.getCaptchaExpire();
-        updateKey(accountId, KeyEnum.CAPTCHA,
-                captcha, captchaExpire, TimeUnit.MINUTES);
     }
 
     /**
@@ -106,12 +117,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         int accessExpire = staticConfiguration.getAccessExpire();
         int refreshExpire = staticConfiguration.getRefreshExpire();
 
-        updateKey(Tid, KeyEnum.ACCESS, access, accessExpire,TimeUnit.DAYS);
-        updateKey(Tid, KeyEnum.REFRESH, refresh, refreshExpire,TimeUnit.DAYS);
+        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire,TimeUnit.DAYS);
+        updateKey(Tid, RedisKeyEnum.REFRESH, refresh, refreshExpire,TimeUnit.DAYS);
 
         JSONObject json_ = new JSONObject();
-        json_.put(KeyEnum.ACCESS.key, access);
-        json_.put(KeyEnum.REFRESH.key, refresh);
+        json_.put(RedisKeyEnum.ACCESS.key, access);
+        json_.put(RedisKeyEnum.REFRESH.key, refresh);
         return json_;
     }
     // --------------------------

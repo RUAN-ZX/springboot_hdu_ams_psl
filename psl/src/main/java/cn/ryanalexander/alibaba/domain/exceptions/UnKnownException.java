@@ -1,6 +1,8 @@
 package cn.ryanalexander.alibaba.domain.exceptions;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 
 /**
  * <p><b></b></p>
@@ -12,6 +14,6 @@ import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
  **/
 public class UnKnownException extends AppException{
     public UnKnownException(Class<?> clazz, String queryMethod) {
-        super(ErrorCodeEnum.UNKNOWN, new ExceptionInfo(clazz.getName(), queryMethod, queryMethod));
+        super(null, new ExceptionInfo(clazz.getName(), queryMethod, queryMethod), new ErrorCode(SubjectEnum.FAIL));
     }
 }

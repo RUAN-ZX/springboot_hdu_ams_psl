@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.config;
+package cn.ryanalexander.alibaba.config.redis;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

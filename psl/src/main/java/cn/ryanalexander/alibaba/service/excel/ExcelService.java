@@ -1,8 +1,10 @@
 package cn.ryanalexander.alibaba.service.excel;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.ExcelEntity;
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
@@ -29,7 +31,7 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
             ExcelEntity o1 = list.get(0);
             o1.transformAndSave(list, BATCH_COUNT);
         } catch (Exception e) {
-            throw new AppException(ErrorCodeEnum.FAIL, e.getMessage());
+            throw new AppException(new ErrorCode(SubjectEnum.INTERNAL), e.getMessage());
         }
         finally {
             // 存储完成清理 list

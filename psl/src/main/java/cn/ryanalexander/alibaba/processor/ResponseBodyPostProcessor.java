@@ -1,8 +1,10 @@
 package cn.ryanalexander.alibaba.processor;
 
 import cn.ryanalexander.alibaba.domain.dto.Result;
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -60,23 +62,23 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
     }
 
 	
-    // 全局异常捕捉处理
+    // 全局异常捕捉处理-普通Exception
     @ResponseBody
     @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Throwable.class)
     public Result errorHandler(Throwable e) {
         log.error(e.toString(), e);
-        return new Result(ErrorCodeEnum.FAIL, e.getMessage());
+        return new Result(new ErrorCode(SubjectEnum.INTERNAL), e.getMessage());
     }
 
 
-    // 全局异常捕捉处理-自定义异常类
+    // 全局异常捕捉处理-自定义Exception
     @ResponseBody
     @org.springframework.web.bind.annotation.ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = AppException.class)
     public Result errorHandler(AppException e) {
         log.error(e.toString(), e);
-        return new Result(e.getCodeEnum(), e.getMessage());
+        return new Result(e.getErrorCode(), e.getExceptionInfoList(), e.getMessage());
     }
 
 
@@ -95,6 +97,6 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
             FieldError error = bindingResult.getFieldErrors().get(i);
             errMsg.append(error.getField() + ":" + error.getDefaultMessage());
         }
-        return new Result(ErrorCodeEnum.FAIL, errMsg.toString());
+        return new Result(new ErrorCode(SubjectEnum.INTERNAL), errMsg.toString());
     }
 }

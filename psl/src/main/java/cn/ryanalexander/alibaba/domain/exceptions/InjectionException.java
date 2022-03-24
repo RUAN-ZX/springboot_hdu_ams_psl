@@ -1,6 +1,8 @@
 package cn.ryanalexander.alibaba.domain.exceptions;
 
-import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
+import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 
 /**
  * @author ryan
@@ -9,9 +11,9 @@ import cn.ryanalexander.alibaba.domain.enumable.ErrorCodeEnum;
  * @Version 1.0.0-Beta
  */
 public class InjectionException extends AppException{
-
+    // TODO: 2022/3/24
     public InjectionException(Class<?> clazz) {
-        super(ErrorCodeEnum.INJECTION_FAIL,
+        super(new ErrorCode(SubjectEnum.INTERNAL),
                 clazz.getName() +" Injection Failed");
     }
 }

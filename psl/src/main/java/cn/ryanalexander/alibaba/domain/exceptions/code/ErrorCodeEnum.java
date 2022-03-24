@@ -1,4 +1,4 @@
-package cn.ryanalexander.alibaba.domain.enumable;
+package cn.ryanalexander.alibaba.domain.exceptions.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * <p><b>错误代码（前后端统一标准）
  * 用于分类错误 方便快速缩小自定义异常的范围</b></p>
-
+ * Subject Behave Property Result
  * <p>2022-03-23 </p>
 
  * @since 1.0.0
