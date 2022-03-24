@@ -11,4 +11,10 @@ public class MathService {
         return df.format(d);
     }
 
+    public static Double ratioFormatter(Double data, Double ratio, String pattern){
+        Double d = data * ratio;
+        DecimalFormat df = new DecimalFormat(pattern);
+        return Double.valueOf(df.format(d));
+    }
+
 }

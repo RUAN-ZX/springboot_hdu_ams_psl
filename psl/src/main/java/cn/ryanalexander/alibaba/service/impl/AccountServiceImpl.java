@@ -38,8 +38,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
-    private AccountMapper accountService;
-    @Resource
     private EmailService emailService;
     @Resource
     StaticConfiguration staticConfiguration;

@@ -17,4 +17,8 @@ import java.util.ArrayList;
 public interface ExcelEntity<T> {
     boolean isValidated();
     void transformAndSave(ArrayList<T> list, int size);
+    boolean multiStart();
+    boolean multiContinue();
+    // 如果没有batchNotEnd变为true 这个方法压根就不会被调用！
+    ExcelEntity copyFromMasterMask(ExcelEntity data);
 }

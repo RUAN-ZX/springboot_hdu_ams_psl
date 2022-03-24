@@ -5,6 +5,7 @@ import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,10 @@ public interface AccountMapper extends BaseMapper<AccountPO> {
      * @since 1.0.0
     */
     void saveOrUpdateBatchByMail(@Param("items") List<AccountIdAndEmail> list);
+
+    ArrayList<Integer> selectBatchIdByName(@Param("items") List<String> list);
+
+//    Integer selectIdByName(@Param("accountName") String accountName);
 }
 
 

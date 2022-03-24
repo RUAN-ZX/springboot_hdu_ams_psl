@@ -26,12 +26,30 @@
         account_mail = r3, account_name = r2
     </insert>
 
+<!--    有一点需要注意 空集合不能传进来！ -->
     <insert id="saveOrUpdateBatchByTitle" parameterType="java.util.List">
         insert into account(account_id, account_name, account_mail) values
-        <foreach collection="items" item="i" separator=",">
-            (#{i.accountId},#{i.accountName},#{i.accountMail})
+        <foreach collection="items" item="item" separator=",">
+            (#{item.accountId},#{item.accountName},#{item.accountMail})
         </foreach>
         AS t1(r1, r2, r3) ON DUPLICATE KEY UPDATE
         account_mail = r3, account_name = r2
     </insert>
+
+<!--这个会去重！！！！所以根本不对应结果的-->
+<!--    <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.String">-->
+<!--        select account_id from account where account_name in-->
+<!--        <foreach collection="items" item="item" separator="," open="(" close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--    </select>-->
+    <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.Integer">
+
+        <foreach collection="items" item="item" separator="union all">
+            select ifnull((select account_id from account where account_name = #{item}), 0)
+        </foreach>
+    </select>
+<!--    <select id="selectIdByName" resultType="java.lang.Integer">-->
+<!--        select account_id from account where account_name = #{accountName} limit 1;-->
+<!--    </select>-->
 </mapper>

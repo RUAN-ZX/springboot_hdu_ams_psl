@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,21 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
     @Override
     public boolean isValidated() {
         return accountId != null && accountMail != null;
+    }
+
+    @Override
+    public boolean multiStart(){
+        return false;
+    }
+
+    @Override
+    public boolean multiContinue(){
+        return false;
+    }
+
+    @Override
+    public ExcelEntity copyFromMasterMask(ExcelEntity data) {
+        return this;
     }
 
     @Override

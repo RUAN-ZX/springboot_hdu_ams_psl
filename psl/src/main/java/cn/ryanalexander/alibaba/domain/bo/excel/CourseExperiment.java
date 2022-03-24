@@ -20,6 +20,8 @@ import lombok.ToString;
 @ApiModel("工作量_实验课程")
 @ToString
 public class CourseExperiment{
+
+
     @ExcelProperty(value = "学期")
     private String c_term;
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.CourseMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.Course">
+            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="courseNum" column="course_num" jdbcType="CHAR"/>
+            <result property="courseTerm" column="course_term" jdbcType="CHAR"/>
+            <result property="courseTime" column="course_time" jdbcType="VARCHAR"/>
+            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+            <result property="courseAddress" column="course_address" jdbcType="VARCHAR"/>
+            <result property="courseTeacherId" column="course_teacher_id" jdbcType="INTEGER"/>
+            <result property="courseTeacherName" column="course_teacher_name" jdbcType="VARCHAR"/>
+            <result property="courseType" column="course_type" jdbcType="TINYINT"/>
+            <result property="courseCapacity" column="course_capacity" jdbcType="INTEGER"/>
+            <result property="courseCapacityFactor1" column="course_capacity_factor_1" jdbcType="DOUBLE"/>
+            <result property="courseCapacityFactor2" column="course_capacity_factor_2" jdbcType="DOUBLE"/>
+            <result property="courseHours" column="course_hours" jdbcType="DOUBLE"/>
+            <result property="courseHoursTheory" column="course_hours_theory" jdbcType="DOUBLE"/>
+            <result property="courseHoursExp" column="course_hours_exp" jdbcType="DOUBLE"/>
+            <result property="courseHoursExpStd" column="course_hours_exp_std" jdbcType="DOUBLE"/>
+            <result property="courseHoursTheoryStd" column="course_hours_theory_std" jdbcType="DOUBLE"/>
+            <result property="courseHoursStd" column="course_hours_std" jdbcType="DOUBLE"/>
+            <result property="courseBilingual" column="course_bilingual" jdbcType="VARCHAR"/>
+            <result property="courseReform" column="course_reform" jdbcType="VARCHAR"/>
+            <result property="courseFactor" column="course_factor" jdbcType="DOUBLE"/>
+            <result property="coursePrior" column="course_prior" jdbcType="DOUBLE"/>
+            <result property="courseHoursOp" column="course_hours_op" jdbcType="DOUBLE"/>
+            <result property="coursePoints" column="course_points" jdbcType="DOUBLE"/>
+            <result property="courseProperties" column="course_properties" jdbcType="CHAR"/>
+            <result property="courseNote1" column="course_note_1" jdbcType="VARCHAR"/>
+            <result property="courseNote2" column="course_note_2" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        course_id,course_num,course_term,
+        course_time,course_name,course_address,
+        course_teacher_id,course_teacher_name,course_type,
+        course_capacity,course_capacity_factor_1,course_capacity_factor_2,
+        course_hours,course_hours_theory,course_hours_exp,
+        course_hours_exp_std,course_hours_theory_std,course_hours_std,
+        course_bilingual,course_reform,course_factor,
+        course_prior,course_hours_op,course_points,
+        course_properties,course_note_1,course_note_2
+    </sql>
+    <insert id="saveBatch" parameterType="java.util.ArrayList">
+        insert into course values
+        <foreach collection="items" item="item">
+            (#{item})
+        </foreach>
+    </insert>
+
+
+</mapper>

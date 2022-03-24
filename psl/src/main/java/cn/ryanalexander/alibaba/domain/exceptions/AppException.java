@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <p><b>自定义Exception</b></p>
@@ -43,11 +44,11 @@ public class AppException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public AppException(ErrorCode codeEnum, String message) {
+    public AppException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
-    // ExceptionInfo exceptionInfo 为当前层的info
+    // exceptionInfo 为当前层的info
     public AppException(AppException e, ExceptionInfo exceptionInfo, ErrorCode errorCode) {
         super();
         if(e != null)
@@ -59,7 +60,7 @@ public class AppException extends RuntimeException {
     // todo 目前打算 如果承接原始Exception 应当做这样的转换！
     //  这些一般发生在比较底层的地方
     public AppException(Exception e, String item, String method){
-        ExceptionInfo exceptionInfo = new ExceptionInfo(item, method, e.getStackTrace()[0].toString());
+        ExceptionInfo exceptionInfo = new ExceptionInfo(item, method, Arrays.toString(e.getStackTrace()));
         this.exceptionInfoList.add(exceptionInfo);
         this.errorCode = new ErrorCode(SubjectEnum.INTERNAL);
     }

@@ -20,11 +20,11 @@ DROP TABLE IF EXISTS `teacher_title`;
 CREATE TABLE `teacher_title` (
   `title_id` INT(8) AUTO_INCREMENT NOT NULL, 
 	`title_teacher_id` INT(8) NOT NULL,
-	`title_academy_id` INT(2) DEFAULT 1, # 学院
+	`title_academy_id` TINYINT(1) UNSIGNED DEFAULT 0, # 学院
 	`title_team` varchar(30) DEFAULT NULL,
 	`title_type` VARCHAR(10) DEFAULT NULL,  # 专职教师
 	`title_name` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学）
-	`title_level` TINYINT(1) DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
+	`title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
 	`title_year` INT(4) NOT NULL,
 	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
 	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 直接null就好了！ 因为每次更改会自动更新
@@ -39,17 +39,19 @@ DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `course_num` CHAR(31) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
-  `course_term` CHAR(11) NOT NULL, # 2019-2020-1
+  `course_term` CHAR(11) NOT NULL, # 2019-2020-1 
 	`course_time` VARCHAR(60) NOT NULL, # 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
   `course_name` VARCHAR(40) NOT NULL, # 物联网技术基础
-	`course_addr` VARCHAR(60) NOT NULL, # 第6教研楼中305;第6教研楼中329
+	`course_address` VARCHAR(60) NOT NULL, # 第6教研楼中305;第6教研楼中329
 	
-  `course_teacher_id` INT(8) NOT NULL, # 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
+  `course_teacher_id` INT(8) DEFAULT NULL, 
+	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
+	# 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到各个老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
 	`course_teacher_name` VARCHAR(100) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
 	
 	
-	`course_type` TINYINT(1) NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
+	`course_type` TINYINT(1) UNSIGNED NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
 	
   `course_capacity` INT(4) NOT NULL,
   `course_capacity_factor_1` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
@@ -57,7 +59,7 @@ CREATE TABLE `course` (
 
 
 	`course_hours` DOUBLE(10,2) NOT NULL, # 老师有几几开的 所以会这样！
-	`course_hours_thory` DOUBLE(10,2) NOT NULL, # 无论实验 还是讲课 还是标准化的学时 先算 然后几几开就好了！
+	`course_hours_theory` DOUBLE(10,2) NOT NULL, # 无论实验 还是讲课 还是标准化的学时 先算 然后几几开就好了！
 	`course_hours_exp` DOUBLE(10,2) NOT NULL, # 注意 这里使用理论-实验就好了 
 	`course_hours_exp_std` DOUBLE(10,2) NOT NULL, # 理论课标准课时 直接×1
 	#实验课 同 标准学时计算方法 这也就是总的标准课时
@@ -79,8 +81,8 @@ CREATE TABLE `course` (
   `course_note_2` VARCHAR(100) DEFAULT NULL,
 	
 	
-  PRIMARY KEY (`course_id`)
---   CONSTRAINT `ctid_tid_fk` FOREIGN KEY (`CTid`) REFERENCES `T` (`Tid`)
+  PRIMARY KEY (`course_id`),
+	UNIQUE KEY (`course_num`(22),`course_teacher_id`)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8 ;
 
 ## -------------课程 理论+实践 专门用于统计主讲课时的!
@@ -92,7 +94,7 @@ CREATE TABLE `short_term` (
 	`short_term_time` VARCHAR(40) NOT NULL, # 第19周/周五/8:20
 
   `short_term_name` VARCHAR(40) NOT NULL, # 项目:电子线路仿真技术与PCB设计
-	`short_term_addr` VARCHAR(60) NOT NULL, # 第8教研楼302（线路实习实验室）
+	`short_term_address` VARCHAR(60) NOT NULL, # 第8教研楼302（线路实习实验室）
 
 	
   `short_term_teacher_id` INT(8) NOT NULL, # 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
@@ -135,7 +137,7 @@ CREATE TABLE `thesis_design` (
 -- 	td_stu_id INT(8) NOT NULL, # 毕设学生的id
 	thesis_design_student_name VARCHAR(25) DEFAULT NULL, # 可能是卓越加点空记录
 	
-	thesis_design_grade TINYINT(1) NOT NULL, # 0 1 2 3 4 优秀 良好 中等 及格 不及格 这个需要统计 所以用数字！
+	thesis_design_grade TINYINT(1) UNSIGNED NOT NULL, # 0 1 2 3 4 优秀 良好 中等 及格 不及格 这个需要统计 所以用数字！
 	thesis_design_factor_1 DOUBLE(10,2) DEFAULT 12.0, # 基本系数
 	thesis_design_factor_2 DOUBLE(10,2) DEFAULT 0.0, # 优秀系数
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
@@ -196,7 +198,7 @@ CREATE TABLE `achievement`(
 	achievement_points_add VARCHAR(30) DEFAULT NULL, # 记录加分以及具体加了多少 加到哪里 s31_1:13:s1_1:0.5
 	# 前端可以读取这玩意 显示在前端 然后改完数据 一并返回后端 形成这个字符串即可
 	
-	achievement_level TINYINT(1) DEFAULT NULL, # 获奖等级
+	achievement_level TINYINT(1) UNSIGNED DEFAULT NULL, # 获奖等级
 	achievement_score DOUBLE(10,2) NOT NULL, # 最终指标分值
 	achievement_note_1 VARCHAR(30) NOT NULL,# 原始备注 30个字！
 	achievement_note_2 VARCHAR(30) NOT NULL,# 我们教科办备注
@@ -206,9 +208,9 @@ CREATE TABLE `achievement`(
 
 
 # academy 学院
-DROP TABLE IF EXISTS `acadamy`;
-CREATE TABLE `acadamy` (
-  `academy_id` INT(2) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `academy`;
+CREATE TABLE `academy` (
+  `academy_id` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `academy_name` VARCHAR(20) DEFAULT NULL,
   PRIMARY KEY (`academy_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
@@ -305,7 +307,7 @@ CREATE TABLE `s`(
 	`s_score` DOUBLE(10,2) DEFAULT NULL, # 考核分数 s1 + 2 + 3 + 4
 	`s_year` INT(4) DEFAULT NULL,
 	`s_grade` CHAR(1) DEFAULT NULL, # 考核等级
-	`s_title_level` TINYINT(1) DEFAULT NULL, # 当年的职称！
+	`s_title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 当年的职称！
 	`s_hours_all` INT(8) DEFAULT NULL,# 承担主讲课程学时数是否不低于64学时 主讲课程学时？
 	
 	
@@ -322,3 +324,6 @@ VALUES
 
 -- INSERT T(Tid,Tpwd,Tname)
 -- VALUES("00001","she_maybe","闪闪兔");
+select account_id from account where account_name = '王晓宇' 
+union
+select account_id from account where account_name = '王晓宇'
