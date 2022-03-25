@@ -16,5 +16,8 @@ public class MathService {
         DecimalFormat df = new DecimalFormat(pattern);
         return Double.valueOf(df.format(d));
     }
-
+    public static Double formatter(Double data, String pattern){
+        DecimalFormat df = new DecimalFormat(pattern);
+        return Double.valueOf(df.format(data));
+    }
 }

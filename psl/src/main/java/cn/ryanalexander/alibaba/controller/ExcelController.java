@@ -2,6 +2,7 @@ package cn.ryanalexander.alibaba.controller;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.*;
 import cn.ryanalexander.alibaba.domain.dto.Result;
+import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.service.excel.ExcelService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
@@ -33,7 +34,7 @@ public class ExcelController {
     private static final HashMap<String, Class<?>> sheetAndExcelEntity = new HashMap<>();
     static{
         // todo 这里 顺序问题需要保证 说白了 教师个人信息最先登记才对 之后别的信息再登
-        sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
+//        sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
         sheetAndExcelEntity.put("理论", CourseTheory.class);
 //        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
 //        sheetAndExcelEntity.put("毕业设计", CourseThesisDesign.class);
@@ -67,6 +68,10 @@ public class ExcelController {
                     excelReader.read(readSheet);
                 }
             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+//            throw new AppException(e, "ExcelController" ,"updateExcel");
         }
         finally {
             if(excelReader != null) excelReader.finish();

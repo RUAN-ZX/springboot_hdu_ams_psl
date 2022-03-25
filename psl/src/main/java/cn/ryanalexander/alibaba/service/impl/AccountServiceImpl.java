@@ -55,7 +55,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
             redisTemplate.opsForValue().set(accountId+":" + key.key, value, nums, timeUnit);
         }
         catch (Exception e){
-            throw new AppException(e, RedisTemplate.class.getSimpleName(), "updateKey");
+//            throw new AppException(e, RedisTemplate.class.getSimpleName(), "updateKey");
+            e.printStackTrace();
         }
     }
 

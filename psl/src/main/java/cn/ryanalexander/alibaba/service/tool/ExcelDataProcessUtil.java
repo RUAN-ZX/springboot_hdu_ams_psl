@@ -1,7 +1,5 @@
 package cn.ryanalexander.alibaba.service.tool;
 
-import java.nio.channels.MulticastChannel;
-
 /**
  * <p><b></b></p>
  *
@@ -14,7 +12,7 @@ public class ExcelDataProcessUtil {
     // 多个老师的情况匹配
 //    private final Character[] multiTeacherRegex = new Character[];
 
-    public static boolean batchStart(String courseTeacherName){
+    public static boolean multiStart(String courseTeacherName){
         boolean contains1 = courseTeacherName.contains("（多人）");
         boolean contains2 = courseTeacherName.contains("/");
         // 两者有一个符合就炸

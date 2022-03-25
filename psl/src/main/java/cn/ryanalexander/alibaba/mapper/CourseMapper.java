@@ -13,7 +13,7 @@ import java.util.ArrayList;
 * @Entity cn.ryanalexander.alibaba.domain.po.Course
 */
 public interface CourseMapper extends BaseMapper<Course> {
-    void saveBatch(@Param("items") ArrayList<Course> list);
+//    void saveBatch(@Param("items") ArrayList<Course> list);
 }
 
 

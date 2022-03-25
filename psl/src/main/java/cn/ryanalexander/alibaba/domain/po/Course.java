@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**
@@ -94,17 +96,17 @@ public class Course implements Serializable {
     /**
      *
      */
-    private Double courseHoursExpStd;
+    private Integer courseHoursExpStd;
 
     /**
      *
      */
-    private Double courseHoursTheoryStd;
+    private Integer courseHoursTheoryStd;
 
     /**
      *
      */
-    private Double courseHoursStd;
+    private Integer courseHoursStd;
 
     /**
      *
@@ -156,6 +158,7 @@ public class Course implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Course(CourseTheory c){
+        this.courseTerm = c.getCourseTerm();
         this.courseAddress = c.getCourseAddress();
         this.courseBilingual = c.getCourseBilingual();
         this.courseCapacity = c.getCourseCapacity();

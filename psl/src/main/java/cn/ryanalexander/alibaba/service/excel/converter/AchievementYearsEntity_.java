@@ -1,11 +1,12 @@
-package cn.ryanalexander.alibaba.service.excel.entity;
+
+package cn.ryanalexander.alibaba.service.excel.converter;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
 // 过去几年等级录入
 @Data
-public class AchievementYearsEntity {
+public class AchievementYearsEntity_ {
 
 
     // 可以这里匹配到电子信息学院 就往数据库中存1 这样的代号就完事了！！ 数据库不存重复内容
