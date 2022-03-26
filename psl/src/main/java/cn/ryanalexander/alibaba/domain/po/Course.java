@@ -22,7 +22,6 @@ public class Course implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     private Integer courseId;
-
     /**
      *
      */

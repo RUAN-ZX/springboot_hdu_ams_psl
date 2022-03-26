@@ -1,5 +1,7 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
+import cn.ryanalexander.alibaba.domain.po.Course;
+
 import java.util.ArrayList;
 
 
@@ -15,10 +17,16 @@ import java.util.ArrayList;
  * @author RyanAlexander 2022-03-23 11:09
  */
 public interface ExcelEntity<T> {
+    // 这两个必须实现！
     boolean isValidated();
     void transformAndSave(ArrayList<T> list, int size);
-    boolean multiStart();
-    boolean multiContinue();
+
+    default boolean multiStart(){return false;}
+    default boolean multiContinue(){return false;}
+
     // 如果没有batchNotEnd变为true 这个方法压根就不会被调用！
-    ExcelEntity copyFromMasterMask(ExcelEntity data);
+    default ExcelEntity copyFromMasterMask(ExcelEntity data){return new CourseTheory();}
+
+    // 默认空实现 省的麻烦
+    default void fieldStandardized(){}
 }

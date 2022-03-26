@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `teacher_data` DEFAULT CHARACTER SET utf8 ;
+CREATE DATABASE IF NOT EXISTS `teacher_data` DEFAULT CHARACTER SET utf8mb4 ;
 
 USE `teacher_data`;
 # 设定几种表 source表 源数据 derived表 导出表 派生表
@@ -13,7 +13,7 @@ CREATE TABLE `account` (
   `account_pwd` VARCHAR(20) DEFAULT NULL, 
   PRIMARY KEY (`account_id`)
 --   CONSTRAINT `tdid_did_fk` FOREIGN KEY (`TDid`) REFERENCES `D` (`Did`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 不一定所有的账户都有teacher title！！！
 DROP TABLE IF EXISTS `teacher_title`;
@@ -31,7 +31,7 @@ CREATE TABLE `teacher_title` (
 	# 前后端去实现时区转换
 	
   PRIMARY KEY (`title_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 ## -------------课程 理论+实践 专门用于统计主讲课时的!
@@ -39,16 +39,16 @@ DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `course_num` CHAR(32) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
-  `course_term` CHAR(20) NOT NULL, # 2019-2020-1 
-	`course_time` VARCHAR(200) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
-  `course_name` VARCHAR(40) NOT NULL, # 物联网技术基础 40
-	`course_address` VARCHAR(200) DEFAULT NULL, # 第6教研楼中305;第6教研楼中329
+  `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
+	`course_time` VARCHAR(42) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
+  `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
+	`course_address` VARCHAR(24) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
 	
   `course_teacher_id` INT(8) DEFAULT NULL, 
 	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
 	# 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到各个老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
-	`course_teacher_name` VARCHAR(100) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
+	`course_teacher_name` CHAR(3) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
 	
 	
 	`course_type` TINYINT(1) UNSIGNED NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
@@ -67,8 +67,8 @@ CREATE TABLE `course` (
   `course_hours_std` TINYINT(1) UNSIGNED NOT NULL, # 总标准课时	除了理论学时哪个算法以外 再乘上优课优测！
 	
 	
-  `course_bilingual` VARCHAR(20) DEFAULT NULL, # 匹配到数字就作为系数乘出来计算就好了 但是内容保留 省的还要存对应 status——code对应哪个项目 太麻烦了 存数字主要为了排序 查找方便罢了 不常用的话根本么必要
-	`course_reform` VARCHAR(20) DEFAULT NULL, # 同理上边！ 这两个一般来说取高作为类别系数 但不一定 实际计算以类别系数为准
+  `course_bilingual` VARCHAR(10) DEFAULT NULL, # 匹配到数字就作为系数乘出来计算就好了 但是内容保留 省的还要存对应 status——code对应哪个项目 太麻烦了 存数字主要为了排序 查找方便罢了 不常用的话根本么必要
+	`course_reform` VARCHAR(16) DEFAULT NULL, # 翻转1.4；卓越1.3 这两个一般来说取高作为类别系数 但不一定 实际计算以类别系数为准
 	# 普通课叫课改系数 
 	`course_factor` DOUBLE(10,2) DEFAULT 1.0, # 类别系数 直接爬 直接用来算就好了！
 	`course_prior` DOUBLE(10,2) DEFAULT 1.0, # 优课优酬 短学期没有
@@ -77,13 +77,15 @@ CREATE TABLE `course` (
 	`course_hours_op` DOUBLE(10,2) DEFAULT NULL, # 上机学时 记录一下 不参与计算
 	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算
 	`course_properties` CHAR(1) DEFAULT NULL, # 性质 实验课有
-	`course_note1` VARCHAR(100) DEFAULT NULL, # 限定50字符
-  `course_note2` VARCHAR(100) DEFAULT NULL,
+	`course_note1` VARCHAR(64) DEFAULT NULL, 
+	# 检查这个属性 string.length 调用快的 超过则截断！检查string的长度！
+	# 应该在循环里边顺手检查一下！
+  `course_note2` VARCHAR(64) DEFAULT NULL,
 	
 	
   PRIMARY KEY (`course_id`),
-	UNIQUE KEY `uk_cnum_ctid` (`course_num`,`course_teacher_id`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8 ;
+	UNIQUE KEY `uk_cnum_ctid` (`course_num`,`course_teacher_name`)
+) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 ;
 
 ## -------------课程 理论+实践 专门用于统计主讲课时的!
 DROP TABLE IF EXISTS `short_term`;
@@ -123,7 +125,7 @@ CREATE TABLE `student` (
 	student_name VARCHAR(25) NOT NULL, # 毕设学生名字
 	student_major VARCHAR(60) NOT NULL,#光电信息科学与工程(光电工程方向)
 	PRIMARY KEY(`student_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 # 毕业设计
@@ -143,7 +145,7 @@ CREATE TABLE `thesis_design` (
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
 	thesis_design_std TINYINT(1) UNSIGNED NOT NULL, # 标准学时 
 	PRIMARY KEY(`thesis_design_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 # 研究生的绩点 
@@ -155,7 +157,7 @@ CREATE TABLE `thesis_design` (
 -- 	`pg_gpa` DOUBLE(10,2) NOT NULL, # 研究生的绩点 以计算在老师头上的标准学时
 -- 	`pg_std` DOUBLE(10,2) NOT NULL,
 -- 	PRIMARY KEY(`pg_id`)
--- ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+-- ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 -- 
 ## ------------- S2 学评教信息 直接有结果 直接用就好了
 ## 这里记录是学期结算的！只需要总分 按上一年学评教分数的平均值排名
@@ -171,7 +173,7 @@ CREATE TABLE `evaluation`(
 	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比
 	
 	PRIMARY KEY(`evaluation_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## ----------成果类
 ##  还有附带的 加分效果的录入 教科办老师只需要选择它的性质即可 余下自动加分 
@@ -203,7 +205,7 @@ CREATE TABLE `achievement`(
 	achievement_note1 VARCHAR(30) NOT NULL,# 原始备注 30个字！
 	achievement_note2 VARCHAR(30) NOT NULL,# 我们教科办备注
 	PRIMARY KEY(`achievement_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -213,7 +215,7 @@ CREATE TABLE `academy` (
   `academy_id` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `academy_name` VARCHAR(20) DEFAULT NULL,
   PRIMARY KEY (`academy_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## -- S1 工作量记录 生成表考这个了！
 DROP TABLE IF EXISTS `s1`;
@@ -234,7 +236,7 @@ CREATE TABLE `s1`(
 	`s1_score` DOUBLE(10,2) DEFAULT NULL, # S1分数
 	
 	PRIMARY KEY (`s1_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## S2 记录完各个学期的学评教evaluation 然后计算
 DROP TABLE IF EXISTS `s2`;
@@ -248,7 +250,7 @@ CREATE TABLE `s2`(
 	`s2_score` DOUBLE(10,2) DEFAULT NULL, 
 	
 PRIMARY KEY (`s2_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## 立即生效计算 Or 只有下载生成表的时候才会触发计算
 
@@ -269,7 +271,7 @@ CREATE TABLE `s3`(
 	`s3_score` DOUBLE(10,2) DEFAULT NULL, 
 	
 PRIMARY KEY (`s3_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## S4 还是尽量手动录入比较好 或者excel写清楚项目 然后字符串匹配！
 DROP TABLE IF EXISTS `s4`;
@@ -294,7 +296,7 @@ CREATE TABLE `s4`(
 	`s4_score` DOUBLE(10,2) DEFAULT NULL, 
 	
 PRIMARY KEY (`s4_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -312,7 +314,7 @@ CREATE TABLE `s`(
 	
 	
 	PRIMARY KEY (`s_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 

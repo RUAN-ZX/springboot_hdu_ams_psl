@@ -27,8 +27,8 @@ public class MyBatisPlusServiceTest {
 
     @Test
     public void testGetCount(){
-        logger.warn("dfgdfg");
-        accountService.updatePwdById("40028", "sdf");
+        String a = "(2019-2020-1)-B0405450-42119-1合班";
+        System.out.println(a.length());
     }
 
     @Test

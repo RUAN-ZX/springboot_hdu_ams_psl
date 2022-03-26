@@ -21,6 +21,7 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import org.apache.poi.ss.formula.functions.T;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -132,6 +133,21 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
     public boolean multiContinue(){
         return courseNum == null && courseTerm == null ;
     }
+    @Override
+    public void fieldStandardized(){
+        // 用对象前 先检测null
+        if(this.courseNote1 != null && this.courseNote1.length() > 64)
+            this.courseNote1 = this.courseNote1.substring(0, 64);
+
+        if(this.courseNote2 != null && this.courseNote2.length() > 64)
+            this.courseNote2 = this.courseNote2.substring(0, 64);
+
+        if(this.courseTime != null && this.courseTime.length() > 64)
+            this.courseTime = this.courseTime.substring(0, 64);
+
+        if(this.courseAddress != null && this.courseAddress.length() > 24)
+            this.courseAddress = this.courseAddress.substring(0, 24);
+    }
 
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
@@ -191,35 +207,36 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         ArrayList<String> accountNameList = new ArrayList<>(size);
 
-
         // 通过accountName 获取accountId
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
         for (CourseTheory courseTheory : list) {
             accountNameList.add(courseTheory.getCourseTeacherName());
             // todo std 问题 | capacity factor 问题 | exp
             stdCalculator(courseTheory);
-
-            // 实验学时直接倒减推出来就行！
-//          result.courseHoursExp = result.courseHours - result.courseHoursTheory;
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
         ArrayList<Course> courses = new ArrayList<>(size);
 
-
         // accountId 注入到CourseTheory
-
-        try{
-//            courseService.saveBatch(courses);
-            for(int i = 0 ; i < list.size() ; i++){
-                list.get(i).setCourseTeacherId(accountIdList.get(i));
+        CourseTheory courseTheory = null;
+        for(int i = 0 ; i < list.size() ; i++){
+            try{
+                courseTheory = list.get(i);
+                courseTheory.setCourseTeacherId(accountIdList.get(i));
+                // 有些字段实在太长 删减点 别太过了
+                courseTheory.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                Course course = new Course(list.get(i));
-                courseMapper.insert(course);
-//            courses.add(new Course(list.get(i)));
-
+                courses.add(new Course(courseTheory));
             }
+            catch (Exception e){
+                throw new AppException(e, "CourseTheory", "transformAndSave courseService.saveBatch(courses)");
+            }
+        }
+        try{
+            courseService.saveBatch(courses);
+
         }
         catch (Exception e){
 
@@ -227,6 +244,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         }
         finally {
             courses.clear();
+            accountIdList.clear();
+            accountNameList.clear();
         }
     }
 }

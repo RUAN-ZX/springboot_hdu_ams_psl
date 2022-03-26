@@ -45,20 +45,6 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
         return accountId != null && accountMail != null;
     }
 
-    @Override
-    public boolean multiStart(){
-        return false;
-    }
-
-    @Override
-    public boolean multiContinue(){
-        return false;
-    }
-
-    @Override
-    public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        return this;
-    }
 
     @Override
     public void transformAndSave(ArrayList<AccountIdAndEmail> list, int size) {
