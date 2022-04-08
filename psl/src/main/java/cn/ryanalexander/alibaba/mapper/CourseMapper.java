@@ -1,10 +1,7 @@
 package cn.ryanalexander.alibaba.mapper;
 
-import cn.ryanalexander.alibaba.domain.po.Course;
+import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
 
 /**
 * @author ryan
@@ -12,7 +9,7 @@ import java.util.ArrayList;
 * @createDate 2022-03-24 20:01:11
 * @Entity cn.ryanalexander.alibaba.domain.po.Course
 */
-public interface CourseMapper extends BaseMapper<Course> {
+public interface CourseMapper extends BaseMapper<CoursePO> {
 //    void saveBatch(@Param("items") ArrayList<Course> list);
 }
 

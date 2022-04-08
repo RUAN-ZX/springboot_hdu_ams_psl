@@ -36,7 +36,7 @@ public class ExcelController {
         // todo 这里 顺序问题需要保证 说白了 教师个人信息最先登记才对 之后别的信息再登
         sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
         sheetAndExcelEntity.put("理论", CourseTheory.class);
-//        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
+        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
 //        sheetAndExcelEntity.put("毕业设计", CourseThesisDesign.class);
     }
     @ApiOperation("更新Excel")

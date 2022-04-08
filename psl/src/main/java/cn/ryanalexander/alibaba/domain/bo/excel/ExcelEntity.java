@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
-import cn.ryanalexander.alibaba.domain.po.Course;
+import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,10 @@ import java.util.ArrayList;
 public interface ExcelEntity<T> {
     // 这两个必须实现！
     boolean isValidated();
+
     void transformAndSave(ArrayList<T> list, int size);
 
-    default boolean multiStart(){return false;}
+
     default boolean multiContinue(){return false;}
 
     // 如果没有batchNotEnd变为true 这个方法压根就不会被调用！
@@ -29,4 +30,17 @@ public interface ExcelEntity<T> {
 
     // 默认空实现 省的麻烦
     default void fieldStandardized(){}
+
+    // 默认不是特别指定的结果
+    default boolean isSpecified(){return false;}
+
+    // 默认不判定为多人课
+    default boolean multiStart(){return false;}
+
+    // 有些时候需要对头进行标准化计算
+    default void stdCalculator(){}
+
+    // 多个多人的情况下 是要累积mask 所以要把之前的拉进来
+    default void stdAccumulate(ExcelEntity mask){}
+
 }

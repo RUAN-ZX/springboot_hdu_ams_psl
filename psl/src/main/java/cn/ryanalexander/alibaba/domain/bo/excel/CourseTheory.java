@@ -6,11 +6,13 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
  * @Author ryan
  * @Date 2022/3/10 19:08
  * @Version 1.0.0-Beta
+ * @apiNote 对于多人 且多课号的情况 理论课的逻辑是 记录课程信息（最下边的）+使用给定学时大小
+ * 如果多人情况 如果有标准学时 使用给定标准学时完事（特别安排相当于）
  **/
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
-import cn.ryanalexander.alibaba.domain.po.Course;
+import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.mapper.CourseMapper;
 import cn.ryanalexander.alibaba.service.CourseService;
@@ -21,7 +23,6 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
-import org.apache.poi.ss.formula.functions.T;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -94,9 +95,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 //    @ExcelProperty(value = "实验标准课时")
     public Integer courseHoursExpStd;
 
-//    @ExcelProperty(value = "标准课时")
-    public Integer courseHoursStd;
-
+    @ExcelProperty(value = "标准课时")
+    public Double courseHoursStd;
 
     public Integer courseType = 1; // Theory
 
@@ -118,20 +118,19 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         return courseTeacherName != null && courseHours != null;
 
     }
-    @Resource
-    private CourseService courseService;
 
     @Override
     public boolean multiStart(){
-        boolean contains1 = courseTeacherName.contains("（多人）");
-        boolean contains2 = courseTeacherName.contains("/");
-        // 两者有一个符合就炸
-        return contains1 || contains2;
+        return ExcelDataProcessUtil.multiStart(courseTeacherName);
     }
-
     @Override
+    public void stdAccumulate(ExcelEntity mask){
+        CourseTheory courseTheory = (CourseTheory) mask;
+        this.courseHoursStd += courseTheory.courseHoursStd;
+    }
+    @Override // 计划 课程代码那边可能要写分配的占比！
     public boolean multiContinue(){
-        return courseNum == null && courseTerm == null ;
+        return courseName == null && courseTerm == null ;
     }
     @Override
     public void fieldStandardized(){
@@ -147,6 +146,9 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         if(this.courseAddress != null && this.courseAddress.length() > 24)
             this.courseAddress = this.courseAddress.substring(0, 24);
+
+        if(this.courseName != null && this.courseName.length() > 24)
+            this.courseName = this.courseName.substring(0, 24);
     }
 
     @Override
@@ -154,7 +156,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         CourseTheory result = null;
         CourseTheory share = (CourseTheory) data;
         try {
-            // 因为是自己clone自己 所以类型一定是对的
+            // 此时this就是多人的模板 result就是每个老师的分成 对象实例
+            // share就是excel读取的分成 数据
             result = (CourseTheory) this.clone();
         } catch (CloneNotSupportedException e) {
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL));
@@ -162,13 +165,19 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         // 老师名字必须改
         result.courseTeacherName = share.getCourseTeacherName();
-        // 获取比例
-        double ratio = share.getCourseHours() / result.courseHours;
+        if(share.courseNum != null){
+            // 获取比例 原来是通过给定学时 但是这不适用于多个多人课头 所以 这里直接设计成 默认通过课号写的百分比来搞定！
+//        double ratio = share.getCourseHours() / result.courseHours;
+            double ratio = Double.parseDouble(share.courseNum.split("%")[0]) / 100.0;
+            result.courseHoursTheory = MathService.ratioFormatter(result.courseHoursTheory,
+                    ratio, "##.#");
+        }
+
         // 课程总课时
-        result.courseHours = share.getCourseHours(); // 总课时是关键！
+        result.courseHours = share.getCourseHours(); // 总课时也就放进来
+        result.courseHoursStd = share.getCourseHoursStd(); // 有标准课时可用就拿来咯
         // 模板 也就是总理论课时 乘上比例 得出share
-        result.courseHoursTheory = MathService.ratioFormatter(result.courseHoursTheory,
-                ratio, "##.#");
+
 
         return result;
     }
@@ -191,8 +200,11 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         factor *= (capacity_factor * prior); // 归在一起了 优课×规模×容量
         // 3位小数 而且
         courseTheory.courseCapacityFactor1 = capacity_factor;
+        // 虽然excel可能获取到double 不管 直接round
+        // 如果有 就用已有的 认为是特殊指定的！
+        if(courseTheory.courseHoursStd == null)
+            courseTheory.courseHoursStd = (double) (int) Math.round(hours * factor);
 
-        courseTheory.courseHoursStd = (int) Math.round(hours * factor);
         courseTheory.courseHoursTheoryStd = (int) Math.round(hoursTheory * factor);
         courseTheory.courseHoursExpStd = (int) Math.round(hoursExp * factor);
 //        courseTheory.courseHoursStd = 1.0;
@@ -212,12 +224,13 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         for (CourseTheory courseTheory : list) {
             accountNameList.add(courseTheory.getCourseTeacherName());
             // todo std 问题 | capacity factor 问题 | exp
-            stdCalculator(courseTheory);
+            if(courseHoursStd == null)
+                stdCalculator(courseTheory);
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
-        ArrayList<Course> courses = new ArrayList<>(size);
+        ArrayList<CoursePO> cours = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
         CourseTheory courseTheory = null;
@@ -228,22 +241,23 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
                 // 有些字段实在太长 删减点 别太过了
                 courseTheory.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                courses.add(new Course(courseTheory));
+                cours.add(new CoursePO(courseTheory));
             }
             catch (Exception e){
-                throw new AppException(e, "CourseTheory", "transformAndSave courseService.saveBatch(courses)");
+                e.printStackTrace();
+//                throw new AppException(e, "CourseTheory", "transformAndSave courseService.saveBatch(courses)");
             }
         }
         try{
-            courseService.saveBatch(courses);
+            courseService.saveBatch(cours);
 
         }
         catch (Exception e){
-
+            e.printStackTrace();
             throw new AppException(e, "CourseTheory", "transformAndSave courseService.saveBatch(courses)");
         }
         finally {
-            courses.clear();
+            cours.clear();
             accountIdList.clear();
             accountNameList.clear();
         }

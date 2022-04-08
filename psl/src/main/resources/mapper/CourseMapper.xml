@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ryanalexander.alibaba.mapper.CourseMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.Course">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.CoursePO">
             <id property="courseId" column="course_id" jdbcType="INTEGER"/>
             <result property="courseNum" column="course_num" jdbcType="CHAR"/>
             <result property="courseTerm" column="course_term" jdbcType="CHAR"/>

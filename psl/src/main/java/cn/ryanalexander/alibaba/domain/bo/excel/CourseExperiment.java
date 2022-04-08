@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * @ClassName: CourseExperiment
- * @Description
- * @Author ryan
- * @Date 2022/3/10 19:09
- * @Version 1.0.0-Beta
- **/
+ * <p><b></b></p>
+
+ * <p>2022-04-08 </p>
+
+ * @since
+ * @author RyanAlexander 2022-04-08 19:05
+ * @apiNote 对于多人 且多课号的情况 与理论课的逻辑相同 记录课程信息（最下边的）+使用给定学时大小
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

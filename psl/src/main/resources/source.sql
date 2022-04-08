@@ -40,7 +40,7 @@ CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `course_num` CHAR(32) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
   `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
-	`course_time` VARCHAR(42) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
+	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
   `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	`course_address` VARCHAR(24) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
 	
@@ -48,12 +48,12 @@ CREATE TABLE `course` (
 	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
 	# 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到各个老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
-	`course_teacher_name` CHAR(3) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
+	`course_teacher_name` CHAR(3) NOT NULL, # 记录一下老师名字 毕竟有些老师id是找不到的！
 	
 	
 	`course_type` TINYINT(1) UNSIGNED NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
 	
-  `course_capacity` INT(4) NOT NULL,
+  `course_capacity` SMALLINT(4) NOT NULL,
   `course_capacity_factor1` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
   `course_capacity_factor2` DOUBLE(10,2) DEFAULT 1.0, # 实验课才有2系数 理论课默认为1即可！
 
@@ -91,29 +91,29 @@ CREATE TABLE `course` (
 DROP TABLE IF EXISTS `short_term`;
 CREATE TABLE `short_term` (
   `short_term_id` INT(8) AUTO_INCREMENT NOT NULL, 
-  `short_term_num` CHAR(31) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
+  `short_term_num` CHAR(34) DEFAULT NULL, # '(2019-2020-1)-B0405450-42119-1 有些竞赛算在这里 故没课号！
   `short_term_term` CHAR(11) NOT NULL, # 2019-2020-1
-	`short_term_time` VARCHAR(40) NOT NULL, # 第19周/周五/8:20
+	`short_term_time` VARCHAR(24) DEFAULT NULL, # 第19周/周五/8:20
 
-  `short_term_name` VARCHAR(40) NOT NULL, # 项目:电子线路仿真技术与PCB设计
-	`short_term_address` VARCHAR(60) NOT NULL, # 第8教研楼302（线路实习实验室）
+  `short_term_name` VARCHAR(24) NOT NULL, # 项目:电子线路仿真技术与PCB设计
+	`short_term_address` VARCHAR(24) DEFAULT NULL, # 第8教研楼302（线路实习实验室）
 
 	
   `short_term_teacher_id` INT(8) NOT NULL, # 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到嗝嗝老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
-	`short_term_teacher_name` VARCHAR(100) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
+	`short_term_teacher_name` CHAR(3) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
 	
-  `short_term_capacity` INT(4) NOT NULL, # 已选人数
+  `short_term_capacity` SMALLINT(4) DEFAULT NULL, # 已选人数
   `short_term_capacity_factor` DOUBLE(10,2) DEFAULT NULL, 
 	`short_term_reform` DOUBLE(10,2) DEFAULT 1.0, # 教改系数 
 	`short_term_factor` DOUBLE(10,2) DEFAULT 1.0, # 类别系数 直接爬 直接用来算就好了！
 	
-	`short_term_hours` DOUBLE(10,2) NOT NULL, # 老师有几几开的 所以会这样！
-  `short_term_hours_std` TINYINT(1) UNSIGNED NOT NULL, # 总标准课时 cf * re * fa * hr
+	`short_term_hours` DOUBLE(10,2) DEFAULT NULL, # 这个学时 直接复制粘贴就好了 没用的
+  `short_term_hours_std` SMALLINT(4) UNSIGNED NOT NULL, # 总标准课时 cf * re * fa * hr
 	
 	`short_term_properties` CHAR(1) DEFAULT NULL, # 短学期的性质
-	`short_term_note1` VARCHAR(100) DEFAULT NULL, # 限定50字符
-  `short_term_note2` VARCHAR(100) DEFAULT NULL,
+	`short_term_note1` VARCHAR(64) DEFAULT NULL, # 限定50字符
+  `short_term_note2` VARCHAR(64) DEFAULT NULL,
   PRIMARY KEY (`short_term_id`)
 --   CONSTRAINT `ctid_tid_fk` FOREIGN KEY (`CTid`) REFERENCES `T` (`Tid`)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8 ;
@@ -318,7 +318,7 @@ CREATE TABLE `s`(
 
 
 
-INSERT acadamy (`academy_name`) 
+INSERT academy (`academy_name`) 
 VALUES
   (
     "电子信息学院（微电子学院）"
@@ -327,7 +327,7 @@ VALUES
 -- INSERT T(Tid,Tpwd,Tname)
 -- VALUES("00001","she_maybe","闪闪兔");
 
-select ifnull((select account_id from account where account_name = 'ff'), 'fuck')
-
-INSERT INTO course ( course_num, course_term, course_time, course_name, course_address, course_teacher_id, course_teacher_name, course_type, course_capacity, course_capacity_factor1, course_hours, course_hours_theory, course_hours_exp, course_hours_exp_std, course_hours_theory_std, course_hours_std, course_reform, course_factor, course_prior, course_note1, course_note2 ) VALUES (
-(2018-2019-2)-A1804020-40136-1, 2018-2019-2, 周二第3,4,5节{第1-16周}, 模拟电子电路, 第7教研楼南205, 40136, 刘圆圆, 1, 19, 1.0, 64.0, 48.0, 16.0, 22, 67, 90, 翻转1.4；卓越1.3, 1.4, 1.4, 卓越单独，翻转课堂，翻转核算高，依照翻转课堂进行核算, 系数不叠加，按最高计算)
+-- select ifnull((select account_id from account where account_name = 'ff'), 'fuck')
+-- 
+-- INSERT INTO course ( course_num, course_term, course_time, course_name, course_address, course_teacher_id, course_teacher_name, course_type, course_capacity, course_capacity_factor1, course_hours, course_hours_theory, course_hours_exp, course_hours_exp_std, course_hours_theory_std, course_hours_std, course_reform, course_factor, course_prior, course_note1, course_note2 ) VALUES (
+-- (2018-2019-2)-A1804020-40136-1, 2018-2019-2, 周二第3,4,5节{第1-16周}, 模拟电子电路, 第7教研楼南205, 40136, 刘圆圆, 1, 19, 1.0, 64.0, 48.0, 16.0, 22, 67, 90, 翻转1.4；卓越1.3, 1.4, 1.4, 卓越单独，翻转课堂，翻转核算高，依照翻转课堂进行核算, 系数不叠加，按最高计算)

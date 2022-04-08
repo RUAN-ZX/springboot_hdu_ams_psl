@@ -1,7 +1,7 @@
 package cn.ryanalexander.alibaba.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.ryanalexander.alibaba.domain.po.Course;
+import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.service.CourseService;
 import cn.ryanalexander.alibaba.mapper.CourseMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-03-24 20:01:11
 */
 @Service
-public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course>
+public class CourseServiceImpl extends ServiceImpl<CourseMapper, CoursePO>
     implements CourseService{
 
 }

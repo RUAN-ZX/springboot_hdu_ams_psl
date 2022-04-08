@@ -11,11 +11,12 @@ package cn.ryanalexander.alibaba.service.tool;
 public class ExcelDataProcessUtil {
     // 多个老师的情况匹配
 //    private final Character[] multiTeacherRegex = new Character[];
-
+    private static final String[] MULTI_FLAG={"多人","/","、"};
     public static boolean multiStart(String courseTeacherName){
-        boolean contains1 = courseTeacherName.contains("（多人）");
-        boolean contains2 = courseTeacherName.contains("/");
-        // 两者有一个符合就炸
-        return contains1 || contains2;
+        // 但凡有一个符合就GG
+        for(String mark : MULTI_FLAG){
+            if(courseTeacherName.contains(mark)) return true;
+        }
+        return false;
     }
 }
