@@ -1,25 +1,18 @@
 package cn.ryanalexander.alibaba.service.excel;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseShortTerm;
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseTheory;
+import cn.ryanalexander.alibaba.domain.bo.excel.CourseExperiment;
 import cn.ryanalexander.alibaba.domain.bo.excel.ExcelEntity;
-import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
-import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.excel.metadata.CellExtra;
 import com.alibaba.fastjson.JSON;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p><b>Excel相关服务</b></p>
@@ -43,7 +36,10 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     private final ArrayList<ExcelEntity> list = new ArrayList<>(BATCH_COUNT);
     private ExcelEntity masterMask = null;
     // 上一个是不是mask 也就是multi的开始
-    private boolean prevIsNotMask = false;
+    private boolean prevIsMultiHead = false;
+
+    // currentHeadInfo 比如毕设的年份 日期等等
+    private List<Map<Integer, String>> headInfoMap = new ArrayList<>();
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
 //        log.error("解析失败:{}", Arrays.toString(exception.getStackTrace()));
@@ -67,8 +63,8 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        log.info("解析到一条头数据:{}", JSON.toJSONString(headMap));
-
+//        log.info("解析到一条头数据:{}", JSON.toJSONString(headMap));
+        headInfoMap.add(headMap);
     }
 
     private void saveList(){
@@ -87,35 +83,35 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     @Override
     public void invoke(ExcelEntity data, AnalysisContext context) {
         if(data.isValidated()){
-
             // 既不是multi开端 也不是 multi中间
             if(!data.multiStart() && !data.multiContinue()) {
-                prevIsNotMask = false;
+                data.stdCalculator(headInfoMap);
                 list.add(data);
                 multiStart = false;
+                prevIsMultiHead = false;
             }
             // 如果是multi中间 添加转换后的data 应该说masterMask基础上 根据data的参数改造的
             else if(data.multiContinue()) {
-                prevIsNotMask = false;
-//                CourseTheory data1 = (CourseTheory) data;
+                prevIsMultiHead = false;
 //                先搞定分成 还有模板填充
+                // 即便对于毕设这种 没有分成 也可以补充模板的内容！
                 list.add(masterMask.copyFromMasterMask(data));
             }
             // 如果multi开端
             else if(data.multiStart()){
-                multiStart = true;
-                data.stdCalculator();
+                data.stdCalculator(headInfoMap);
                 // 多个多人 记得累加
-                if(prevIsNotMask)
-                    data.stdAccumulate(masterMask);
+                if(prevIsMultiHead){
+                    boolean addMultiHead = data.prevIsMultiHeadOperation(masterMask);
+                    if(addMultiHead) list.add(masterMask); // 意思存储这个多头 用于毕设那边
+                }
                 // data的std是前面所有的总和！
                 masterMask = data;
                 // 标准化计算
-                prevIsNotMask = true;
-
+                prevIsMultiHead = true;
+                multiStart = true;
             }
-
-            // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
+            // 达到BATCH_COUNT了，需要去存储一次数据库 已经开头了别断！
             if (list.size() >= BATCH_COUNT && !multiStart) saveList();
         }
     }
@@ -123,5 +119,6 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     @Override // 最后一批
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         if(list.size() > 0) saveList();
+        headInfoMap.clear(); // 清空！
     }
 }

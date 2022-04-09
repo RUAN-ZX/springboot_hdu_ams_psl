@@ -26,6 +26,8 @@ import lombok.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -110,12 +112,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 //    private String courseProperties;
     @Override
     public boolean isValidated() {
-        // 有名字 名字存在 有时长 这记录才有用！
-//        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
-//        boolean isAccountExist = accountMapper.selectIdByName(courseTeacherName) != null;
-        // TODO 挨个检查太慢了 不知道有没有啥好办法 不过这里也不需要了 找不到就让记录留下来 有朝一日update上
-        //  反正也不影响在案老师的工作量计算
-        return courseTeacherName != null && courseHours != null;
+        // 有名字 名字存在 有时长 这记录才有用！ 如果只有老师+标准学时 也认了。。
+        return courseTeacherName != null && (courseHours != null || courseHoursStd != null);
 
     }
 
@@ -123,10 +121,16 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
     public boolean multiStart(){
         return ExcelDataProcessUtil.multiStart(courseTeacherName);
     }
+
+    // 多行 多人头出现
     @Override
-    public void stdAccumulate(ExcelEntity mask){
-        CourseTheory courseTheory = (CourseTheory) mask;
-        this.courseHoursStd += courseTheory.courseHoursStd;
+    public boolean prevIsMultiHeadOperation(ExcelEntity mask){
+        CourseTheory lastMultiHead = (CourseTheory) mask; // 上一个模板
+//        两个都要计算Std 然后叠加Std 不过每次都已经算好了！ 只有multiContinued不用算 直接分成！
+        this.courseHoursStd += lastMultiHead.courseHoursStd;
+        this.courseHoursExpStd += lastMultiHead.courseHoursExpStd;
+        this.courseCapacity += lastMultiHead.courseCapacity;
+        return false;
     }
     @Override // 计划 课程代码那边可能要写分配的占比！
     public boolean multiContinue(){
@@ -165,54 +169,47 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         // 老师名字必须改
         result.courseTeacherName = share.getCourseTeacherName();
-        if(share.courseNum != null){
-            // 获取比例 原来是通过给定学时 但是这不适用于多个多人课头 所以 这里直接设计成 默认通过课号写的百分比来搞定！
-//        double ratio = share.getCourseHours() / result.courseHours;
-            double ratio = Double.parseDouble(share.courseNum.split("%")[0]) / 100.0;
-            result.courseHoursTheory = MathService.ratioFormatter(result.courseHoursTheory,
-                    ratio, "##.#");
+        if(share.courseHoursStd == null && share.courseNum != null){
+            double ratio = ExcelDataProcessUtil.getRatio(share.courseNum);
+            result.courseHoursStd *= ratio; // 分成
+            // 总课时什么的没必要分成 就是作为一个课程信息的展示 多好啊
         }
-
-        // 课程总课时
-        result.courseHours = share.getCourseHours(); // 总课时也就放进来
         result.courseHoursStd = share.getCourseHoursStd(); // 有标准课时可用就拿来咯
-        // 模板 也就是总理论课时 乘上比例 得出share
-
-
+        // 课程总课时 等等其他参数 全部放进来即可 不需要分成。。
         return result;
     }
-
-    private static void stdCalculator(CourseTheory courseTheory){
-        int capacity = courseTheory.courseCapacity;
-        double hours = courseTheory.courseHours;
-        double factor = courseTheory.courseFactor;
-        double prior = courseTheory.coursePrior;
-        double hoursTheory = courseTheory.courseHoursTheory;
+    @Override
+    public void stdCalculator(List<Map<Integer, String>> headInfoMap){
+        if(this.courseHours == null){
+            this.courseHoursExpStd = 0;
+            this.courseHoursTheory = 0.0;
+            this.courseHoursExp = 0.0;
+            this.courseHoursTheoryStd = 0;
+            return; // 直接使用指定的std了。别的都为0
+        }
+        double hours = this.courseHours;
+        double factor = this.courseFactor;
+        double prior = this.coursePrior;
+        double hoursTheory = this.courseHoursTheory;
         double hoursExp = hours - hoursTheory;
         if(hoursExp < 0) hoursExp = 0.0; // 竟然存在这种情况。。
 
-        courseTheory.courseHoursExp = hoursExp;
+        this.courseHoursExp = hoursExp;
 
-        double capacity_factor = 1.0;
-        if(capacity > 80){
-            capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
-                    "I",
-                    courseTheory.courseCapacity
-            );
-        }
+        double capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
+                "I",
+                this.courseCapacity
+        );
         factor *= (capacity_factor * prior); // 归在一起了 优课×规模×容量
         // 3位小数 而且
-        courseTheory.courseCapacityFactor1 = capacity_factor;
+        this.courseCapacityFactor1 = capacity_factor;
         // 虽然excel可能获取到double 不管 直接round
         // 如果有 就用已有的 认为是特殊指定的！
-        if(courseTheory.courseHoursStd == null)
-            courseTheory.courseHoursStd = (double) (int) Math.round(hours * factor);
+        if(this.courseHoursStd == null)
+            this.courseHoursStd = hours * factor;
 
-        courseTheory.courseHoursTheoryStd = (int) Math.round(hoursTheory * factor);
-        courseTheory.courseHoursExpStd = (int) Math.round(hoursExp * factor);
-//        courseTheory.courseHoursStd = 1.0;
-//        courseTheory.courseHoursTheoryStd = 1.0;
-//        courseTheory.courseHoursExpStd = 1.0;
+        this.courseHoursTheoryStd = (int) Math.round(hoursTheory * factor);
+        this.courseHoursExpStd = (int) Math.round(hoursExp * factor);
     }
     @Override
     public void transformAndSave(ArrayList<CourseTheory> list, int size) {
@@ -225,9 +222,6 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
         for (CourseTheory courseTheory : list) {
             accountNameList.add(courseTheory.getCourseTeacherName());
-            // todo std 问题 | capacity factor 问题 | exp
-//            if(courseHoursStd == null)
-            stdCalculator(courseTheory);
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的

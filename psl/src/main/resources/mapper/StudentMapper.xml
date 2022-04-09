@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.StudentPO">
+            <id property="studentId" column="student_id" jdbcType="INTEGER"/>
+            <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
+            <result property="studentMajor" column="student_major" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        student_id,student_name,student_major
+    </sql>
+</mapper>

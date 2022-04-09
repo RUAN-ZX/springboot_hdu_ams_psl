@@ -1,8 +1,8 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,10 +37,12 @@ public interface ExcelEntity<T> {
     // 默认不判定为多人课
     default boolean multiStart(){return false;}
 
-    // 有些时候需要对头进行标准化计算
-    default void stdCalculator(){}
+    // 有些时候需要对头进行标准化计算 而且需要一些环境信息补全！
+    default void stdCalculator(List<Map<Integer, String>> headInfoMap){}
 
     // 多个多人的情况下 是要累积mask 所以要把之前的拉进来
-    default void stdAccumulate(ExcelEntity mask){}
+    default boolean prevIsMultiHeadOperation(ExcelEntity mask){
+        return false;
+    }
 
 }

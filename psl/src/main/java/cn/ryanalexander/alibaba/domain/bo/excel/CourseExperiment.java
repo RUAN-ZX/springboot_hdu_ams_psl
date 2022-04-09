@@ -5,10 +5,8 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.mapper.CourseMapper;
 import cn.ryanalexander.alibaba.service.CourseService;
 import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
-import cn.ryanalexander.alibaba.service.tool.MathService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -19,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p><b></b></p>
@@ -51,9 +51,6 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
 
     @ExcelProperty(value = "上课地点")
     private String courseAddress;
-
-
-    private Integer courseTeacherId;
 
     @ExcelProperty(value = "教师姓名")
     private String courseTeacherName;
@@ -98,16 +95,15 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
     @ExcelProperty(value = "总学时")
     private Double courseHours;
 
-    @ExcelProperty(value = "标准课时")
+    @ExcelProperty(value = "标准学时")
     private Double courseHoursStd;
 
 //    private Double courseHoursTheory = 0.0;
+    private Integer courseTeacherId;
 
     private Double courseHoursExp;
 
     private Integer courseHoursExpStd;
-
-    private Integer courseHoursTheoryStd;
 
 
     @Override
@@ -117,7 +113,7 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
 //        boolean isAccountExist = accountMapper.selectIdByName(courseTeacherName) != null;
         // TODO 挨个检查太慢了 不知道有没有啥好办法 不过这里也不需要了 找不到就让记录留下来 有朝一日update上
         //  反正也不影响在案老师的工作量计算
-        return courseTeacherName != null && courseHours != null;
+        return courseTeacherName != null && (courseHours != null || courseHoursExpStd != null);
 
     }
 
@@ -126,9 +122,10 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
         return ExcelDataProcessUtil.multiStart(courseTeacherName);
     }
     @Override
-    public void stdAccumulate(ExcelEntity mask){
+    public boolean prevIsMultiHeadOperation(ExcelEntity mask){
         CourseTheory courseTheory = (CourseTheory) mask;
         this.courseHoursStd += courseTheory.courseHoursStd;
+        return false; // 不存储多头
     }
     @Override // 计划 课程代码那边可能要写分配的占比！
     public boolean multiContinue(){
@@ -155,60 +152,62 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
 
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        CourseTheory result = null;
-        CourseTheory share = (CourseTheory) data;
+        CourseExperiment result = null;
+        CourseExperiment share = (CourseExperiment) data;
         try {
             // 此时this就是多人的模板 result就是每个老师的分成 对象实例
             // share就是excel读取的分成 数据
-            result = (CourseTheory) this.clone();
+            result = (CourseExperiment) this.clone();
         } catch (CloneNotSupportedException e) {
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL));
         }
 
         // 老师名字必须改
         result.courseTeacherName = share.getCourseTeacherName();
-        if(share.courseNum != null){
+        // 需要计算 且 可以计算的时候
+        // todo 这里有个致命点 就是如果即没有标准学时 也不知道分成具体情况 会导致hoursStd=null！
+        if(share.courseHoursStd == null && share.courseNum != null){
             // 获取比例 原来是通过给定学时 但是这不适用于多个多人课头 所以 这里直接设计成 默认通过课号写的百分比来搞定！
 //        double ratio = share.getCourseHours() / result.courseHours;
-            double ratio = Double.parseDouble(share.courseNum.split("%")[0]) / 100.0;
-            result.courseHoursTheory = MathService.ratioFormatter(result.courseHoursTheory,
-                    ratio, "##.#");
+            double ratio = ExcelDataProcessUtil.getRatio(share.courseNum);
+            result.courseHoursStd *= ratio; // 分成
+            // 总课时什么的没必要分成 就是作为一个课程信息的展示 多好啊
         }
-
-        // 课程总课时
-        result.courseHours = share.getCourseHours(); // 总课时也就放进来
         result.courseHoursStd = share.getCourseHoursStd(); // 有标准课时可用就拿来咯
-        // 模板 也就是总理论课时 乘上比例 得出share
 
 
         return result;
     }
 
-    private static void stdCalculator(CourseExperiment courseExperiment){
-        int capacity = courseExperiment.courseCapacity;
-        double hours = courseExperiment.courseHours;
-        double factor = courseExperiment.courseFactor;
-        double prior = courseExperiment.coursePrior;
-        courseExperiment.courseHoursExp = hours;
+    @Override
+    public void stdCalculator(List<Map<Integer, String>> headInfoMap){
+        if(this.courseHours == null){
+            this.courseHoursExpStd = (int) Math.round(this.courseHoursStd);
+            this.courseHoursExp = 0.0;
+            return; // 直接使用指定的std了。别的都为0
+        }
+        double hours = this.courseHours;
+        double factor = this.courseFactor;
+        double prior = this.coursePrior;
+        this.courseHoursExp = hours;
 
         double capacity_factor_1 = ExcelDataProcessUtil.getCapacityFactorByProperty(
-                courseExperiment.courseProperties,
-                courseExperiment.courseCapacity
+                this.courseProperties,
+                this.courseCapacity
         );
-        double capacity_factor_2 = courseExperiment.courseCapacityFactor2;
+        double capacity_factor_2 = this.courseCapacityFactor2;
 
         factor *= (capacity_factor_1 * capacity_factor_2 * prior); // 归在一起了 优课×规模×容量
         // 3位小数 而且
-        courseExperiment.courseCapacityFactor1 = capacity_factor_1;
-
-
+        this.courseCapacityFactor1 = capacity_factor_1;
 
         // 虽然excel可能获取到double 不管 直接round
-        // 如果有 就用已有的 认为是特殊指定的！
-        if(courseExperiment.courseHoursStd == null)
-            courseExperiment.courseHoursStd = hours * factor;
+        // 如果没有就计算
+        if(this.courseHoursStd == null)
+            this.courseHoursStd = hours * factor;
 
-        courseExperiment.courseHoursExpStd = (int) Math.round(hours * factor);
+        // 其他的就算制定了 你也算算。。
+        this.courseHoursExpStd = (int) Math.round(hours * factor);
     }
     @Override
     public void transformAndSave(ArrayList<CourseExperiment> list, int size) {
@@ -221,14 +220,9 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
         for (CourseExperiment courseExperiment : list) {
             accountNameList.add(courseExperiment.getCourseTeacherName());
-            // todo std 问题 | capacity factor 问题 | exp
-//            if(courseHoursStd == null)
-            stdCalculator(courseExperiment);
         }
-        // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
-        // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
-        ArrayList<CoursePO> cours = new ArrayList<>(size);
+        ArrayList<CoursePO> courses = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
         CourseExperiment courseExperiment = null;
@@ -239,7 +233,7 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
                 // 有些字段实在太长 删减点 别太过了
                 courseExperiment.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                cours.add(new CoursePO(courseExperiment));
+                courses.add(new CoursePO(courseExperiment));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -247,15 +241,15 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
             }
         }
         try{
-            courseService.saveBatch(cours);
+            courseService.saveBatch(courses);
 
         }
         catch (Exception e){
             e.printStackTrace();
-            throw new AppException(e, "CourseTheory", "transformAndSave courseService.saveBatch(courses)");
+            throw new AppException(e, "CourseExperiment", "transformAndSave courseService.saveBatch(courses)");
         }
         finally {
-            cours.clear();
+            courses.clear();
             accountIdList.clear();
             accountNameList.clear();
         }

@@ -24,6 +24,8 @@ import lombok.ToString;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p><b></b></p>
@@ -125,7 +127,7 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
 
     @Override
     public boolean isValidated() {
-        // 有名字 有百分占比 正常情况！
+        // 有名字 有百分占比 正常情况！ 没有的话 有个std结果也行啊
         return shortTermTeacherName != null && (shortTermNum != null || shortTermHoursStd != null);
     }
 
@@ -194,27 +196,29 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         return result;
     }
     @Override
-    public void stdCalculator(){
-        CourseShortTerm.stdCalculator(this);
-    }
-    @Override
-    public void stdAccumulate(ExcelEntity mask){
+    public boolean prevIsMultiHeadOperation(ExcelEntity mask){
         CourseShortTerm courseShortTerm = (CourseShortTerm) mask;
         this.shortTermHoursStd += courseShortTerm.shortTermHoursStd;
+        return false; // 这个多人不存储
     }
-    private static void stdCalculator(CourseShortTerm courseShortTerm){
-        double hours = courseShortTerm.shortTermHours;
-        double factor = courseShortTerm.shortTermFactor;
-        double reform = courseShortTerm.shortTermReform;
+
+    @Override
+    public void stdCalculator(List<Map<Integer, String>> headInfoMap){
+        if(this.shortTermHours == null){
+            return; // 直接使用指定的std了。别的都为null 因为数据库允许！
+        }
+        double hours = this.shortTermHours;
+        double factor = this.shortTermFactor;
+        double reform = this.shortTermReform;
         double capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
-                courseShortTerm.shortTermProperties,
-                courseShortTerm.shortTermCapacity
+                this.shortTermProperties,
+                this.shortTermCapacity
         );
         factor *= (capacity_factor * reform); // 归在一起了 类别本身*教改*规模*学时
         // 3位小数 而且
-        courseShortTerm.shortTermCapacityFactor = capacity_factor;
+        this.shortTermCapacityFactor = capacity_factor;
 
-        courseShortTerm.shortTermHoursStd = (double) Math.round(hours * factor);
+        this.shortTermHoursStd = (double) Math.round(hours * factor);
     }
     @Override
     public void transformAndSave(ArrayList<CourseShortTerm> list, int size) {
@@ -227,12 +231,6 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
         for (CourseShortTerm courseShortTerm : list) {
             accountNameList.add(courseShortTerm.shortTermTeacherName);
-            // 如果没有标准课时 才计算 否则不算 以给定数据为准！
-            // 没有课程性质 算个鬼的规模系数 直接用给定数据得了
-            // 只有需要我计算 且能计算 才放行！
-            if(shortTermHoursStd == null && shortTermProperties != null){
-                stdCalculator(courseShortTerm);
-            }
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的

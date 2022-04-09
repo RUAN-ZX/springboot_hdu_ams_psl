@@ -125,6 +125,7 @@ CREATE TABLE `student` (
 	student_id INT(8) NOT NULL, # 毕设学生的id
 	student_name VARCHAR(25) NOT NULL, # 毕设学生名字
 	student_major VARCHAR(60) NOT NULL,#光电信息科学与工程(光电工程方向)
+	student_graduate_year INT(4) NOT NULL,# 每年都有一批！
 	PRIMARY KEY(`student_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -134,11 +135,11 @@ DROP TABLE IF EXISTS `thesis_design`;
 CREATE TABLE `thesis_design` (
 	thesis_design_id INT(8) AUTO_INCREMENT NOT NULL, 
 	thesis_design_year INT(4) NOT NULL,# 每年都有一批！
-	thesis_design_note VARCHAR(100) DEFAULT NULL,# 备注
+	thesis_design_note VARCHAR(24) DEFAULT NULL,# 备注
 	thesis_design_teacher_id INT(8) NOT NULL,# 教师id 方便查询。
-	thesis_design_teacher_name VARCHAR(25) DEFAULT NULL, # 方便显示！
+	thesis_design_teacher_name CHAR(3) DEFAULT NULL, # 方便显示！
 -- 	td_stu_id INT(8) NOT NULL, # 毕设学生的id
-	thesis_design_student_name VARCHAR(25) DEFAULT NULL, # 可能是卓越加点空记录
+	thesis_design_student_name CHAR(3) DEFAULT NULL, # 可能是卓越加点空记录
 	
 	thesis_design_grade TINYINT(1) UNSIGNED NOT NULL, # 0 1 2 3 4 优秀 良好 中等 及格 不及格 这个需要统计 所以用数字！
 	thesis_design_factor1 DOUBLE(10,2) DEFAULT 12.0, # 基本系数
@@ -223,6 +224,7 @@ DROP TABLE IF EXISTS `s1`;
 CREATE TABLE `s1`(
 	`s1_id` INT(8) AUTO_INCREMENT NOT NULL, 
 	`s1_teacher_id` INT(8) DEFAULT NULL,  
+	`s1_teacher_name` VARCHAR(24) NOT NULL, # 怪怪的老师名字都来了。。有些没有id 暂时 还是先登记在案吧
 	`s1_year` INT(4) DEFAULT NULL,
 	`s1_kpi_course` DOUBLE(10,4) DEFAULT NULL, # 通过四个理论 实验 短学期 毕设 搞出来的业绩点
 	# 课外实践工作量
@@ -236,7 +238,8 @@ CREATE TABLE `s1`(
 	# 给KPI排名 确定S1
 	`s1_score` DOUBLE(10,2) DEFAULT NULL, # S1分数
 	
-	PRIMARY KEY (`s1_id`)
+	PRIMARY KEY (`s1_id`),
+	UNIQUE KEY `uk_tid_year` (`s1_teacher_id`,`s1_year`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## S2 记录完各个学期的学评教evaluation 然后计算
