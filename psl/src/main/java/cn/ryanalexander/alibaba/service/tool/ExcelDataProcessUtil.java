@@ -19,4 +19,12 @@ public class ExcelDataProcessUtil {
         }
         return false;
     }
+
+    public static double getCapacityFactorByProperty(String properties, Integer capacity){
+        if(properties.equals("A") && capacity > 20) return capacity / 20.0;
+        else if(properties.equals("I")) return Math.min(1 + (capacity - 80) / 200.0, 1.2);
+        else if(properties.equals(("J"))) return capacity <= 30 ? 1.2 : 1.2 * capacity / 30.0 ;
+        else if(properties.equals("B") && capacity > 40) return capacity / 40.0;
+        else return 1.0;
+    }
 }

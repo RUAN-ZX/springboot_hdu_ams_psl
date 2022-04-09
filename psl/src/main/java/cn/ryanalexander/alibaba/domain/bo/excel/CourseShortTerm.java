@@ -110,7 +110,7 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
     @ExcelProperty(value = "教改")
     private Double shortTermReform;
 
-    @ExcelProperty(value = "性质")
+    @ExcelProperty(value = "性质") // A B J
     private String shortTermProperties;
 
     @ExcelProperty(value = "教务处备注")
@@ -152,8 +152,8 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         if(shortTermName != null && this.shortTermName.length() > 24)
             this.shortTermName = this.shortTermName.substring(0, 24);
 
-        if(shortTermAddress != null && this.shortTermAddress.length() > 24)
-            this.shortTermAddress = this.shortTermAddress.substring(0, 24);
+        if(shortTermAddress != null && this.shortTermAddress.length() > 64)
+            this.shortTermAddress = this.shortTermAddress.substring(0, 64);
 
         if(shortTermTerm != null && this.shortTermTerm.length() > 11)
             this.shortTermTerm = this.shortTermTerm.substring(0, 11);
@@ -186,9 +186,9 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
             // this.shortTermHoursStd;可能是前边多个多人 标准化完 累加的结果！
             result.shortTermHoursStd = ratio * this.shortTermHoursStd;
         }
-
-        // 线程的标准课时 拿来吧!
-        result.shortTermHoursStd = share.shortTermHoursStd;
+        else
+            // 线程的标准课时 拿来吧!
+            result.shortTermHoursStd = share.shortTermHoursStd;
 
 
         return result;
@@ -203,12 +203,13 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         this.shortTermHoursStd += courseShortTerm.shortTermHoursStd;
     }
     private static void stdCalculator(CourseShortTerm courseShortTerm){
-        int capacity = courseShortTerm.shortTermCapacity;
         double hours = courseShortTerm.shortTermHours;
         double factor = courseShortTerm.shortTermFactor;
         double reform = courseShortTerm.shortTermReform;
-        double capacity_factor = (capacity/30.0) * 1.2;
-
+        double capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
+                courseShortTerm.shortTermProperties,
+                courseShortTerm.shortTermCapacity
+        );
         factor *= (capacity_factor * reform); // 归在一起了 类别本身*教改*规模*学时
         // 3位小数 而且
         courseShortTerm.shortTermCapacityFactor = capacity_factor;
@@ -227,7 +228,9 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         for (CourseShortTerm courseShortTerm : list) {
             accountNameList.add(courseShortTerm.shortTermTeacherName);
             // 如果没有标准课时 才计算 否则不算 以给定数据为准！
-            if(shortTermHoursStd == null){
+            // 没有课程性质 算个鬼的规模系数 直接用给定数据得了
+            // 只有需要我计算 且能计算 才放行！
+            if(shortTermHoursStd == null && shortTermProperties != null){
                 stdCalculator(courseShortTerm);
             }
         }

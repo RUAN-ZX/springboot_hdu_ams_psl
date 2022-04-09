@@ -46,7 +46,8 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     private boolean prevIsNotMask = false;
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
-        log.error("解析失败:{}", Arrays.toString(exception.getStackTrace()));
+//        log.error("解析失败:{}", Arrays.toString(exception.getStackTrace()));
+        exception.printStackTrace();
 
         // 如果是某一个单元格的转换异常 能获取到具体行号
 
@@ -56,6 +57,8 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
             log.error("第{}行，第{}列解析异常", excelDataConvertException.getRowIndex(),
                     excelDataConvertException.getColumnIndex());
         }
+
+
     }
     @Override
     public void extra(CellExtra extra, AnalysisContext context) {
@@ -83,11 +86,6 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     }
     @Override
     public void invoke(ExcelEntity data, AnalysisContext context) {
-//        log.info(data.toString());
-//        CourseTheory data1 = (CourseTheory) data;
-//        boolean fuck = Objects.equals(data1.courseTeacherName, "郑梁");
-        CourseShortTerm a = (CourseShortTerm) data;
-//        log.info(data1.courseHours );
         if(data.isValidated()){
 
             // 既不是multi开端 也不是 multi中间

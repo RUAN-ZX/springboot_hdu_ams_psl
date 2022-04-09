@@ -144,8 +144,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         if(this.courseTime != null && this.courseTime.length() > 64)
             this.courseTime = this.courseTime.substring(0, 64);
 
-        if(this.courseAddress != null && this.courseAddress.length() > 24)
-            this.courseAddress = this.courseAddress.substring(0, 24);
+        if(this.courseAddress != null && this.courseAddress.length() > 64)
+            this.courseAddress = this.courseAddress.substring(0, 64);
 
         if(this.courseName != null && this.courseName.length() > 24)
             this.courseName = this.courseName.substring(0, 24);
@@ -195,7 +195,10 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         double capacity_factor = 1.0;
         if(capacity > 80){
-            capacity_factor = Math.min(1 + (capacity - 80) / 200.0, 1.2);
+            capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
+                    "I",
+                    courseTheory.courseCapacity
+            );
         }
         factor *= (capacity_factor * prior); // 归在一起了 优课×规模×容量
         // 3位小数 而且
@@ -214,7 +217,6 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
     @Override
     public void transformAndSave(ArrayList<CourseTheory> list, int size) {
         CourseService courseService = (CourseService) SpringUtil.getBean("courseServiceImpl");
-        CourseMapper courseMapper = (CourseMapper) SpringUtil.getBean("courseMapper");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
         ArrayList<String> accountNameList = new ArrayList<>(size);
@@ -224,8 +226,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         for (CourseTheory courseTheory : list) {
             accountNameList.add(courseTheory.getCourseTeacherName());
             // todo std 问题 | capacity factor 问题 | exp
-            if(courseHoursStd == null)
-                stdCalculator(courseTheory);
+//            if(courseHoursStd == null)
+            stdCalculator(courseTheory);
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的

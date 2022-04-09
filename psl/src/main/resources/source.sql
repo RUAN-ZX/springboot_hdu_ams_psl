@@ -42,7 +42,7 @@ CREATE TABLE `course` (
   `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
 	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
   `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
-	`course_address` VARCHAR(24) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
+	`course_address` VARCHAR(64) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
 	
   `course_teacher_id` INT(8) DEFAULT NULL, 
 	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
@@ -51,7 +51,7 @@ CREATE TABLE `course` (
 	`course_teacher_name` CHAR(3) NOT NULL, # 记录一下老师名字 毕竟有些老师id是找不到的！
 	
 	
-	`course_type` TINYINT(1) UNSIGNED NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
+-- 	`course_type` TINYINT(1) UNSIGNED NOT NULL, # 根据从哪个表提取出来的 可以区分不同种类 理论 实验 短学期 毕设
 	
   `course_capacity` SMALLINT(4) NOT NULL,
   `course_capacity_factor1` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
@@ -59,8 +59,8 @@ CREATE TABLE `course` (
 
 
 	`course_hours` DOUBLE(10,2) NOT NULL, # 老师有几几开的 所以会这样！
-	`course_hours_theory` DOUBLE(10,2) NOT NULL, # 无论实验 还是讲课 还是标准化的学时 先算 然后几几开就好了！
-	`course_hours_exp` DOUBLE(10,2) NOT NULL, # 注意 这里使用理论-实验就好了 
+	`course_hours_theory` DOUBLE(10,2) DEFAULT 0.00, # 无论实验 还是讲课 还是标准化的学时 先算 然后几几开就好了！
+	`course_hours_exp` DOUBLE(10,2) DEFAULT 0.00, # 注意 这里使用理论-实验就好了 
 	`course_hours_exp_std` TINYINT(1) UNSIGNED NOT NULL, # 理论课标准课时 直接×1
 	#实验课 同 标准学时计算方法 这也就是总的标准课时
 	`course_hours_theory_std` TINYINT(1) UNSIGNED NOT NULL, # 理论课标准课时有公式 注意 不是两个std加起来就是总标准课时！！ 类别系数 × 规模系数 × 课时
@@ -74,9 +74,10 @@ CREATE TABLE `course` (
 	`course_prior` DOUBLE(10,2) DEFAULT 1.0, # 优课优酬 短学期没有
 	
 	
-	`course_hours_op` DOUBLE(10,2) DEFAULT NULL, # 上机学时 记录一下 不参与计算
+	`course_hours_op` DOUBLE(10,2) DEFAULT 0.00, # 上机学时 记录一下 不参与计算
 	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算
-	`course_properties` CHAR(1) DEFAULT NULL, # 性质 实验课有
+	`course_properties` CHAR(1) DEFAULT NULL, # 性质 I ABJ
+	
 	`course_note1` VARCHAR(64) DEFAULT NULL, 
 	# 检查这个属性 string.length 调用快的 超过则截断！检查string的长度！
 	# 应该在循环里边顺手检查一下！

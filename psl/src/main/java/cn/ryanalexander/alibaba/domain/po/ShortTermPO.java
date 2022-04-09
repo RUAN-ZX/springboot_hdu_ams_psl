@@ -118,7 +118,10 @@ public class ShortTermPO implements Serializable {
         shortTermReform = cst.getShortTermReform();
         shortTermFactor = cst.getShortTermFactor();
         shortTermHours = cst.getShortTermHours();
-        shortTermHoursStd = (int) Math.round(cst.getShortTermHoursStd());
+
+        if(cst.getShortTermHoursStd() != null)
+            shortTermHoursStd = (int) Math.round(cst.getShortTermHoursStd());
+
         shortTermProperties = cst.getShortTermProperties();
         shortTermNote1 = cst.getShortTermNote1();
         shortTermNote2 = cst.getShortTermNote2();

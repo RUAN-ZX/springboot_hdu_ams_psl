@@ -1,5 +1,6 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("毕业设计")
+@ExcelIgnoreUnannotated
 public class CourseThesisDesign{
 
 

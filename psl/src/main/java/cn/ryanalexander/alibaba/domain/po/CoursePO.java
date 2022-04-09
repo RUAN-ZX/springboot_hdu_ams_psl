@@ -1,6 +1,8 @@
 package cn.ryanalexander.alibaba.domain.po;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.CourseExperiment;
 import cn.ryanalexander.alibaba.domain.bo.excel.CourseTheory;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -56,10 +58,6 @@ public class CoursePO implements Serializable {
      */
     private String courseTeacherName;
 
-    /**
-     *
-     */
-    private Integer courseType;
 
     /**
      *
@@ -152,7 +150,6 @@ public class CoursePO implements Serializable {
     private String courseNote2;
 
     @TableField(exist = false)
-
     private static final long serialVersionUID = 1L;
 
     public CoursePO(CourseTheory c){
@@ -165,7 +162,8 @@ public class CoursePO implements Serializable {
         this.courseHours = c.getCourseHours();
         this.courseHoursTheory = c.getCourseHoursTheory();
         this.courseHoursExp = c.getCourseHoursExp();
-        this.courseHoursStd = (int) Math.round(c.getCourseHoursStd());
+        if(c.getCourseHoursStd() != null)
+            this.courseHoursStd = (int) Math.round(c.getCourseHoursStd());
         this.courseHoursExpStd = c.getCourseHoursExpStd();
         this.courseHoursTheoryStd = c.getCourseHoursTheoryStd();
         this.courseName = c.getCourseName();
@@ -174,10 +172,42 @@ public class CoursePO implements Serializable {
         this.courseReform = c.getCourseReform();
         this.courseTeacherId = c.getCourseTeacherId();
         this.courseTeacherName = c.getCourseTeacherName();
-        this.courseType = 1;
         this.courseTime = c.getCourseTime();
         this.courseNote1 = c.getCourseNote1();
         this.courseNote2 = c.getCourseNote2();
+
+        this.courseProperties = "I";
+    }
+
+    public CoursePO(CourseExperiment c){
+        this.courseTerm = c.getCourseTerm();
+        this.courseAddress = c.getCourseAddress();
+        this.courseBilingual = c.getCourseBilingual();
+        this.courseCapacity = c.getCourseCapacity();
+        this.courseFactor = c.getCourseFactor();
+        this.courseCapacityFactor1 = c.getCourseCapacityFactor1();
+
+        this.courseHoursExp = c.getCourseHoursExp();
+        this.courseHoursExpStd = c.getCourseHoursExpStd();
+
+        this.courseHours = c.getCourseHours();
+        if(c.getCourseHoursStd() != null)
+            this.courseHoursStd = (int) Math.round(c.getCourseHoursStd());
+
+        this.courseHoursTheoryStd = 0;
+        this.courseHoursTheory = 0.0;
+        this.courseName = c.getCourseName();
+        this.courseNum = c.getCourseNum();
+        this.coursePrior = c.getCoursePrior();
+        this.courseReform = c.getCourseReform();
+        this.courseTeacherId = c.getCourseTeacherId();
+        this.courseTeacherName = c.getCourseTeacherName();
+        this.courseTime = c.getCourseTime();
+        this.courseNote1 = c.getCourseNote1();
+        this.courseNote2 = c.getCourseNote2();
+        this.coursePoints = c.getCoursePoints();
+        this.courseProperties = c.getCourseProperties();
+
     }
     @Override
     public boolean equals(Object that) {
@@ -199,7 +229,6 @@ public class CoursePO implements Serializable {
                 && (this.getCourseAddress() == null ? other.getCourseAddress() == null : this.getCourseAddress().equals(other.getCourseAddress()))
                 && (this.getCourseTeacherId() == null ? other.getCourseTeacherId() == null : this.getCourseTeacherId().equals(other.getCourseTeacherId()))
                 && (this.getCourseTeacherName() == null ? other.getCourseTeacherName() == null : this.getCourseTeacherName().equals(other.getCourseTeacherName()))
-                && (this.getCourseType() == null ? other.getCourseType() == null : this.getCourseType().equals(other.getCourseType()))
                 && (this.getCourseCapacity() == null ? other.getCourseCapacity() == null : this.getCourseCapacity().equals(other.getCourseCapacity()))
                 && (this.getCourseCapacityFactor1() == null ? other.getCourseCapacityFactor1() == null : this.getCourseCapacityFactor1().equals(other.getCourseCapacityFactor1()))
                 && (this.getCourseCapacityFactor2() == null ? other.getCourseCapacityFactor2() == null : this.getCourseCapacityFactor2().equals(other.getCourseCapacityFactor2()))
@@ -232,7 +261,6 @@ public class CoursePO implements Serializable {
         result = prime * result + ((getCourseAddress() == null) ? 0 : getCourseAddress().hashCode());
         result = prime * result + ((getCourseTeacherId() == null) ? 0 : getCourseTeacherId().hashCode());
         result = prime * result + ((getCourseTeacherName() == null) ? 0 : getCourseTeacherName().hashCode());
-        result = prime * result + ((getCourseType() == null) ? 0 : getCourseType().hashCode());
         result = prime * result + ((getCourseCapacity() == null) ? 0 : getCourseCapacity().hashCode());
         result = prime * result + ((getCourseCapacityFactor1() == null) ? 0 : getCourseCapacityFactor1().hashCode());
         result = prime * result + ((getCourseCapacityFactor2() == null) ? 0 : getCourseCapacityFactor2().hashCode());
@@ -268,7 +296,6 @@ public class CoursePO implements Serializable {
         sb.append(", courseAddress=").append(courseAddress);
         sb.append(", courseTeacherId=").append(courseTeacherId);
         sb.append(", courseTeacherName=").append(courseTeacherName);
-        sb.append(", courseType=").append(courseType);
         sb.append(", courseCapacity=").append(courseCapacity);
         sb.append(", courseCapacityFactor1=").append(courseCapacityFactor1);
         sb.append(", courseCapacityFactor2=").append(courseCapacityFactor2);
