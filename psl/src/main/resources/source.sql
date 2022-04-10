@@ -6,7 +6,7 @@ USE `teacher_data`;
 # account 教师 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
-  `account_id` INT(8) NOT NULL,
+  `account_id` INT(8) NOT NULL, # teacher id
   `account_name` VARCHAR(25) NOT NULL,
   `account_mail` VARCHAR(50) DEFAULT NULL, # 保持最新状态就行了！
 	`account_phone` CHAR(11) DEFAULT NULL, # 13713524786
@@ -44,7 +44,7 @@ CREATE TABLE `course` (
   `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	`course_address` VARCHAR(64) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
 	
-  `course_teacher_id` INT(8) DEFAULT NULL, 
+  `course_teacher_id` INT(8) UNSIGNED DEFAULT NULL, 
 	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
 	# 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到各个老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
@@ -85,8 +85,8 @@ CREATE TABLE `course` (
 	
 	
   PRIMARY KEY (`course_id`),
-	UNIQUE KEY `uk_cnum_ctid` (`course_num`,`course_teacher_name`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 ;
+	UNIQUE KEY `uk_cnum_ctname` (`course_num`,`course_teacher_name`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## -------------课程 理论+实践 专门用于统计主讲课时的!
 DROP TABLE IF EXISTS `short_term`;
@@ -115,17 +115,18 @@ CREATE TABLE `short_term` (
 	`short_term_properties` CHAR(1) DEFAULT NULL, # 短学期的性质
 	`short_term_note1` VARCHAR(64) DEFAULT NULL, # 限定50字符
   `short_term_note2` VARCHAR(64) DEFAULT NULL,
+	# 如果别人的share转给他了 会导致课号-名字 都没办法限制！
+-- 	UNIQUE KEY `uk_num_tname` (`short_term_num`,`short_term_teacher_name`),
   PRIMARY KEY (`short_term_id`)
---   CONSTRAINT `ctid_tid_fk` FOREIGN KEY (`CTid`) REFERENCES `T` (`Tid`)
-) ENGINE = INNODB DEFAULT CHARSET = utf8 ;
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 毕设学生表
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
-	student_id INT(8) NOT NULL, # 毕设学生的id
+	student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id
 	student_name VARCHAR(25) NOT NULL, # 毕设学生名字
 	student_major VARCHAR(60) NOT NULL,#光电信息科学与工程(光电工程方向)
-	student_graduate_year INT(4) NOT NULL,# 每年都有一批！
+	student_graduate_year INT(4) UNSIGNED NOT NULL,# 每年都有一批！
 	PRIMARY KEY(`student_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -140,41 +141,15 @@ CREATE TABLE `thesis_design` (
 	thesis_design_teacher_name CHAR(3) DEFAULT NULL, # 方便显示！
 -- 	td_stu_id INT(8) NOT NULL, # 毕设学生的id
 	thesis_design_student_name CHAR(3) DEFAULT NULL, # 可能是卓越加点空记录
+	thesis_design_student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id
 	
 	thesis_design_grade TINYINT(1) UNSIGNED NOT NULL, # 0 1 2 3 4 优秀 良好 中等 及格 不及格 这个需要统计 所以用数字！
 	thesis_design_factor1 DOUBLE(10,2) DEFAULT 12.0, # 基本系数
 	thesis_design_factor2 DOUBLE(10,2) DEFAULT 0.0, # 优秀系数
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
 	thesis_design_std TINYINT(1) UNSIGNED NOT NULL, # 标准学时 
+	UNIQUE KEY `uk_stu_id` (`thesis_design_student_id`), # 学号 得天独厚的区分条件
 	PRIMARY KEY(`thesis_design_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
-
-# 研究生的绩点 
--- DROP TABLE IF EXISTS `post_graduate`;
--- CREATE TABLE `post_graduate`( 
--- 	`pg_id` INT(8) AUTO_INCREMENT NOT NULL, 
--- 	`pg_term` INT(4) NOT NULL,
--- 	`pg_t_id` INT(8) NOT NULL, 
--- 	`pg_gpa` DOUBLE(10,2) NOT NULL, # 研究生的绩点 以计算在老师头上的标准学时
--- 	`pg_std` DOUBLE(10,2) NOT NULL,
--- 	PRIMARY KEY(`pg_id`)
--- ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
--- 
-## ------------- S2 学评教信息 直接有结果 直接用就好了
-## 这里记录是学期结算的！只需要总分 按上一年学评教分数的平均值排名
-DROP TABLE IF EXISTS `evaluation`;
-CREATE TABLE `evaluation`(
-  `evaluation_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`evaluation_term` CHAR(11) NOT NULL,
-	`evaluation_teacher_id` INT(8) NOT NULL,
-	`evaluation_participate` INT(4) NOT NULL,
-	`evaluation_score` DOUBLE(10,3) NOT NULL,
-	`evaluation_srank` INT(4) NOT NULL, # 学校排名
-	`evaluation_arank` INT(4) NOT NULL, # 学院排名
-	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比
-	
-	PRIMARY KEY(`evaluation_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 ## ----------成果类
@@ -185,39 +160,73 @@ DROP TABLE IF EXISTS `achievement`;
 CREATE TABLE `achievement`(
   achievement_id INT(8) AUTO_INCREMENT NOT NULL, 
 	achievement_teacher_id INT(8) NOT NULL,  # 当前老师！
-	achievement_ratio INT(3) NOT NULL, # 占比 %
 	
-	achievement_teacher_name VARCHAR(200) NOT NULL,
+	achievement_teacher_name CHAR(3) NOT NULL,
 	achievement_year INT(4) NOT NULL, # 学年成果
 	achievement_name VARCHAR(150) NOT NULL, # 成果名称
-	achievement_type VARCHAR(20) NOT NULL, # 成果类别 教学业绩核心指标目录与分值
-
-	achievement_category VARCHAR(40) NOT NULL,# “考核项” 直接显示用的 不做计算 
-	## 有些写的很长 厅局级教改项目、校教改研究重点项目/校教改研究一般项目
 	
-	achievement_evidence1 VARCHAR(60) NOT NULL, # https:// 开头这个省略 后边的才用！ stea.ryanalexander.cn/psl/hdu1.jpg
+	achievement_type TINYINT(1) UNSIGNED NOT NULL, # 0 标志性 1 非标志性
+	achievement_level VARCHAR(48) NOT NULL, 	## SCI收录的TOP期刊论文，计算机科学与技术、软件工程学科的A类会议论文（论文页数≥12页）
+
+	achievement_category VARCHAR(24) NOT NULL,# 教学业绩核心指标目录与分值
+
+	
+	achievement_evidence1 VARCHAR(60) DEFAULT NULL, # https:// 开头这个省略 后边的才用！ stea.ryanalexander.cn/psl/hdu1.jpg
 	achievement_evidence2 VARCHAR(60) DEFAULT NULL,
 	achievement_evidence3 VARCHAR(60) DEFAULT NULL,
 	
-	achievement_points_add VARCHAR(30) DEFAULT NULL, # 记录加分以及具体加了多少 加到哪里 s31_1:13:s1_1:0.5
-	# 前端可以读取这玩意 显示在前端 然后改完数据 一并返回后端 形成这个字符串即可
+-- 	achievement_points_add VARCHAR(30) DEFAULT NULL, # 记录加分以及具体加了多少 加到哪里 s31_1:13:s1_1:0.5
+-- 	# 前端可以读取这玩意 显示在前端 然后改完数据 一并返回后端 形成这个字符串即可
 	
-	achievement_level TINYINT(1) UNSIGNED DEFAULT NULL, # 获奖等级
-	achievement_score DOUBLE(10,2) NOT NULL, # 最终指标分值
-	achievement_note1 VARCHAR(30) NOT NULL,# 原始备注 30个字！
-	achievement_note2 VARCHAR(30) NOT NULL,# 我们教科办备注
+	achievement_rank TINYINT(1) UNSIGNED DEFAULT NULL, # 获奖等级 1 2 3
+	achievement_kpi DOUBLE(10,2) NOT NULL, # 最终指标分值
+	achievement_note VARCHAR(32) DEFAULT NULL,# 我们教科办备注
+  # 有完全一摸一样的 没办法。。
 	PRIMARY KEY(`achievement_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
-
-
-# academy 学院
-DROP TABLE IF EXISTS `academy`;
-CREATE TABLE `academy` (
-  `academy_id` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `academy_name` VARCHAR(20) DEFAULT NULL,
-  PRIMARY KEY (`academy_id`)
+# 研究生的绩点 也作为源数据！ 
+DROP TABLE IF EXISTS `post_graduate`;
+CREATE TABLE `post_graduate`( 
+	`post_graduate_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`post_graduate_year` INT(4) NOT NULL,
+	`post_graduate_teacher_id` INT(8) NOT NULL, 
+	`post_graduate_teacher_name` CHAR(3) NOT NULL, # 
+	`post_graduate_kpi` DOUBLE(10,5) NOT NULL, # 研究生的绩点 以计算在老师头上的标准学时
+	UNIQUE KEY `uk_year_tid` (`post_graduate_year`,`post_graduate_teacher_name`),
+	PRIMARY KEY(`post_graduate_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+# 研究生的绩点 也作为源数据！ 
+DROP TABLE IF EXISTS `special_assignment`;
+CREATE TABLE `special_assignment`( 
+	`special_assignment_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`special_assignment_year` INT(4) NOT NULL,
+	
+	`special_assignment_teacher_id` INT(8) DEFAULT NULL, 
+	`special_assignment_teacher_name` CHAR(3) NOT NULL, # 
+	
+	`special_assignment_kpi` DOUBLE(10,2) NOT NULL, # 研究生的绩点 以计算在老师头上的标准学时
+	
+	`special_assignment_name` VARCHAR(24) NOT NULL, # 信号系统与信号处理教研组
+	`special_assignment_project` VARCHAR(36) NOT NULL, # 卓越工程师专业系主任
+  UNIQUE KEY `uk_year_tname_project` (`special_assignment_year`,`special_assignment_teacher_name`,`special_assignment_project`),
+	PRIMARY KEY(`special_assignment_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `shoulder_both`;
+CREATE TABLE `shoulder_both`( 
+	`shoulder_both_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`shoulder_both_year` INT(4) NOT NULL,
+	
+	`shoulder_both_teacher_id` INT(8) DEFAULT NULL, 
+	`shoulder_both_teacher_name` CHAR(3) NOT NULL, # 
+	
+	`shoulder_both_hours` TINYINT(1) UNSIGNED DEFAULT 0, # 研究生的绩点 以计算在老师头上的标准学时
+	UNIQUE KEY `uk_year_tname` (`shoulder_both_year`,`shoulder_both_teacher_name`),
+	PRIMARY KEY(`shoulder_both_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
 
 ## -- S1 工作量记录 生成表考这个了！
 DROP TABLE IF EXISTS `s1`;
@@ -241,6 +250,25 @@ CREATE TABLE `s1`(
 	PRIMARY KEY (`s1_id`),
 	UNIQUE KEY `uk_tid_year` (`s1_teacher_id`,`s1_year`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+
+## ------------- S2 学评教信息 直接有结果 直接用就好了
+## 这里记录是学期结算的！只需要总分 按上一年学评教分数的平均值排名
+DROP TABLE IF EXISTS `evaluation`;
+CREATE TABLE `evaluation`(
+  `evaluation_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`evaluation_term` CHAR(11) NOT NULL,
+	`evaluation_teacher_id` INT(8) NOT NULL,
+	`evaluation_participate` INT(4) NOT NULL,
+	`evaluation_score` DOUBLE(10,3) NOT NULL,
+	`evaluation_srank` INT(4) NOT NULL, # 学校排名
+	`evaluation_arank` INT(4) NOT NULL, # 学院排名
+	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比
+	
+	PRIMARY KEY(`evaluation_id`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+
 
 ## S2 记录完各个学期的学评教evaluation 然后计算
 DROP TABLE IF EXISTS `s2`;
@@ -319,6 +347,14 @@ CREATE TABLE `s`(
 	
 	PRIMARY KEY (`s_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+# academy 学院
+DROP TABLE IF EXISTS `academy`;
+CREATE TABLE `academy` (
+  `academy_id` TINYINT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `academy_name` VARCHAR(20) DEFAULT NULL,
+  PRIMARY KEY (`academy_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
 

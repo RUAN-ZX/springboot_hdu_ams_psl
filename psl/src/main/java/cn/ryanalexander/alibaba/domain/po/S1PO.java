@@ -1,7 +1,6 @@
 package cn.ryanalexander.alibaba.domain.po;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.S1PostGraduate;
-import cn.ryanalexander.alibaba.domain.bo.excel.S1Practical;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -82,21 +81,6 @@ public class S1PO implements Serializable {
      */
     private Double s1Score;
 
-    public S1PO(S1PostGraduate s1PostGraduate){
-        s1TeacherId = s1PostGraduate.getS1TeacherId();
-        s1TeacherName = s1PostGraduate.getS1TeacherName();
-        s1KpiPostgraduate = s1PostGraduate.getS1KpiPostgraduate();
-    }
-
-    public S1PO(S1Practical s1Practical){
-        s1KpiPractical1 = s1Practical.getS1KpiPractical1();
-        s1KpiPractical2 = s1Practical.getS1KpiPractical2();
-        s1KpiPractical3 = s1Practical.getS1KpiPractical3();
-        s1KpiPractical4 = s1Practical.getS1KpiPractical4();
-        s1TeacherId = s1Practical.getS1TeacherId();
-        s1TeacherName = s1Practical.getS1TeacherName();
-        s1Year = s1Practical.getS1Year();
-    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

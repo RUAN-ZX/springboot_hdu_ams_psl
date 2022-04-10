@@ -9,8 +9,9 @@
             <result property="thesisDesignYear" column="thesis_design_year" jdbcType="INTEGER"/>
             <result property="thesisDesignNote" column="thesis_design_note" jdbcType="VARCHAR"/>
             <result property="thesisDesignTeacherId" column="thesis_design_teacher_id" jdbcType="INTEGER"/>
-            <result property="thesisDesignTeacherName" column="thesis_design_teacher_name" jdbcType="VARCHAR"/>
-            <result property="thesisDesignStudentName" column="thesis_design_student_name" jdbcType="VARCHAR"/>
+            <result property="thesisDesignTeacherName" column="thesis_design_teacher_name" jdbcType="CHAR"/>
+            <result property="thesisDesignStudentName" column="thesis_design_student_name" jdbcType="CHAR"/>
+            <result property="thesisDesignStudentId" column="thesis_design_student_id" jdbcType="OTHER"/>
             <result property="thesisDesignGrade" column="thesis_design_grade" jdbcType="TINYINT"/>
             <result property="thesisDesignFactor1" column="thesis_design_factor1" jdbcType="DOUBLE"/>
             <result property="thesisDesignFactor2" column="thesis_design_factor2" jdbcType="DOUBLE"/>
@@ -21,7 +22,7 @@
     <sql id="Base_Column_List">
         thesis_design_id,thesis_design_year,thesis_design_note,
         thesis_design_teacher_id,thesis_design_teacher_name,thesis_design_student_name,
-        thesis_design_grade,thesis_design_factor1,thesis_design_factor2,
-        thesis_design_t1,thesis_design_std
+        thesis_design_student_id,thesis_design_grade,thesis_design_factor1,
+        thesis_design_factor2,thesis_design_t1,thesis_design_std
     </sql>
 </mapper>

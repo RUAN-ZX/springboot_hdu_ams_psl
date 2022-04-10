@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.SpecialAssignmentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.SpecialAssignmentPO">
+            <id property="specialAssignmentId" column="special_assignment_id" jdbcType="INTEGER"/>
+            <result property="specialAssignmentTerm" column="special_assignment_term" jdbcType="INTEGER"/>
+            <result property="specialAssignmentTeacherId" column="special_assignment_teacher_id" jdbcType="INTEGER"/>
+            <result property="specialAssignmentTeacherName" column="special_assignment_teacher_name" jdbcType="CHAR"/>
+            <result property="specialAssignmentKpi" column="special_assignment_kpi" jdbcType="DOUBLE"/>
+            <result property="specialAssignmentName" column="special_assignment_name" jdbcType="VARCHAR"/>
+            <result property="specialAssignmentProject" column="special_assignment_project" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        special_assignment_id,special_assignment_term,special_assignment_teacher_id,
+        special_assignment_teacher_name,special_assignment_kpi,special_assignment_name,
+        special_assignment_project
+    </sql>
+</mapper>

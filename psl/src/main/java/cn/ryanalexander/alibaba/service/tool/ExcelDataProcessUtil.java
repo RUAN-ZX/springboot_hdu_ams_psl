@@ -1,7 +1,5 @@
 package cn.ryanalexander.alibaba.service.tool;
 
-import io.swagger.models.auth.In;
-
 import java.util.HashMap;
 
 /**
@@ -23,7 +21,6 @@ public class ExcelDataProcessUtil {
         }
         return false;
     }
-
     public static double getCapacityFactorByProperty(String properties, Integer capacity){
         if(properties.equals("A") && capacity > 20) return capacity / 20.0;
         else if(properties.equals("I") && capacity > 80) return Math.min(1 + (capacity - 80) / 200.0, 1.2);
@@ -45,7 +42,12 @@ public class ExcelDataProcessUtil {
         gradeMap.put("不及格", 4);
     }
 
-    public static Integer transformGrade(String grade){
+    public static int transformThesisDesignGrade(String grade){
         return gradeMap.getOrDefault(grade, 1);
+    }
+
+    public static int transformAchievementType(String type){
+        if(type.contains("非")) return 1;
+        else return 0;
     }
 }

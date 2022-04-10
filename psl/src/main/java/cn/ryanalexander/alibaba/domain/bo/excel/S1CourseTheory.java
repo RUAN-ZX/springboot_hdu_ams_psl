@@ -97,7 +97,7 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 //    @ExcelProperty(value = "实验标准课时")
     public Integer courseHoursExpStd;
 
-    @ExcelProperty(value = "标准课时")
+    @ExcelProperty(value = "标准\n课时")
     public Double courseHoursStd;
 
     public Integer courseType = 1; // Theory
@@ -169,7 +169,9 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         // 老师名字必须改
         result.courseTeacherName = share.getCourseTeacherName();
+
         if(share.courseHoursStd == null && share.courseNum != null){
+            // todo 这个地方写分成比例！
             double ratio = ExcelDataProcessUtil.getRatio(share.courseNum);
             result.courseHoursStd *= ratio; // 分成
             // 总课时什么的没必要分成 就是作为一个课程信息的展示 多好啊

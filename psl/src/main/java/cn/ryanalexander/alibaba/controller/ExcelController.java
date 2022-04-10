@@ -35,10 +35,18 @@ public class ExcelController {
     static{
         // 最好先有工号邮箱 否则匹配的teacherId全是0 到时候还要清盘
         sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
-//        sheetAndExcelEntity.put("理论", CourseTheory.class);
-//        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
-//        sheetAndExcelEntity.put("实验", CourseExperiment.class);
+        sheetAndExcelEntity.put("理论", CourseTheory.class);
+        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
+        sheetAndExcelEntity.put("实验", CourseExperiment.class);
         sheetAndExcelEntity.put("毕业设计", CourseThesisDesign.class);
+
+        sheetAndExcelEntity.put("研究生理论课工作量", S1PostGraduate.class);
+
+        sheetAndExcelEntity.put("标志性", S1Achievement.class);
+        sheetAndExcelEntity.put("非标志性业绩点", S1Achievement.class);
+        sheetAndExcelEntity.put("双肩挑", S1ShoulderBoth.class);
+        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+
 
     }
     @ApiOperation("更新Excel")

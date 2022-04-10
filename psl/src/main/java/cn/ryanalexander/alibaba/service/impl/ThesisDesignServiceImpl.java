@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author ryan
 * @description 针对表【thesis_design】的数据库操作Service实现
-* @createDate 2022-04-09 11:01:31
+* @createDate 2022-04-10 15:54:44
 */
 @Service
 public class ThesisDesignServiceImpl extends ServiceImpl<ThesisDesignMapper, ThesisDesignPO>

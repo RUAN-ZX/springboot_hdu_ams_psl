@@ -1,12 +1,10 @@
 package cn.ryanalexander.alibaba.service.excel;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseExperiment;
 import cn.ryanalexander.alibaba.domain.bo.excel.ExcelEntity;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.excel.metadata.CellExtra;
-import com.alibaba.fastjson.JSON;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +26,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ExcelService extends AnalysisEventListener<ExcelEntity> {
 
-    private static final int BATCH_COUNT = 64;
+    private static final int BATCH_COUNT = 1000; // 数据库插入1000条太常见了。。
     private boolean multiStart = false; // 为true 强制不能截断！为false才行
 
 //    private int masterMaskIdx = Integer.MAX_VALUE; // 每一批 如果多人 其母版的index
@@ -39,7 +37,7 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     private boolean prevIsMultiHead = false;
 
     // currentHeadInfo 比如毕设的年份 日期等等
-    private List<Map<Integer, String>> headInfoMap = new ArrayList<>();
+    private List<Map<Integer, String>> headMapList = new ArrayList<>();
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
 //        log.error("解析失败:{}", Arrays.toString(exception.getStackTrace()));
@@ -64,7 +62,12 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
 //        log.info("解析到一条头数据:{}", JSON.toJSONString(headMap));
-        headInfoMap.add(headMap);
+        if(headMapList.size() == 0){
+            // 拿100的位置存表名！
+            headMap.put(100, context.readSheetHolder().getSheetName());
+            headMapList.add(headMap);
+        }
+
     }
 
     private void saveList(){
@@ -85,7 +88,7 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
         if(data.isValidated()){
             // 既不是multi开端 也不是 multi中间
             if(!data.multiStart() && !data.multiContinue()) {
-                data.stdCalculator(headInfoMap);
+                data.stdCalculator(headMapList);
                 list.add(data);
                 multiStart = false;
                 prevIsMultiHead = false;
@@ -99,7 +102,7 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
             }
             // 如果multi开端
             else if(data.multiStart()){
-                data.stdCalculator(headInfoMap);
+                data.stdCalculator(headMapList);
                 // 多个多人 记得累加
                 if(prevIsMultiHead){
                     boolean addMultiHead = data.prevIsMultiHeadOperation(masterMask);
@@ -119,6 +122,6 @@ public class ExcelService extends AnalysisEventListener<ExcelEntity> {
     @Override // 最后一批
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         if(list.size() > 0) saveList();
-        headInfoMap.clear(); // 清空！
+        headMapList.clear(); // 清空！
     }
 }

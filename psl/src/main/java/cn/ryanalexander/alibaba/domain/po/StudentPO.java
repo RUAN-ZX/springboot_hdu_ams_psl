@@ -38,6 +38,7 @@ public class StudentPO implements Serializable {
 
 
     public StudentPO(CourseThesisDesign ctd){
+        studentId = Integer.valueOf(ctd.getStudentId());
         studentName = ctd.getThesisDesignStudentName();
         studentMajor = ctd.getStudentMajor();
         studentGraduateYear = ctd.getThesisDesignYear();

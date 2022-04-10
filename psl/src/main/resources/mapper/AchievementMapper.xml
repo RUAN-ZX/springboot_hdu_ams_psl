@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.AchievementMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.AchievementPO">
+            <id property="achievementId" column="achievement_id" jdbcType="INTEGER"/>
+            <result property="achievementTeacherId" column="achievement_teacher_id" jdbcType="INTEGER"/>
+            <result property="achievementTeacherName" column="achievement_teacher_name" jdbcType="VARCHAR"/>
+            <result property="achievementYear" column="achievement_year" jdbcType="INTEGER"/>
+            <result property="achievementName" column="achievement_name" jdbcType="VARCHAR"/>
+            <result property="achievementType" column="achievement_type" jdbcType="TINYINT"/>
+            <result property="achievementLevel" column="achievement_level" jdbcType="VARCHAR"/>
+            <result property="achievementCategory" column="achievement_category" jdbcType="VARCHAR"/>
+            <result property="achievementEvidence1" column="achievement_evidence1" jdbcType="VARCHAR"/>
+            <result property="achievementEvidence2" column="achievement_evidence2" jdbcType="VARCHAR"/>
+            <result property="achievementEvidence3" column="achievement_evidence3" jdbcType="VARCHAR"/>
+            <result property="achievementRank" column="achievement_rank" jdbcType="TINYINT"/>
+            <result property="achievementKpi" column="achievement_kpi" jdbcType="DOUBLE"/>
+            <result property="achievementNote" column="achievement_note" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        achievement_id,achievement_teacher_id,achievement_teacher_name,
+        achievement_year,achievement_name,achievement_type,
+        achievement_level,achievement_category,achievement_evidence1,
+        achievement_evidence2,achievement_evidence3,achievement_rank,
+        achievement_kpi,achievement_note
+    </sql>
+</mapper>

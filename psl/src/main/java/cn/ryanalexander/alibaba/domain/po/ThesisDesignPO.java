@@ -50,6 +50,11 @@ public class ThesisDesignPO implements Serializable {
     /**
      * 
      */
+    private Object thesisDesignStudentId;
+
+    /**
+     * 
+     */
     private Integer thesisDesignGrade;
 
     /**
@@ -74,20 +79,20 @@ public class ThesisDesignPO implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
     public ThesisDesignPO(CourseThesisDesign ctd){
+
         thesisDesignYear = ctd.getThesisDesignYear();
         thesisDesignNote = ctd.getThesisDesignNote();
         thesisDesignTeacherId = ctd.getThesisDesignTeacherId();
         thesisDesignTeacherName = ctd.getThesisDesignTeacherName();
         thesisDesignStudentName = ctd.getThesisDesignStudentName();
-        thesisDesignGrade = ExcelDataProcessUtil.transformGrade(ctd.getThesisDesignGrade());
+        thesisDesignStudentId = ctd.getStudentId();
+        thesisDesignGrade = ExcelDataProcessUtil.transformAchievementType(ctd.getThesisDesignGrade());
         thesisDesignFactor1 = ctd.getThesisDesignFactor1();
         thesisDesignFactor2 = ctd.getThesisDesignFactor2();
         thesisDesignT1 = ctd.getThesisDesignT1();
         thesisDesignStd = ctd.getThesisDesignStd();
     }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -106,6 +111,7 @@ public class ThesisDesignPO implements Serializable {
             && (this.getThesisDesignTeacherId() == null ? other.getThesisDesignTeacherId() == null : this.getThesisDesignTeacherId().equals(other.getThesisDesignTeacherId()))
             && (this.getThesisDesignTeacherName() == null ? other.getThesisDesignTeacherName() == null : this.getThesisDesignTeacherName().equals(other.getThesisDesignTeacherName()))
             && (this.getThesisDesignStudentName() == null ? other.getThesisDesignStudentName() == null : this.getThesisDesignStudentName().equals(other.getThesisDesignStudentName()))
+            && (this.getThesisDesignStudentId() == null ? other.getThesisDesignStudentId() == null : this.getThesisDesignStudentId().equals(other.getThesisDesignStudentId()))
             && (this.getThesisDesignGrade() == null ? other.getThesisDesignGrade() == null : this.getThesisDesignGrade().equals(other.getThesisDesignGrade()))
             && (this.getThesisDesignFactor1() == null ? other.getThesisDesignFactor1() == null : this.getThesisDesignFactor1().equals(other.getThesisDesignFactor1()))
             && (this.getThesisDesignFactor2() == null ? other.getThesisDesignFactor2() == null : this.getThesisDesignFactor2().equals(other.getThesisDesignFactor2()))
@@ -123,6 +129,7 @@ public class ThesisDesignPO implements Serializable {
         result = prime * result + ((getThesisDesignTeacherId() == null) ? 0 : getThesisDesignTeacherId().hashCode());
         result = prime * result + ((getThesisDesignTeacherName() == null) ? 0 : getThesisDesignTeacherName().hashCode());
         result = prime * result + ((getThesisDesignStudentName() == null) ? 0 : getThesisDesignStudentName().hashCode());
+        result = prime * result + ((getThesisDesignStudentId() == null) ? 0 : getThesisDesignStudentId().hashCode());
         result = prime * result + ((getThesisDesignGrade() == null) ? 0 : getThesisDesignGrade().hashCode());
         result = prime * result + ((getThesisDesignFactor1() == null) ? 0 : getThesisDesignFactor1().hashCode());
         result = prime * result + ((getThesisDesignFactor2() == null) ? 0 : getThesisDesignFactor2().hashCode());
@@ -143,6 +150,7 @@ public class ThesisDesignPO implements Serializable {
         sb.append(", thesisDesignTeacherId=").append(thesisDesignTeacherId);
         sb.append(", thesisDesignTeacherName=").append(thesisDesignTeacherName);
         sb.append(", thesisDesignStudentName=").append(thesisDesignStudentName);
+        sb.append(", thesisDesignStudentId=").append(thesisDesignStudentId);
         sb.append(", thesisDesignGrade=").append(thesisDesignGrade);
         sb.append(", thesisDesignFactor1=").append(thesisDesignFactor1);
         sb.append(", thesisDesignFactor2=").append(thesisDesignFactor2);
