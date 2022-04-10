@@ -14,17 +14,14 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.mapper.CourseMapper;
 import cn.ryanalexander.alibaba.service.CourseService;
 import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
-import cn.ryanalexander.alibaba.service.tool.MathService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +32,7 @@ import java.util.Map;
 @ApiModel("工作量_理论课程")
 @ToString
 @ExcelIgnoreUnannotated
-public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
+public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
 
     @ExcelProperty(value = "学期")
     public String courseTerm;
@@ -125,7 +122,7 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
     // 多行 多人头出现
     @Override
     public boolean prevIsMultiHeadOperation(ExcelEntity mask){
-        CourseTheory lastMultiHead = (CourseTheory) mask; // 上一个模板
+        S1CourseTheory lastMultiHead = (S1CourseTheory) mask; // 上一个模板
 //        两个都要计算Std 然后叠加Std 不过每次都已经算好了！ 只有multiContinued不用算 直接分成！
         this.courseHoursStd += lastMultiHead.courseHoursStd;
         this.courseHoursExpStd += lastMultiHead.courseHoursExpStd;
@@ -157,12 +154,12 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        CourseTheory result = null;
-        CourseTheory share = (CourseTheory) data;
+        S1CourseTheory result = null;
+        S1CourseTheory share = (S1CourseTheory) data;
         try {
             // 此时this就是多人的模板 result就是每个老师的分成 对象实例
             // share就是excel读取的分成 数据
-            result = (CourseTheory) this.clone();
+            result = (S1CourseTheory) this.clone();
         } catch (CloneNotSupportedException e) {
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL));
         }
@@ -214,7 +211,7 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         this.courseHoursExpStd = (int) Math.round(hoursExp * factor);
     }
     @Override
-    public void transformAndSave(ArrayList<CourseTheory> list, int size) {
+    public void transformAndSave(ArrayList<S1CourseTheory> list, int size) {
         CourseService courseService = (CourseService) SpringUtil.getBean("courseServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
@@ -222,8 +219,8 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
 
         // 通过accountName 获取accountId
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
-        for (CourseTheory courseTheory : list) {
-            accountNameList.add(courseTheory.getCourseTeacherName());
+        for (S1CourseTheory s1CourseTheory : list) {
+            accountNameList.add(s1CourseTheory.getCourseTeacherName());
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的
@@ -231,15 +228,15 @@ public class CourseTheory implements ExcelEntity<CourseTheory>, Cloneable{
         ArrayList<CoursePO> cours = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
-        CourseTheory courseTheory = null;
+        S1CourseTheory s1CourseTheory = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
-                courseTheory = list.get(i);
-                courseTheory.setCourseTeacherId(accountIdList.get(i));
+                s1CourseTheory = list.get(i);
+                s1CourseTheory.setCourseTeacherId(accountIdList.get(i));
                 // 有些字段实在太长 删减点 别太过了
-                courseTheory.fieldStandardized();
+                s1CourseTheory.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                cours.add(new CoursePO(courseTheory));
+                cours.add(new CoursePO(s1CourseTheory));
             }
             catch (Exception e){
                 e.printStackTrace();

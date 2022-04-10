@@ -35,7 +35,7 @@ import java.util.Map;
 @ApiModel("工作量_实验课程")
 @ToString
 @ExcelIgnoreUnannotated
-public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneable{
+public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Cloneable{
 
     @ExcelProperty(value = "选课课号")
     private String courseNum;
@@ -123,8 +123,8 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
     }
     @Override
     public boolean prevIsMultiHeadOperation(ExcelEntity mask){
-        CourseTheory courseTheory = (CourseTheory) mask;
-        this.courseHoursStd += courseTheory.courseHoursStd;
+        S1CourseTheory s1CourseTheory = (S1CourseTheory) mask;
+        this.courseHoursStd += s1CourseTheory.courseHoursStd;
         return false; // 不存储多头
     }
     @Override // 计划 课程代码那边可能要写分配的占比！
@@ -152,12 +152,12 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
 
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        CourseExperiment result = null;
-        CourseExperiment share = (CourseExperiment) data;
+        S1CourseExperiment result = null;
+        S1CourseExperiment share = (S1CourseExperiment) data;
         try {
             // 此时this就是多人的模板 result就是每个老师的分成 对象实例
             // share就是excel读取的分成 数据
-            result = (CourseExperiment) this.clone();
+            result = (S1CourseExperiment) this.clone();
         } catch (CloneNotSupportedException e) {
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL));
         }
@@ -210,7 +210,7 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
         this.courseHoursExpStd = (int) Math.round(hours * factor);
     }
     @Override
-    public void transformAndSave(ArrayList<CourseExperiment> list, int size) {
+    public void transformAndSave(ArrayList<S1CourseExperiment> list, int size) {
         CourseService courseService = (CourseService) SpringUtil.getBean("courseServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
@@ -218,22 +218,22 @@ public class CourseExperiment implements ExcelEntity<CourseExperiment>, Cloneabl
 
         // 通过accountName 获取accountId
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
-        for (CourseExperiment courseExperiment : list) {
-            accountNameList.add(courseExperiment.getCourseTeacherName());
+        for (S1CourseExperiment s1CourseExperiment : list) {
+            accountNameList.add(s1CourseExperiment.getCourseTeacherName());
         }
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
         ArrayList<CoursePO> courses = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
-        CourseExperiment courseExperiment = null;
+        S1CourseExperiment s1CourseExperiment = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
-                courseExperiment = list.get(i);
-                courseExperiment.setCourseTeacherId(accountIdList.get(i));
+                s1CourseExperiment = list.get(i);
+                s1CourseExperiment.setCourseTeacherId(accountIdList.get(i));
                 // 有些字段实在太长 删减点 别太过了
-                courseExperiment.fieldStandardized();
+                s1CourseExperiment.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                courses.add(new CoursePO(courseExperiment));
+                courses.add(new CoursePO(s1CourseExperiment));
             }
             catch (Exception e){
                 e.printStackTrace();

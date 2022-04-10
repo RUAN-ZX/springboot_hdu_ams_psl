@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.domain.po;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseThesisDesign;
+import cn.ryanalexander.alibaba.domain.bo.excel.S1ThesisDesign;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,7 +37,7 @@ public class StudentPO implements Serializable {
 
 
 
-    public StudentPO(CourseThesisDesign ctd){
+    public StudentPO(S1ThesisDesign ctd){
         studentId = Integer.valueOf(ctd.getStudentId());
         studentName = ctd.getThesisDesignStudentName();
         studentMajor = ctd.getStudentMajor();

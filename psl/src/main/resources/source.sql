@@ -7,7 +7,8 @@ USE `teacher_data`;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `account_id` INT(8) NOT NULL, # teacher id
-  `account_name` VARCHAR(25) NOT NULL,
+  `account_name` VARCHAR(24) NOT NULL, # Hadi Barzegar Bafrooei
+
   `account_mail` VARCHAR(50) DEFAULT NULL, # 保持最新状态就行了！
 	`account_phone` CHAR(11) DEFAULT NULL, # 13713524786
   `account_pwd` VARCHAR(20) DEFAULT NULL, 
@@ -19,15 +20,17 @@ CREATE TABLE `account` (
 DROP TABLE IF EXISTS `teacher_title`;
 CREATE TABLE `teacher_title` (
   `title_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`title_teacher_id` INT(8) NOT NULL,
-	`title_academy_id` TINYINT(1) UNSIGNED DEFAULT 0, # 学院
+	`title_teacher_id` INT(8) NOT NULL, # 职工号信息来源可靠 可以顺便导入到Account里边去！
+	`title_teacher_name` VARCHAR(24) NOT NULL, # 名字也很重要！
+	
+-- 	`title_academy_id` TINYINT(1) UNSIGNED DEFAULT 0, # 学院
 	`title_team` varchar(30) DEFAULT NULL,
 	`title_type` VARCHAR(10) DEFAULT NULL,  # 专职教师
 	`title_name` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学）
 	`title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
-	`title_year` INT(4) NOT NULL,
+	`title_year` SMALLINT(4) UNSIGNED NOT NULL,
 	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
-	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 直接null就好了！ 因为每次更改会自动更新
+	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 每次更新即可
 	# 前后端去实现时区转换
 	
   PRIMARY KEY (`title_id`)
@@ -104,7 +107,7 @@ CREATE TABLE `short_term` (
 	# 另外 如果有多行带有“多人” 那意思多个班 我们不用管 反正1、统计下边那些数据的标准学时 归到嗝嗝老师头上2、多人那边 第一行作为其他数据的填充！剩下重复的跳过 直到详情获取标准学时
 	`short_term_teacher_name` CHAR(3) NOT NULL, # 记录一下所有的老师名字 仅作为记录而已
 	
-  `short_term_capacity` SMALLINT(4) DEFAULT NULL, # 已选人数
+  `short_term_capacity` SMALLINT(4) UNSIGNED DEFAULT NULL, # 0-65535
   `short_term_capacity_factor` DOUBLE(10,2) DEFAULT NULL, 
 	`short_term_reform` DOUBLE(10,2) DEFAULT 1.0, # 教改系数 
 	`short_term_factor` DOUBLE(10,2) DEFAULT 1.0, # 类别系数 直接爬 直接用来算就好了！
@@ -126,7 +129,7 @@ CREATE TABLE `student` (
 	student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id
 	student_name VARCHAR(25) NOT NULL, # 毕设学生名字
 	student_major VARCHAR(60) NOT NULL,#光电信息科学与工程(光电工程方向)
-	student_graduate_year INT(4) UNSIGNED NOT NULL,# 每年都有一批！
+	student_graduate_year SMALLINT(4) UNSIGNED NOT NULL,# 每年都有一批！
 	PRIMARY KEY(`student_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -135,13 +138,13 @@ CREATE TABLE `student` (
 DROP TABLE IF EXISTS `thesis_design`;
 CREATE TABLE `thesis_design` (
 	thesis_design_id INT(8) AUTO_INCREMENT NOT NULL, 
-	thesis_design_year INT(4) NOT NULL,# 每年都有一批！
+	thesis_design_year SMALLINT(4) UNSIGNED NOT NULL,# 每年都有一批！
 	thesis_design_note VARCHAR(24) DEFAULT NULL,# 备注
 	thesis_design_teacher_id INT(8) NOT NULL,# 教师id 方便查询。
 	thesis_design_teacher_name CHAR(3) DEFAULT NULL, # 方便显示！
 -- 	td_stu_id INT(8) NOT NULL, # 毕设学生的id
 	thesis_design_student_name CHAR(3) DEFAULT NULL, # 可能是卓越加点空记录
-	thesis_design_student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id
+	thesis_design_student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id 18042328
 	
 	thesis_design_grade TINYINT(1) UNSIGNED NOT NULL, # 0 1 2 3 4 优秀 良好 中等 及格 不及格 这个需要统计 所以用数字！
 	thesis_design_factor1 DOUBLE(10,2) DEFAULT 12.0, # 基本系数
@@ -162,7 +165,7 @@ CREATE TABLE `achievement`(
 	achievement_teacher_id INT(8) NOT NULL,  # 当前老师！
 	
 	achievement_teacher_name CHAR(3) NOT NULL,
-	achievement_year INT(4) NOT NULL, # 学年成果
+	achievement_year SMALLINT(4) UNSIGNED NOT NULL, # 学年成果
 	achievement_name VARCHAR(150) NOT NULL, # 成果名称
 	
 	achievement_type TINYINT(1) UNSIGNED NOT NULL, # 0 标志性 1 非标志性
@@ -189,7 +192,7 @@ CREATE TABLE `achievement`(
 DROP TABLE IF EXISTS `post_graduate`;
 CREATE TABLE `post_graduate`( 
 	`post_graduate_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`post_graduate_year` INT(4) NOT NULL,
+	`post_graduate_year` SMALLINT(4) UNSIGNED NOT NULL,
 	`post_graduate_teacher_id` INT(8) NOT NULL, 
 	`post_graduate_teacher_name` CHAR(3) NOT NULL, # 
 	`post_graduate_kpi` DOUBLE(10,5) NOT NULL, # 研究生的绩点 以计算在老师头上的标准学时
@@ -201,7 +204,7 @@ CREATE TABLE `post_graduate`(
 DROP TABLE IF EXISTS `special_assignment`;
 CREATE TABLE `special_assignment`( 
 	`special_assignment_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`special_assignment_year` INT(4) NOT NULL,
+	`special_assignment_year` SMALLINT(4) UNSIGNED NOT NULL,
 	
 	`special_assignment_teacher_id` INT(8) DEFAULT NULL, 
 	`special_assignment_teacher_name` CHAR(3) NOT NULL, # 
@@ -217,7 +220,7 @@ CREATE TABLE `special_assignment`(
 DROP TABLE IF EXISTS `shoulder_both`;
 CREATE TABLE `shoulder_both`( 
 	`shoulder_both_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`shoulder_both_year` INT(4) NOT NULL,
+	`shoulder_both_year` SMALLINT(4) UNSIGNED NOT NULL,
 	
 	`shoulder_both_teacher_id` INT(8) DEFAULT NULL, 
 	`shoulder_both_teacher_name` CHAR(3) NOT NULL, # 
@@ -234,7 +237,7 @@ CREATE TABLE `s1`(
 	`s1_id` INT(8) AUTO_INCREMENT NOT NULL, 
 	`s1_teacher_id` INT(8) DEFAULT NULL,  
 	`s1_teacher_name` VARCHAR(24) NOT NULL, # 怪怪的老师名字都来了。。有些没有id 暂时 还是先登记在案吧
-	`s1_year` INT(4) DEFAULT NULL,
+	`s1_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
 	`s1_kpi_course` DOUBLE(10,4) DEFAULT NULL, # 通过四个理论 实验 短学期 毕设 搞出来的业绩点
 	# 课外实践工作量
 	`s1_kpi_practical1` DOUBLE(10,4) DEFAULT NULL, #学校标志性成果业绩分（本科）	 	
@@ -259,11 +262,12 @@ CREATE TABLE `evaluation`(
   `evaluation_id` INT(8) AUTO_INCREMENT NOT NULL, 
 	`evaluation_term` CHAR(11) NOT NULL,
 	`evaluation_teacher_id` INT(8) NOT NULL,
-	`evaluation_participate` INT(4) NOT NULL,
-	`evaluation_score` DOUBLE(10,3) NOT NULL,
-	`evaluation_srank` INT(4) NOT NULL, # 学校排名
-	`evaluation_arank` INT(4) NOT NULL, # 学院排名
-	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比
+	`evaluation_teacher_name` CHAR(3) NOT NULL,
+	`evaluation_participate` SMALLINT(4) UNSIGNED NOT NULL,
+	`evaluation_score` DOUBLE(10,3) NOT NULL, # 92.925
+	`evaluation_school_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学校排名
+	`evaluation_academy_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学院排名
+-- 	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比 按照分数平均之后的 排名比 所以学期内排名比没意义！分数是唯一有用的！
 	
 	PRIMARY KEY(`evaluation_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
@@ -278,7 +282,7 @@ CREATE TABLE `s2`(
 	`s2_factor1` DOUBLE(10,2) DEFAULT NULL,# 上上学期学评教分数
 	`s2_factor2` DOUBLE(10,2) DEFAULT NULL,# 上学期学评教分数
 	`s2_factor` DOUBLE(10,2) DEFAULT NULL, # 平均
-	`s2_rank` INT(8) DEFAULT NULL, # 平均分的排名
+	`s2_rank` INT(8) DEFAULT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
 	`s2_score` DOUBLE(10,2) DEFAULT NULL, 
 	
 PRIMARY KEY (`s2_id`)

@@ -1,2 +1,31 @@
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7b35c97f] was not registered for synchronization because synchronization is not active
-JDBC Connection [com.mysql.cj.jdbc.ConnectionImpl@cad3b5] will not be managed by Spring
+ private Integer titleTeacherId;
+
+    /**
+     *
+     */
+    private String titleTeacherName;
+
+    /**
+     *
+     */
+    private String titleTeam;
+
+    /**
+     *
+     */
+    private String titleType;
+
+    /**
+     *
+     */
+    private String titleName;
+
+    /**
+     *
+     */
+    private Integer titleLevel;
+
+    /**
+     *
+     */
+    private Integer titleYear;

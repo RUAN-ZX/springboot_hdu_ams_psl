@@ -1,8 +1,7 @@
 package cn.ryanalexander.alibaba.domain.po;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseExperiment;
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseTheory;
-import com.alibaba.excel.annotation.ExcelProperty;
+import cn.ryanalexander.alibaba.domain.bo.excel.S1CourseExperiment;
+import cn.ryanalexander.alibaba.domain.bo.excel.S1CourseTheory;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -152,7 +151,7 @@ public class CoursePO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public CoursePO(CourseTheory c){
+    public CoursePO(S1CourseTheory c){
         this.courseTerm = c.getCourseTerm();
         this.courseAddress = c.getCourseAddress();
         this.courseBilingual = c.getCourseBilingual();
@@ -179,7 +178,7 @@ public class CoursePO implements Serializable {
         this.courseProperties = "I";
     }
 
-    public CoursePO(CourseExperiment c){
+    public CoursePO(S1CourseExperiment c){
         this.courseTerm = c.getCourseTerm();
         this.courseAddress = c.getCourseAddress();
         this.courseBilingual = c.getCourseBilingual();

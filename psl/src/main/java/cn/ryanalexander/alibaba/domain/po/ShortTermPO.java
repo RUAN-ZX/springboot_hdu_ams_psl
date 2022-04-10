@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.domain.po;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.CourseShortTerm;
+import cn.ryanalexander.alibaba.domain.bo.excel.S1ShortTerm;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -104,7 +104,7 @@ public class ShortTermPO implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public ShortTermPO(CourseShortTerm cst){
+    public ShortTermPO(S1ShortTerm cst){
         shortTermNum = cst.getShortTermNum();
         shortTermTerm = cst.getShortTermTerm();
         shortTermTime = cst.getShortTermTime();

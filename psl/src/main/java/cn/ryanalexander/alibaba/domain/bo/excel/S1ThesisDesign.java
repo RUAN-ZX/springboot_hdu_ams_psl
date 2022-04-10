@@ -34,7 +34,7 @@ import java.util.Map;
 @AllArgsConstructor
 @ApiModel("毕业设计")
 @ExcelIgnoreUnannotated
-public class CourseThesisDesign implements ExcelEntity<CourseThesisDesign>, Cloneable{
+public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
 
     @ExcelProperty(value = "备注")
     private String thesisDesignNote;
@@ -130,11 +130,11 @@ public class CourseThesisDesign implements ExcelEntity<CourseThesisDesign>, Clon
     // 只有多人才会调用这个！
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        CourseThesisDesign result = null;
-        CourseThesisDesign share = (CourseThesisDesign) data;
+        S1ThesisDesign result = null;
+        S1ThesisDesign share = (S1ThesisDesign) data;
         try {
             // 因为是自己clone自己 所以类型一定是对的
-            result = (CourseThesisDesign) this.clone();
+            result = (S1ThesisDesign) this.clone();
             share.stdCalculator(null);
             // 合并！
             // 头已经计算过了 在multiStart那边
@@ -152,7 +152,7 @@ public class CourseThesisDesign implements ExcelEntity<CourseThesisDesign>, Clon
     }
 
     @Override
-    public void transformAndSave(ArrayList<CourseThesisDesign> list, int size) {
+    public void transformAndSave(ArrayList<S1ThesisDesign> list, int size) {
         ThesisDesignService thesisDesignService = (ThesisDesignService) SpringUtil.getBean("thesisDesignServiceImpl");
         StudentService studentService = (StudentService) SpringUtil.getBean("studentServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
@@ -160,24 +160,24 @@ public class CourseThesisDesign implements ExcelEntity<CourseThesisDesign>, Clon
         ArrayList<String> accountNameList = new ArrayList<>(size);
 
         // 这里 因为标准课时 前边累加了 都是指定系数1 没有直接指定标准课时的 所以不calculation
-        for (CourseThesisDesign courseThesisDesign : list) {
-            accountNameList.add(courseThesisDesign.thesisDesignTeacherName);
+        for (S1ThesisDesign s1ThesisDesign : list) {
+            accountNameList.add(s1ThesisDesign.thesisDesignTeacherName);
         }
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
         ArrayList<ThesisDesignPO> thesisDesignPOS = new ArrayList<>(size);
         ArrayList<StudentPO> studentPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
-        CourseThesisDesign courseThesisDesign = null;
+        S1ThesisDesign s1ThesisDesign = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
-                courseThesisDesign = list.get(i);
-                courseThesisDesign.setThesisDesignTeacherId(accountIdList.get(i));
+                s1ThesisDesign = list.get(i);
+                s1ThesisDesign.setThesisDesignTeacherId(accountIdList.get(i));
                 // 有些字段实在太长 删减点 别太过了
-                courseThesisDesign.fieldStandardized();
+                s1ThesisDesign.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                thesisDesignPOS.add(new ThesisDesignPO(courseThesisDesign));
-                studentPOS.add(new StudentPO(courseThesisDesign));
+                thesisDesignPOS.add(new ThesisDesignPO(s1ThesisDesign));
+                studentPOS.add(new StudentPO(s1ThesisDesign));
             }
             catch (Exception e){
                 e.printStackTrace();

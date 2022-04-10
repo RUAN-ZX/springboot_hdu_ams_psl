@@ -3,26 +3,19 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
-import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.domain.po.ShortTermPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.mapper.CourseMapper;
-import cn.ryanalexander.alibaba.service.CourseService;
 import cn.ryanalexander.alibaba.service.ShortTermService;
 import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
-import cn.ryanalexander.alibaba.service.tool.MathService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +36,7 @@ import java.util.Map;
 @ApiModel("工作量_短学期")
 @ToString
 @ExcelIgnoreUnannotated
-public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
+public class S1ShortTerm implements ExcelEntity<S1ShortTerm>, Cloneable{
     /**
      *
      */
@@ -164,11 +157,11 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
     // 只有多人才会调用这个！
     @Override
     public ExcelEntity copyFromMasterMask(ExcelEntity data) {
-        CourseShortTerm result = null;
-        CourseShortTerm share = (CourseShortTerm) data;
+        S1ShortTerm result = null;
+        S1ShortTerm share = (S1ShortTerm) data;
         try {
             // 因为是自己clone自己 所以类型一定是对的
-            result = (CourseShortTerm) this.clone();
+            result = (S1ShortTerm) this.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL));
@@ -197,8 +190,8 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
     }
     @Override
     public boolean prevIsMultiHeadOperation(ExcelEntity mask){
-        CourseShortTerm courseShortTerm = (CourseShortTerm) mask;
-        this.shortTermHoursStd += courseShortTerm.shortTermHoursStd;
+        S1ShortTerm s1ShortTerm = (S1ShortTerm) mask;
+        this.shortTermHoursStd += s1ShortTerm.shortTermHoursStd;
         return false; // 这个多人不存储
     }
 
@@ -221,7 +214,7 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         this.shortTermHoursStd = (double) Math.round(hours * factor);
     }
     @Override
-    public void transformAndSave(ArrayList<CourseShortTerm> list, int size) {
+    public void transformAndSave(ArrayList<S1ShortTerm> list, int size) {
         ShortTermService shortTermService = (ShortTermService) SpringUtil.getBean("shortTermServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
@@ -229,8 +222,8 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
 
         // 通过accountName 获取accountId
         // 另外顺便做些处理 处理多人课程 必须放在那里 因为是共性问题 但这里就是个性问题
-        for (CourseShortTerm courseShortTerm : list) {
-            accountNameList.add(courseShortTerm.shortTermTeacherName);
+        for (S1ShortTerm s1ShortTerm : list) {
+            accountNameList.add(s1ShortTerm.shortTermTeacherName);
         }
         // todo 这里存在问题 如果这个老师不存在 找到的id为null 应当怎么处理为好？
         // 目前是计划 我先导入 虽然id为一个值 比如null 到时候再补充 全库批量找null 然后 update还是快的
@@ -238,15 +231,15 @@ public class CourseShortTerm implements ExcelEntity<CourseShortTerm>, Cloneable{
         ArrayList<ShortTermPO> shortTerms = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
-        CourseShortTerm courseShortTerm = null;
+        S1ShortTerm s1ShortTerm = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
-                courseShortTerm = list.get(i);
-                courseShortTerm.setShortTermTeacherId(accountIdList.get(i));
+                s1ShortTerm = list.get(i);
+                s1ShortTerm.setShortTermTeacherId(accountIdList.get(i));
                 // 有些字段实在太长 删减点 别太过了
-                courseShortTerm.fieldStandardized();
+                s1ShortTerm.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                shortTerms.add(new ShortTermPO(courseShortTerm));
+                shortTerms.add(new ShortTermPO(s1ShortTerm));
             }
             catch (Exception e){
                 e.printStackTrace();

@@ -40,6 +40,10 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
     @ExcelProperty(value = "邮箱")
     public String accountMail;
 
+    public AccountIdAndEmail(TitleInfo titleInfo){
+        accountId = titleInfo.getTitleTeacherId();
+        accountName = titleInfo.getTitleTeacherName();
+    }
     @Override
     public boolean isValidated() {
         return accountId != null && accountMail != null;

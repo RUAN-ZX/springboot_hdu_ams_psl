@@ -2,8 +2,6 @@ package cn.ryanalexander.alibaba.controller;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.*;
 import cn.ryanalexander.alibaba.domain.dto.Result;
-import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.service.excel.ExcelService;
 import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
 import com.alibaba.excel.EasyExcel;
@@ -35,17 +33,22 @@ public class ExcelController {
     static{
         // 最好先有工号邮箱 否则匹配的teacherId全是0 到时候还要清盘
         sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
-        sheetAndExcelEntity.put("理论", CourseTheory.class);
-        sheetAndExcelEntity.put("短学期", CourseShortTerm.class);
-        sheetAndExcelEntity.put("实验", CourseExperiment.class);
-        sheetAndExcelEntity.put("毕业设计", CourseThesisDesign.class);
+//        sheetAndExcelEntity.put("职称信息表", TitleInfo.class);
 
-        sheetAndExcelEntity.put("研究生理论课工作量", S1PostGraduate.class);
 
-        sheetAndExcelEntity.put("标志性", S1Achievement.class);
-        sheetAndExcelEntity.put("非标志性业绩点", S1Achievement.class);
-        sheetAndExcelEntity.put("双肩挑", S1ShoulderBoth.class);
-        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+//        sheetAndExcelEntity.put("理论", S1CourseTheory.class);
+//        sheetAndExcelEntity.put("短学期", S1ShortTerm.class);
+//        sheetAndExcelEntity.put("实验", S1CourseExperiment.class);
+//        sheetAndExcelEntity.put("毕业设计", S1ThesisDesign.class);
+//
+//        sheetAndExcelEntity.put("研究生理论课工作量", S1PostGraduate.class);
+//
+//        sheetAndExcelEntity.put("标志性", S1Achievement.class);
+//        sheetAndExcelEntity.put("非标志性业绩点", S1Achievement.class);
+//        sheetAndExcelEntity.put("双肩挑", S1ShoulderBoth.class);
+//        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+
+        sheetAndExcelEntity.put("学评教", S2Evaluation.class);
 
 
     }
@@ -61,6 +64,7 @@ public class ExcelController {
             excelReader = EasyExcel.read(url).build();
             List<ReadSheet> sheets = excelReader.excelExecutor().sheetList();
             for (ReadSheet sheet : sheets) {
+                // 可以用别的字符做区分 省的sheetName重复 但是中文对就行！
                 Matcher matcher = Pattern.compile(chineseRegex).matcher(sheet.getSheetName());
                 String matcherResult = null;
                 Class<?> excelEntity = null;
@@ -71,7 +75,7 @@ public class ExcelController {
 
                 if(excelEntity != null){
                     ReadSheet readSheet = EasyExcel.readSheet(matcherResult)
-                            .headRowNumber(2)
+                            .headRowNumber(2) // 其实还可以特别指定哪个表对应headRows Map嘛
                             .head(excelEntity)
                             .registerReadListener(new ExcelService()).build();
 

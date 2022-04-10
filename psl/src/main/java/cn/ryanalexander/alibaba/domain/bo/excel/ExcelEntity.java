@@ -26,7 +26,7 @@ public interface ExcelEntity<T> {
     default boolean multiContinue(){return false;}
 
     // 如果没有batchNotEnd变为true 这个方法压根就不会被调用！
-    default ExcelEntity copyFromMasterMask(ExcelEntity data){return new CourseTheory();}
+    default ExcelEntity copyFromMasterMask(ExcelEntity data){return new S1CourseTheory();}
 
     // 默认空实现 省的麻烦
     default void fieldStandardized(){}

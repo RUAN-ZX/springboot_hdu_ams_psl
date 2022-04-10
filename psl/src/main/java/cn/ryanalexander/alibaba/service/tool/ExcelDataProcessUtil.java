@@ -11,8 +11,6 @@ import java.util.HashMap;
  * @since 1.0.0
  **/
 public class ExcelDataProcessUtil {
-    // 多个老师的情况匹配
-//    private final Character[] multiTeacherRegex = new Character[];
     private static final String[] MULTI_FLAG={"多人","/","、"};
     public static boolean multiStart(String courseTeacherName){
         // 但凡有一个符合就GG
@@ -33,21 +31,36 @@ public class ExcelDataProcessUtil {
         return Double.parseDouble(ratio.split("%")[0]) / 100.0;
     }
 
-    private static HashMap<String, Integer> gradeMap = new HashMap<>();
+    private static final HashMap<String, Integer> ThesisDesignGradeMap = new HashMap<>();
     {
-        gradeMap.put("优秀", 0);
-        gradeMap.put("良好", 1);
-        gradeMap.put("中等", 2);
-        gradeMap.put("及格", 3);
-        gradeMap.put("不及格", 4);
+        ThesisDesignGradeMap.put("优秀", 0);
+        ThesisDesignGradeMap.put("良好", 1);
+        ThesisDesignGradeMap.put("中等", 2);
+        ThesisDesignGradeMap.put("及格", 3);
+        ThesisDesignGradeMap.put("不及格", 4);
     }
-
+    private static final HashMap<String, Integer> TitleGradeMap = new HashMap<>();
+    {
+        TitleGradeMap.put("优秀", 0);
+        TitleGradeMap.put("良好", 1);
+        TitleGradeMap.put("中等", 2);
+        TitleGradeMap.put("及格", 3);
+        TitleGradeMap.put("不及格", 4);
+    }
     public static int transformThesisDesignGrade(String grade){
-        return gradeMap.getOrDefault(grade, 1);
+        return ThesisDesignGradeMap.getOrDefault(grade, 1);
     }
 
     public static int transformAchievementType(String type){
         if(type.contains("非")) return 1;
         else return 0;
+    }
+
+    public static String getTermFromHead(String head){
+        return head.substring(0,12);
+    }
+
+    public static int transformTitleGrade(String grade){
+        return TitleGradeMap.getOrDefault(grade, 1);
     }
 }
