@@ -1,7 +1,9 @@
 package cn.ryanalexander.alibaba.mapper;
 
-import cn.ryanalexander.alibaba.domain.po.S1PO;
+import cn.ryanalexander.alibaba.domain.po.SDetailPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.ArrayList;
 
 /**
 * @author ryan
@@ -9,7 +11,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2022-04-09 21:48:57
 * @Entity cn.ryanalexander.alibaba.domain.po.S1
 */
-public interface S1Mapper extends BaseMapper<S1PO> {
+public interface S1Mapper extends BaseMapper<SDetailPO> {
+    ArrayList<Integer> selectAllYears();
 
 }
 

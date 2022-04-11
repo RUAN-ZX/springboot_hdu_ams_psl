@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 @Data
 @ConfigurationProperties(prefix="service")
 public class StaticConfiguration {
-    private String excelUrl;
+    private String excelReadUrl;
+    private String excelWriteUrl;
     private String mailUrl;
     private int captchaExpire;
     private int accessExpire;

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.alibaba.mapper.TeacherMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.TeacherPO">
+            <id property="teacherTitleId" column="teacher_title_id" jdbcType="INTEGER"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+            <result property="teacherTeam" column="teacher_team" jdbcType="VARCHAR"/>
+            <result property="teacherType" column="teacher_type" jdbcType="VARCHAR"/>
+            <result property="teacherTitleName" column="teacher_title_name" jdbcType="VARCHAR"/>
+            <result property="teacherLevel" column="teacher_level" jdbcType="TINYINT"/>
+            <result property="teacherTitleYear" column="teacher_title_year" jdbcType="SMALLINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        teacher_title_id,teacher_id,teacher_name,
+        teacher_team,teacher_type,teacher_title_name,
+        teacher_level,teacher_title_year,create_time,
+        update_time
+    </sql>
+</mapper>

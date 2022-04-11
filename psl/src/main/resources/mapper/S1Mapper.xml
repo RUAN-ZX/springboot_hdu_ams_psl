@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ryanalexander.alibaba.mapper.S1Mapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.S1PO">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.SDetailPO">
             <id property="s1Id" column="s1_id" jdbcType="INTEGER"/>
             <result property="s1TeacherId" column="s1_teacher_id" jdbcType="INTEGER"/>
             <result property="s1Year" column="s1_year" jdbcType="INTEGER"/>
@@ -25,4 +25,8 @@
         s1_kpi_practical3,s1_kpi_practical4,s1_kpi_postgraduate,
         s1_kpi,s1_hours_std,s1_score
     </sql>
+
+    <select id="selectAllYears" resultType="java.lang.Integer">
+        SELECT DISTINCT s1_year from s1;
+    </select>
 </mapper>

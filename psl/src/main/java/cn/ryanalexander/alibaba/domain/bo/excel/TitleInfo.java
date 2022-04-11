@@ -1,11 +1,9 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
-import cn.ryanalexander.alibaba.domain.po.EvaluationPO;
-import cn.ryanalexander.alibaba.domain.po.TeacherTitlePO;
+import cn.ryanalexander.alibaba.domain.po.TeacherPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.service.EvaluationService;
-import cn.ryanalexander.alibaba.service.TeacherTitleService;
+import cn.ryanalexander.alibaba.service.TeacherService;
 import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -91,12 +89,12 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
 
     @Override
     public void transformAndSave(ArrayList<TitleInfo> list, int size) {
-        TeacherTitleService teacherTitleService =
-                (TeacherTitleService) SpringUtil.getBean("teacherTitleServiceImpl");
+        TeacherService teacherService =
+                (TeacherService) SpringUtil.getBean("teacherTitleServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
         ArrayList<AccountIdAndEmail> accountIdAndEmails = new ArrayList<>(size);
-        ArrayList<TeacherTitlePO> teacherTitlePOS = new ArrayList<>(size);
+        ArrayList<TeacherPO> teacherPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
         TitleInfo titleInfo = null;
@@ -105,7 +103,7 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
                 titleInfo = list.get(i);
                 titleInfo.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                teacherTitlePOS.add(new TeacherTitlePO(titleInfo));
+                teacherPOS.add(new TeacherPO(titleInfo));
                 accountIdAndEmails.add(new AccountIdAndEmail(titleInfo));
             }
             catch (Exception e){
@@ -114,7 +112,7 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
             }
         }
         try{
-            teacherTitleService.saveBatch(teacherTitlePOS);
+            teacherService.saveBatch(teacherPOS);
             accountMapper.saveOrIgnoreBatchByNameAndId(accountIdAndEmails);
 
         }
@@ -123,7 +121,7 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
             throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
         }
         finally {
-            teacherTitlePOS.clear();
+            teacherPOS.clear();
             accountIdAndEmails.clear();
         }
     }

@@ -1,6 +1,5 @@
 package cn.ryanalexander.alibaba.domain.po;
 
-import cn.ryanalexander.alibaba.domain.bo.excel.S1PostGraduate;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,7 +13,7 @@ import lombok.Data;
  */
 @TableName(value ="s1")
 @Data
-public class S1PO implements Serializable {
+public class SDetailPO implements Serializable {
     /**
      * 
      */
@@ -96,7 +95,7 @@ public class S1PO implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        S1PO other = (S1PO) that;
+        SDetailPO other = (SDetailPO) that;
         return (this.getS1Id() == null ? other.getS1Id() == null : this.getS1Id().equals(other.getS1Id()))
             && (this.getS1TeacherId() == null ? other.getS1TeacherId() == null : this.getS1TeacherId().equals(other.getS1TeacherId()))
             && (this.getS1Year() == null ? other.getS1Year() == null : this.getS1Year().equals(other.getS1Year()))

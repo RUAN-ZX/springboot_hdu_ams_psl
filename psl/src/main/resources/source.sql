@@ -17,23 +17,23 @@ CREATE TABLE `account` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 不一定所有的账户都有teacher title！！！
-DROP TABLE IF EXISTS `teacher_title`;
-CREATE TABLE `teacher_title` (
-  `title_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`title_teacher_id` INT(8) NOT NULL, # 职工号信息来源可靠 可以顺便导入到Account里边去！
-	`title_teacher_name` VARCHAR(24) NOT NULL, # 名字也很重要！
+DROP TABLE IF EXISTS `teacher`;
+CREATE TABLE `teacher` (
+  `teacher_title_id` INT(8) AUTO_INCREMENT NOT NULL,  # 老师的职称是可能会变的！
+	`teacher_id` INT(8) NOT NULL, # 职工号信息来源可靠 可以顺便导入到Account里边去！
+	`teacher_name` VARCHAR(24) NOT NULL, # 名字也很重要！
 	
 -- 	`title_academy_id` TINYINT(1) UNSIGNED DEFAULT 0, # 学院
-	`title_team` varchar(30) DEFAULT NULL,
-	`title_type` VARCHAR(10) DEFAULT NULL,  # 专职教师
-	`title_name` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学）
-	`title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
-	`title_year` SMALLINT(4) UNSIGNED NOT NULL,
+	`teacher_team` varchar(30) DEFAULT NULL,
+	`teacher_type` VARCHAR(10) DEFAULT NULL,  # 专职教师 系列
+	`teacher_title_name` VARCHAR(24) DEFAULT NULL, # 助理研究员（自然科学） 职称
+	`teacher_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 正高 副高 中级 初级 0 ~ 3 每年都有数据 直接查就行啦
+	`teacher_title_year` SMALLINT(4) UNSIGNED NOT NULL,
 	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
 	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 每次更新即可
 	# 前后端去实现时区转换
 	
-  PRIMARY KEY (`title_id`)
+  PRIMARY KEY (`teacher_title_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
@@ -246,7 +246,7 @@ CREATE TABLE `s1`(
 	`s1_kpi_practical4`	DOUBLE(10,4) DEFAULT NULL,#	双肩挑
 	`s1_kpi_postgraduate` DOUBLE(10,4) DEFAULT NULL,# 研究生绩点 这是另外一张表的
 	`s1_kpi` DOUBLE(10,4) DEFAULT NULL, # 所有业绩绩点加起来 *100 就是标准课时 
-	`s1_hours_std` DOUBLE(10,2) DEFAULT NULL, # 标准学时
+	`s1_hours_std` DOUBLE(10,2) DEFAULT NULL, # 标准学时 被称为工作量
 	# 给KPI排名 确定S1
 	`s1_score` DOUBLE(10,2) DEFAULT NULL, # S1分数
 	
@@ -279,9 +279,9 @@ DROP TABLE IF EXISTS `s2`;
 CREATE TABLE `s2`(
 	`s2_id` INT(8) AUTO_INCREMENT NOT NULL, 
 	`s2_teacher_id` INT(8) DEFAULT NULL,   
-	`s2_factor1` DOUBLE(10,2) DEFAULT NULL,# 上上学期学评教分数
-	`s2_factor2` DOUBLE(10,2) DEFAULT NULL,# 上学期学评教分数
-	`s2_factor` DOUBLE(10,2) DEFAULT NULL, # 平均
+	`s2_score1` DOUBLE(10,2) DEFAULT NULL,# 上上学期学评教分数
+	`s2_score2` DOUBLE(10,2) DEFAULT NULL,# 上学期学评教分数
+	`s2_score_avg` DOUBLE(10,2) DEFAULT NULL, # 平均 注意 如果只有一个有的 就认为这个为avg
 	`s2_rank` INT(8) DEFAULT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
 	`s2_score` DOUBLE(10,2) DEFAULT NULL, 
 	
@@ -336,11 +336,11 @@ PRIMARY KEY (`s4_id`)
 
 
 
-## 最终kpi结果记录
+## 最终kpi结果记录 这个还是需要记录的！ 
 DROP TABLE IF EXISTS `s`;
 CREATE TABLE `s`(
 	`s_id` INT(8) AUTO_INCREMENT NOT NULL, 
-#	`s_teacher_name` VARCHAR(25) NOT NULL, # 教师名字 冗余? 没必要啊 你的页面 还需要重复嘛？
+  `s_teacher_name` VARCHAR(25) NOT NULL, # 教师名字
 	`s_teacher_id` INT(8) NOT NULL, 
 	`s_score` DOUBLE(10,2) DEFAULT NULL, # 考核分数 s1 + 2 + 3 + 4
 	`s_year` INT(4) DEFAULT NULL,

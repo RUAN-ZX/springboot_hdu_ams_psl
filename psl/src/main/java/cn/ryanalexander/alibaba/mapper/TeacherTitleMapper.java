@@ -1,6 +1,6 @@
 package cn.ryanalexander.alibaba.mapper;
 
-import cn.ryanalexander.alibaba.domain.po.TeacherTitlePO;
+import cn.ryanalexander.alibaba.domain.po.TeacherPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2022-04-10 21:26:52
 * @Entity cn.ryanalexander.alibaba.domain.po.TeacherTitlePO
 */
-public interface TeacherTitleMapper extends BaseMapper<TeacherTitlePO> {
+public interface TeacherTitleMapper extends BaseMapper<TeacherPO> {
 
 }
 
