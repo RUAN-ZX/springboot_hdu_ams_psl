@@ -25,4 +25,8 @@
         thesis_design_student_id,thesis_design_grade,thesis_design_factor1,
         thesis_design_factor2,thesis_design_t1,thesis_design_std
     </sql>
+
+    <select id="selectYearRange" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct thesis_design_year from thesis_design where thesis_design_teacher_id = #{teacherId}
+    </select>
 </mapper>

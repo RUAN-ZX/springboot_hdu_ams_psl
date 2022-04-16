@@ -48,6 +48,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
      */
     private static final Random RANDOM = new SecureRandom();
 
+
     // TODO: 2022/3/24 这里的逻辑还有大问题 如果redis主键更新了 mail炸了 或者反之 这个rollback是个大问题！
     private void updateKey(String accountId, RedisKeyEnum key,
                            String value, int nums, TimeUnit timeUnit){
@@ -67,6 +68,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         }
         return new String(nonceChars);
     }
+
     private Boolean verifyKey(String Tid, RedisKeyEnum event, String value){
         String eventName = event.getKey();
         Optional<Object> codeNullable = Optional.ofNullable(
@@ -131,7 +133,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 
         AccountPO accountPONullable = accountMapper.orElseThrow(
             () -> new InjectionException(AccountService.class)
-        ).selectById(Integer.valueOf(t_id));
+        ).selectById(t_id);
 
         Optional<AccountPO> accountOptional = Optional.ofNullable(accountPONullable);
         AccountPO accountPO = accountOptional.orElseThrow(
@@ -144,7 +146,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 
     public String getEmailById(String Tid) {
         Optional<AccountPO> accountOptional =
-                Optional.ofNullable(accountMapper.selectById(Integer.valueOf(Tid)));
+                Optional.ofNullable(accountMapper.selectById(Tid));
 
         AccountPO accountPO = accountOptional.orElseThrow(
                 () -> new NotFoundException(AccountPO.class, "accountMapper.selectById")

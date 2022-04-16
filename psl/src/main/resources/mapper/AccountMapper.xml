@@ -35,7 +35,9 @@
     </insert>
 
 
-
+    <select id="selectOneByTid" resultType="java.lang.String">
+        select account_name from account where account_id=#{teacherId} limit 1
+    </select>
 <!--这个会去重！！！！所以根本不对应结果的-->
 <!--    <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.String">-->
 <!--        select account_id from account where account_name in-->

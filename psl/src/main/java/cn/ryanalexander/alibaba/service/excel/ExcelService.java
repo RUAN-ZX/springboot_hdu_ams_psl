@@ -26,7 +26,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ExcelService extends AnalysisEventListener<ExcelEntity> {
 
-    private static final int BATCH_COUNT = 1000; // 数据库插入1000条太常见了。。
+    private static final int BATCH_COUNT = 512; // 数据库插入1000条太常见了。。
     private boolean multiStart = false; // 为true 强制不能截断！为false才行
 
 //    private int masterMaskIdx = Integer.MAX_VALUE; // 每一批 如果多人 其母版的index

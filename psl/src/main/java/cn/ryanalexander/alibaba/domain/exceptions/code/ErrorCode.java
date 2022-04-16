@@ -22,11 +22,11 @@ public class ErrorCode {
     private ResultEnum result = ResultEnum.OK;
 
     // todo 后期再实现这么复杂的code
-    public static String getOK(){
-        return "0";
+    public static int getOK(){
+        return 0;
     }
-    public String getCode(){
-        return String.valueOf(subject.getCode());
+    public int getCode(){
+        return subject.getCode();
 //        StringBuilder sb = new StringBuilder();
 //        sb.append(this.subject.getCode());
 //        sb.append(this.behavior.getCode());

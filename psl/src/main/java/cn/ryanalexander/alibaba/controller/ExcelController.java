@@ -3,6 +3,7 @@ package cn.ryanalexander.alibaba.controller;
 import cn.ryanalexander.alibaba.domain.bo.excel.*;
 import cn.ryanalexander.alibaba.domain.bo.excel.out.S1234;
 import cn.ryanalexander.alibaba.domain.bo.excel.out.S1Workload;
+import cn.ryanalexander.alibaba.domain.bo.excel.out.SFinal;
 import cn.ryanalexander.alibaba.domain.dto.Result;
 import cn.ryanalexander.alibaba.domain.po.SDetailPO;
 import cn.ryanalexander.alibaba.service.S1Service;
@@ -12,7 +13,10 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.ResultMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -31,6 +35,7 @@ import java.util.regex.Pattern;
  * @Version 1.0.0-Beta
  **/
 @RestController
+@RequestMapping("/excel")
 public class ExcelController {
     @Resource
     private StaticConfiguration StaticConfiguration;
@@ -56,11 +61,16 @@ public class ExcelController {
 
         readSheetAndExcelEntity.put("学评教", S2Evaluation.class);
 
+        // 历史数据导入用
+        readSheetAndExcelEntity.put("汇总表", S1234.class);
+        readSheetAndExcelEntity.put("工作量", S1Workload.class);
+        readSheetAndExcelEntity.put("成绩汇总表", SFinal.class);
+
 
     }
 
     @ApiOperation("更新Excel")
-    @GetMapping("/updateExcel")
+    @GetMapping("/update")
     public Result updateExcel(){
         String url = StaticConfiguration.getExcelReadUrl();
         ExcelReader excelReader = null;
@@ -105,7 +115,7 @@ public class ExcelController {
     // todo 范围内的年都输出出来 需要检查 没有就不输出 一年一个excel！
     // getAll意味输出所有 不管前面的参数了！
     @ApiOperation("获取生成的Excel")
-    @GetMapping("/getExcel")
+    @GetMapping("/get")
     public Result getExcel(List<Integer> years, boolean isGetAll) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String url = StaticConfiguration.getExcelWriteUrl();
         List<Integer> availableYears = new ArrayList<>(years);
@@ -123,6 +133,8 @@ public class ExcelController {
             for (SDetailPO s1: sDetailPOS) {
                 s1Workloads.add(new S1Workload(s1));
                 s1234s.add(new S1234(s1));
+                // todo 两个数据怎么合并 打算多表 以职称表为准 搞hashMap 其他表往里边填充！
+                // 这里目前放着 逻辑有点复杂
             }
             EasyExcel.write(url+i+".xlsx", S1Workload.class)
                     .sheet("工作量")

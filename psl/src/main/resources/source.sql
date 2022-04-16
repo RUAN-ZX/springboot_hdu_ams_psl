@@ -78,7 +78,7 @@ CREATE TABLE `course` (
 	
 	
 	`course_hours_op` DOUBLE(10,2) DEFAULT 0.00, # 上机学时 记录一下 不参与计算
-	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算
+	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算 也不会分配！
 	`course_properties` CHAR(1) DEFAULT NULL, # 性质 I ABJ
 	
 	`course_note1` VARCHAR(64) DEFAULT NULL, 
@@ -168,12 +168,11 @@ CREATE TABLE `achievement`(
 	achievement_year SMALLINT(4) UNSIGNED NOT NULL, # 学年成果
 	achievement_name VARCHAR(150) NOT NULL, # 成果名称
 	
-	achievement_type TINYINT(1) UNSIGNED NOT NULL, # 0 标志性 1 非标志性
+	achievement_type TINYINT(1) UNSIGNED NOT NULL, # 0 标志性 1 非标志性 2 院级 只对S3S4有影响的！
 	achievement_level VARCHAR(48) NOT NULL, 	## SCI收录的TOP期刊论文，计算机科学与技术、软件工程学科的A类会议论文（论文页数≥12页）
 
 	achievement_category VARCHAR(24) NOT NULL,# 教学业绩核心指标目录与分值
 
-	
 	achievement_evidence1 VARCHAR(60) DEFAULT NULL, # https:// 开头这个省略 后边的才用！ stea.ryanalexander.cn/psl/hdu1.jpg
 	achievement_evidence2 VARCHAR(60) DEFAULT NULL,
 	achievement_evidence3 VARCHAR(60) DEFAULT NULL,
@@ -230,31 +229,6 @@ CREATE TABLE `shoulder_both`(
 	PRIMARY KEY(`shoulder_both_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
-
-## -- S1 工作量记录 生成表考这个了！
-DROP TABLE IF EXISTS `s1`;
-CREATE TABLE `s1`(
-	`s1_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`s1_teacher_id` INT(8) DEFAULT NULL,  
-	`s1_teacher_name` VARCHAR(24) NOT NULL, # 怪怪的老师名字都来了。。有些没有id 暂时 还是先登记在案吧
-	`s1_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
-	`s1_kpi_course` DOUBLE(10,4) DEFAULT NULL, # 通过四个理论 实验 短学期 毕设 搞出来的业绩点
-	# 课外实践工作量
-	`s1_kpi_practical1` DOUBLE(10,4) DEFAULT NULL, #学校标志性成果业绩分（本科）	 	
-	`s1_kpi_practical2` DOUBLE(10,4) DEFAULT NULL,# 学校非标志性成果业绩分（本科）
-	`s1_kpi_practical3` DOUBLE(10,4) DEFAULT NULL,# 学院专项（本科）
-	`s1_kpi_practical4`	DOUBLE(10,4) DEFAULT NULL,#	双肩挑
-	`s1_kpi_postgraduate` DOUBLE(10,4) DEFAULT NULL,# 研究生绩点 这是另外一张表的
-	`s1_kpi` DOUBLE(10,4) DEFAULT NULL, # 所有业绩绩点加起来 *100 就是标准课时 
-	`s1_hours_std` DOUBLE(10,2) DEFAULT NULL, # 标准学时 被称为工作量
-	# 给KPI排名 确定S1
-	`s1_score` DOUBLE(10,2) DEFAULT NULL, # S1分数
-	
-	PRIMARY KEY (`s1_id`),
-	UNIQUE KEY `uk_tid_year` (`s1_teacher_id`,`s1_year`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
-
 ## ------------- S2 学评教信息 直接有结果 直接用就好了
 ## 这里记录是学期结算的！只需要总分 按上一年学评教分数的平均值排名
 DROP TABLE IF EXISTS `evaluation`;
@@ -272,84 +246,75 @@ CREATE TABLE `evaluation`(
 	PRIMARY KEY(`evaluation_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
+## -- S1 工作量记录 所有表一率存储标准课时 而不是什么业绩点 原表是 你也存课时
+DROP TABLE IF EXISTS `s_detail`;
+CREATE TABLE `s_detail`(
+	`s_detail_id` INT(8) AUTO_INCREMENT NOT NULL, 
+	`s_detail_teacher_id` INT(8) DEFAULT NULL,  
+	`s_detail_teacher_name` VARCHAR(24) NOT NULL, # 怪怪的老师名字都来了。。有些没有id 暂时 还是先登记在案吧
+	`s_detail_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
 
-
-## S2 记录完各个学期的学评教evaluation 然后计算
-DROP TABLE IF EXISTS `s2`;
-CREATE TABLE `s2`(
-	`s2_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`s2_teacher_id` INT(8) DEFAULT NULL,   
+	
+	`s1_kpi_course_theory` DOUBLE(10,4) DEFAULT NULL, # 课程的总业绩
+	`s1_kpi_course_experiment` DOUBLE(10,4) DEFAULT NULL, # 课程的总业绩
+	
+	# 课外实践工作量
+	`s1_kpi_achievement1` DOUBLE(10,4) DEFAULT NULL, #学校标志性成果业绩分（本科）	 	
+	`s1_kpi_achievement2` DOUBLE(10,4) DEFAULT NULL,# 学校非标志性成果业绩分（本科）
+	`s1_kpi_special_assignment` DOUBLE(10,4) DEFAULT NULL,# 学院专项（本科）
+	`s1_kpi_shoulder_both`	DOUBLE(10,4) DEFAULT NULL,#	双肩挑
+	`s1_kpi_postgraduate` DOUBLE(10,4) DEFAULT NULL,# 研究生绩点 这是另外一张表的
+	`s1_kpi` DOUBLE(10,4) DEFAULT NULL, # 标准课时
+	`s1_score` DOUBLE(10,2) DEFAULT NULL, # S1分数
+	
 	`s2_score1` DOUBLE(10,2) DEFAULT NULL,# 上上学期学评教分数
 	`s2_score2` DOUBLE(10,2) DEFAULT NULL,# 上学期学评教分数
 	`s2_score_avg` DOUBLE(10,2) DEFAULT NULL, # 平均 注意 如果只有一个有的 就认为这个为avg
-	`s2_rank` INT(8) DEFAULT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
+	`s2_rank` SMALLINT(4) UNSIGNED DEFAULT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
 	`s2_score` DOUBLE(10,2) DEFAULT NULL, 
 	
-PRIMARY KEY (`s2_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
-## 立即生效计算 Or 只有下载生成表的时候才会触发计算
-
-## S3
-DROP TABLE IF EXISTS `s3`;
-CREATE TABLE `s3`(
-	`s3_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`s3_teacher_id` INT(8) DEFAULT NULL,   
-	`s31_first` DOUBLE(10,2) DEFAULT NULL,# 学科竞赛
-	`s31_second` DOUBLE(10,2) DEFAULT NULL,# 其他省级比赛
-	
-	`s32_first` DOUBLE(10,2) DEFAULT NULL,# 教学成果奖
-	`s32_second` DOUBLE(10,2) DEFAULT NULL,# 教学名师奖
-	`s32_third` DOUBLE(10,2) DEFAULT NULL,# 其它教学奖励
-	`s32_fourth` DOUBLE(10,2) DEFAULT NULL,# 教学技能奖
-	`s32_fifth` DOUBLE(10,2) DEFAULT NULL,# 教学事故
-
+-- 	JSON name:value 311:10
+-- 导出的时候 将detail转为两个形式 
+-- 用于导出表List<List<String>> 只有数据 表头List<string>另外从rule导入
+-- 用于前端 利用index相同的特性 把rule数组和数据结合使用！拼接为detail!
+	`s_rank` SMALLINT(4) UNSIGNED DEFAULT NULL, #同职称等级的rank排名！
+	`s3_data` VARCHAR(100) NOT NULL,
 	`s3_score` DOUBLE(10,2) DEFAULT NULL, 
 	
-PRIMARY KEY (`s3_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
-## S4 还是尽量手动录入比较好 或者excel写清楚项目 然后字符串匹配！
-DROP TABLE IF EXISTS `s4`;
-CREATE TABLE `s4`(
-	`s4_id` INT(8) AUTO_INCREMENT NOT NULL, 
-	`s4_teacher_id` INT(8) DEFAULT NULL,   
-	`s41_first` DOUBLE(10,2) DEFAULT NULL,# 教改项目
-
-	`s41_second` DOUBLE(10,2) DEFAULT NULL,# 实验教学示范中心建设项目
-
-	
-	`s41_third` DOUBLE(10,2) DEFAULT NULL,# 教学团队
-
-	`s42_first` DOUBLE(10,2) DEFAULT NULL,# 专业建设
-
-	`s42_second` DOUBLE(10,2) DEFAULT NULL,# 课程建设
-
-	`s42_third` DOUBLE(10,2) DEFAULT NULL,# 教材建设
-
-	`s43_first` DOUBLE(10,2) DEFAULT NULL,# 公开发表论文
-
+	`s4_data` VARCHAR(100) NOT NULL,
 	`s4_score` DOUBLE(10,2) DEFAULT NULL, 
+
+	`s_score` DOUBLE(10,2) DEFAULT NULL, 
 	
-PRIMARY KEY (`s4_id`)
+	PRIMARY KEY (`s_detail_id`),
+	UNIQUE KEY `uk_tid_year` (`s_detail_teacher_id`,`s_detail_year`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
-
-## 最终kpi结果记录 这个还是需要记录的！ 
-DROP TABLE IF EXISTS `s`;
-CREATE TABLE `s`(
-	`s_id` INT(8) AUTO_INCREMENT NOT NULL, 
-  `s_teacher_name` VARCHAR(25) NOT NULL, # 教师名字
-	`s_teacher_id` INT(8) NOT NULL, 
-	`s_score` DOUBLE(10,2) DEFAULT NULL, # 考核分数 s1 + 2 + 3 + 4
-	`s_year` INT(4) DEFAULT NULL,
-	`s_grade` CHAR(1) DEFAULT NULL, # 考核等级
-	`s_title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 当年的职称！
-	`s_hours_all` INT(8) DEFAULT NULL,# 承担主讲课程学时数是否不低于64学时 主讲课程学时？
+-- 先找当年的规则有没有 没有就找最近的规则
+-- 到时候统计 聚合起来作为一个json扔到s3Details
+-- 读取 显示的时候 则是
+DROP TABLE IF EXISTS `rule_s3s4`;
+CREATE TABLE `rule_s3s4`(
+	`rule_s3s4_id` TINYINT(4) AUTO_INCREMENT NOT NULL, 
+	`rule_s3s4_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
+	`rule_s3s4_json` VARCHAR(200) NOT NULL,
+	PRIMARY KEY (`rule_s3s4_id`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+## 这个表应该改造为 能够覆盖 汇总表 工作量表 最终汇总交给教务处表的能力！！！！
+DROP TABLE IF EXISTS `s_final`;
+CREATE TABLE `s_final`(
+	`s_final_id` INT(8) AUTO_INCREMENT NOT NULL, 
+  `s_final_teacher_name` VARCHAR(25) NOT NULL, # 教师名字
+	`s_final_teacher_id` INT(8) NOT NULL, 
+	`s_final_score` DOUBLE(10,2) DEFAULT NULL, # 考核分数 s1 + 2 + 3 + 4
+	`s_final_year` INT(4) DEFAULT NULL,
+	`s_final_grade` CHAR(1) DEFAULT NULL, # 考核等级
+	`s_final_title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 当年的职称！
+	`s_final_course_main` INT(8) DEFAULT NULL,# 承担主讲课程学时数是否不低于64学时 主讲课程学时？
 	
 	
-	PRIMARY KEY (`s_id`)
+	PRIMARY KEY (`s_final_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # academy 学院

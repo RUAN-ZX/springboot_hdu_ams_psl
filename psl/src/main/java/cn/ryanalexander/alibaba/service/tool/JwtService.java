@@ -10,7 +10,7 @@ public class JwtService {
 
     private static final String SIG = "胸膛燃烧着愤怒的火焰\uD83D\uDD25，悔恨与痛苦鞭笞这一颗苦涩的心。";
 
-    private static String getToken(String Tid,int time){
+    private static String getToken(String Tid, int time){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,time);
 

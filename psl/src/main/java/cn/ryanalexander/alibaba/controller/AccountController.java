@@ -9,9 +9,11 @@ import cn.ryanalexander.alibaba.domain.exceptions.InvalidException;
 import cn.ryanalexander.alibaba.domain.exceptions.NotFoundException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
+import cn.ryanalexander.alibaba.domain.po.SDetailPO;
 import cn.ryanalexander.alibaba.service.*;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,25 +34,25 @@ public class AccountController {
 
     @ApiOperation("通过token验证")
     @PostMapping("/loginByAccess")
-    public Result loginByaccess(String Tid, String access){
-        accountService.verifyAccess(Tid,access);
-        JSONObject jsonObject = accountService.refreshBothToken(Tid);
-        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+    public Result loginByAccess(String accountId, String access){
+        accountService.verifyAccess(accountId,access);
+        JSONObject jsonObject = accountService.refreshBothToken(accountId);
+        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(accountId).getAccountName());
         return new Result(jsonObject);
     }
 
     @ApiOperation("通过refresh token更新access token")
     @PostMapping("/refresh")
-    public Result refresh(String Tid, String refresh){
+    public Result refresh(String accountId, String refresh){
 //        if(accountService.verifyRefresh(Tid,refresh)){
 //            JSONObject jsonObject = accountService.refreshBothToken(Tid);
 //            jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
 //            return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
 //        }
 //        else throw new UnKnownException(AccountController.class, "refresh");
-        accountService.verifyRefresh(Tid,refresh); // 如果有问题 里边就排除完毕 不需要外边看了
-        JSONObject jsonObject = accountService.refreshBothToken(Tid);
-        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
+        accountService.verifyRefresh(accountId,refresh); // 如果有问题 里边就排除完毕 不需要外边看了
+        JSONObject jsonObject = accountService.refreshBothToken(accountId);
+        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(accountId).getAccountName());
         return new Result(jsonObject);
     }
 
@@ -72,13 +74,16 @@ public class AccountController {
      */
     @ApiOperation("登录 或者说注册 反正验证一波")
     @PostMapping("/loginByPwd")
-    public Result loginByPwd(String accountId, String accountPwd) throws Exception {
+    public Result loginByPwd(String accountId, String accountPwd){
 //        String accountId = JSONObject.parseObject(AesService.decrypt(temp))
 //                .getString("accountId");
 //
 //        String accountPwd = JSONObject.parseObject(AesService.decrypt(temp))
 //                .getString("accountPwd");
-        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
+        Optional<AccountPO> accountNullable = Optional.ofNullable(
+            accountService.getOne(
+                new QueryWrapper<AccountPO>().eq("account_id", accountId)
+        ));
         AccountPO accountPO = accountNullable.orElseThrow(() ->
                 new InvalidException(AccountPO.class, "getById", "Wrong Account id"));
 
@@ -105,14 +110,14 @@ public class AccountController {
     }
     @ApiOperation("获取验证码")
     @PostMapping("/getCaptcha")
-    public Result getCaptcha(String Tid) throws Exception {
+    public Result getCaptcha(String accountId) throws Exception {
 
-        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(Tid));
+        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
         AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
         String Tname = accountPO.getAccountName();
         String Temail = accountPO.getAccountMail();
 
-        accountService.getCaptcha(Tid, Tname, Temail);
+        accountService.getCaptcha(accountId, Tname, Temail);
         return new Result("验证码已发送到您的邮箱"+Temail+" 10分钟内有效");
     }
 

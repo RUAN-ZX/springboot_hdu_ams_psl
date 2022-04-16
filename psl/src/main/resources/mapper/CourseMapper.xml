@@ -52,5 +52,7 @@
         </foreach>
     </insert>
 
-
+    <select id="selectTermRange" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct course_term from course where course_teacher_id = #{teacherId}
+    </select>
 </mapper>

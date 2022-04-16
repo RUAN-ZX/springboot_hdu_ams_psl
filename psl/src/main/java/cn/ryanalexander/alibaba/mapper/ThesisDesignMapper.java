@@ -2,6 +2,9 @@ package cn.ryanalexander.alibaba.mapper;
 
 import cn.ryanalexander.alibaba.domain.po.ThesisDesignPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.ArrayList;
 
 /**
 * @author ryan
@@ -10,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.ryanalexander.alibaba.domain.po.ThesisDesignPO
 */
 public interface ThesisDesignMapper extends BaseMapper<ThesisDesignPO> {
-
+    ArrayList<String> selectYearRange(@Param("teacherId")String id);
 }
 
 
