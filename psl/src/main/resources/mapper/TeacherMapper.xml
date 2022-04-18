@@ -23,4 +23,18 @@
         teacher_level,teacher_title_year,create_time,
         update_time
     </sql>
+
+    <insert id="saveOrUpdateBatch" parameterType="java.util.List">
+        insert into teacher(teacher_id, teacher_name, teacher_team,
+                            teacher_type, teacher_title_name, teacher_level,
+                            teacher_title_year) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.teacherId},#{item.teacherName},#{item.teacherTeam},
+             #{item.teacherType}, #{item.teacherTitleName}, #{item.teacherLevel}, #{item.teacherTitleYear})
+        </foreach>
+        AS t1(r1, r2, r3, r4, r5, r6, r7) ON DUPLICATE KEY UPDATE
+        teacher_id = r1, teacher_name = r2, teacher_team = r3,
+        teacher_type = r4, teacher_title_name = r5, teacher_level = r6,
+        teacher_title_year = r7
+    </insert>
 </mapper>

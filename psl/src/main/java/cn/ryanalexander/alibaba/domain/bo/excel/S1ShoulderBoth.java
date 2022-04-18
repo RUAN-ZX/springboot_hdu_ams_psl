@@ -31,7 +31,6 @@ import java.util.Map;
 @ApiModel("双肩挑")
 @ToString
 @ExcelIgnoreUnannotated
-
 public class S1ShoulderBoth implements ExcelEntity<S1ShoulderBoth>{
     //    姓名	学校标志性成果业绩分（本科）	学校非标志性成果业绩分（本科）	学院专项（本科）	双肩挑
     @ExcelProperty(value = "姓名")

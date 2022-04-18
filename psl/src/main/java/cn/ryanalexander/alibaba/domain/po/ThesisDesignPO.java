@@ -1,7 +1,7 @@
 package cn.ryanalexander.alibaba.domain.po;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.S1ThesisDesign;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -87,7 +87,7 @@ public class ThesisDesignPO implements Serializable {
         thesisDesignTeacherName = ctd.getThesisDesignTeacherName();
         thesisDesignStudentName = ctd.getThesisDesignStudentName();
         thesisDesignStudentId = ctd.getStudentId();
-        thesisDesignGrade = ExcelDataProcessUtil.transformThesisDesignGrade(ctd.getThesisDesignGrade());
+        thesisDesignGrade = DataUtil.transformThesisDesignGrade(ctd.getThesisDesignGrade());
         thesisDesignFactor1 = ctd.getThesisDesignFactor1();
         thesisDesignFactor2 = ctd.getThesisDesignFactor2();
         thesisDesignT1 = ctd.getThesisDesignT1();

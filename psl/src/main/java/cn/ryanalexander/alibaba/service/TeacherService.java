@@ -9,5 +9,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2022-04-11 14:56:26
 */
 public interface TeacherService extends IService<TeacherPO> {
-
 }

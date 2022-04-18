@@ -1,16 +1,18 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
-import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.domain.po.TeacherPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.mapper.TeacherMapper;
+import cn.ryanalexander.alibaba.service.AccountService;
 import cn.ryanalexander.alibaba.service.TeacherService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,34 +26,35 @@ import java.util.Map;
  * @Version 1.0.0-Beta
  **/
 @Data
-@ToString
-@AllArgsConstructor
 @ApiModel("职称信息表")
+@NoArgsConstructor
+@AllArgsConstructor
+@ExcelIgnoreUnannotated
 public class TitleInfo implements ExcelEntity<TitleInfo>{
     @ExcelProperty(value = "团队")
-    private String titleTeam;
+    private String teacherTeam;
 
     @ExcelProperty(value = "姓名")
-    private String titleTeacherName;
+    private String teacherName;
 
     @ExcelProperty(value = "职工号")
-    private Integer titleTeacherId;
+    private String teacherId;
 
     @ExcelProperty(value = "职称")
-    private String titleName;
+    private String teacherTitleName;
 
     @ExcelProperty(value = "系列")
-    private String titleType;
+    private String teacherType;
 
     @ExcelProperty(value = "职称级别")
-    private String titleLevel;
+    private String teacherLevel;
 
-    private Integer titleYear;
+    private String teacherTitleYear;
 
     @Override
     public boolean isValidated() {
         // 有名字 有百分占比 正常情况！
-        return titleTeacherName != null;
+        return teacherName != null;
     }
 
     @Override
@@ -71,15 +74,14 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
     @Override
     public void fieldStandardized(){
         // 用对象前 先检测null teacherName一定有的。。
-        if(this.titleTeacherName.length() > 24)
-            this.titleTeacherName = this.titleTeacherName.substring(0, 24);
+        if(this.teacherName.length() > 24)
+            this.teacherName = this.teacherName.substring(0, 24);
     }
     @Override
     public void stdCalculator(List<Map<Integer, String>> headInfoMap){
         try{
-            if(headInfoMap != null) // null的含义就是 我不想更新这个时间
-                this.titleYear = Integer.valueOf(
-                        ExcelDataProcessUtil.getTermFromHead(headInfoMap.get(0).get(0)));
+            if(headInfoMap != null) // null的含义就是 我不想更新这个时间 不过每年都有职称表！
+                this.teacherTitleYear = headInfoMap.get(0).get(0);
         }
         catch (Exception e){
             System.out.println("Invalid currentHeadInfo, a integer for current date(year) Expected");
@@ -89,11 +91,16 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
 
     @Override
     public void transformAndSave(ArrayList<TitleInfo> list, int size) {
-        TeacherService teacherService =
-                (TeacherService) SpringUtil.getBean("teacherTitleServiceImpl");
+        TeacherMapper teacherMapper =
+                (TeacherMapper) SpringUtil.getBean("teacherMapper");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
-        ArrayList<AccountIdAndEmail> accountIdAndEmails = new ArrayList<>(size);
+//        TeacherService teacherService =
+//                (TeacherService) SpringUtil.getBean("teacherServiceImpl");
+//        AccountService accountService =
+//                (AccountService) SpringUtil.getBean("accountServiceImpl");
+//        ArrayList<AccountIdAndEmail> accountIdAndEmails = new ArrayList<>(size);
+        ArrayList<AccountPO> accountPOS = new ArrayList<>(size);
         ArrayList<TeacherPO> teacherPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
@@ -104,25 +111,26 @@ public class TitleInfo implements ExcelEntity<TitleInfo>{
                 titleInfo.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
                 teacherPOS.add(new TeacherPO(titleInfo));
-                accountIdAndEmails.add(new AccountIdAndEmail(titleInfo));
+                accountPOS.add(new AccountPO(titleInfo));
             }
             catch (Exception e){
                 e.printStackTrace();
-                throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+//                throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
             }
         }
         try{
-            teacherService.saveBatch(teacherPOS);
-            accountMapper.saveOrIgnoreBatchByNameAndId(accountIdAndEmails);
+            teacherMapper.saveOrUpdateBatch(teacherPOS);
+            // 职称表更新职工号+id的 有就没必要管了
+            accountMapper.saveOrIgnoreBatchByNameAndId(accountPOS);
 
         }
         catch (Exception e){
             e.printStackTrace();
-            throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+//            throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
         }
         finally {
             teacherPOS.clear();
-            accountIdAndEmails.clear();
+            accountPOS.clear();
         }
     }
 }

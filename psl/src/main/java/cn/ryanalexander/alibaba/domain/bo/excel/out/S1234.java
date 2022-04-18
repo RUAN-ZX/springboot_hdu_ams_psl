@@ -81,79 +81,79 @@ public class S1234 implements ExcelEntity<S1234>{
 
     // ------------------------------------------------------------------------
 
-    @ExcelProperty(value = {"S3", "学科竞赛"})
-    private Double s31First;
-
-    @ExcelProperty(value = {"S3", "其它省级比赛"})
-    private Double s31Second;
-
-    @ExcelProperty(value = {"S3", "S31"})
-    private Double s31;
-
-    @ExcelProperty(value = {"S3", "教学成果奖\n"})
-    private Double s32First;
-
-    @ExcelProperty(value = {"S3", "教学名师奖\n"})
-    private Double s32Second;
-
-    @ExcelProperty(value = {"S3", "其它教学奖励\n"})
-    private Double s32Third;
-
-    @ExcelProperty(value = {"S3", "教学技能奖\n"})
-    private Double s32Fourth;
-
-    @ExcelProperty(value = {"S3", "教学事故\n"})
-    private Double s32Fifth;
-
-    @ExcelProperty(value = {"S3", "S32\n"})
-    private Double s32;
-
-    @ExcelProperty(value = {"S3", "S3"})
-    private Double s3;
-
-    // ------------------------------------------------------------------------
-
-    @ExcelProperty(value = {"S4", "教改项目"})
-    private Double s41First;
-
-    @ExcelProperty(value = {"S4", "实验教学示范中心建设项目\n"})
-    private Double s41Second;
-
-    @ExcelProperty(value = {"S4", "教学团队"})
-    private Double s41Third;
-
-    @ExcelProperty(value = {"S4", "S41"})
-    private Double s41;
-
-    @ExcelProperty(value = {"S4", "专业建设"})
-    private Double s42First;
-
-    @ExcelProperty(value = {"S4", "课程建设\n"})
-    private Double s42Second;
-
-    @ExcelProperty(value = {"S4", "教材建设\n"})
-    private Double s42Third;
-
-    @ExcelProperty(value = {"S4", "S42\n"})
-    private Double s42;
-
-    @ExcelProperty(value = {"S4", "公开发表论文\n"})
-    private Double s43First;
-
-    @ExcelProperty(value = {"S3", "S43\n"})
-    private Double s43;
-
-    @ExcelProperty(value = {"S3", "S4\n"})
-    private Double s4;
+//    @ExcelProperty(value = {"S3", "学科竞赛"})
+//    private Double s31First;
+//
+//    @ExcelProperty(value = {"S3", "其它省级比赛"})
+//    private Double s31Second;
+//
+//    @ExcelProperty(value = {"S3", "S31"})
+//    private Double s31;
+//
+//    @ExcelProperty(value = {"S3", "教学成果奖\n"})
+//    private Double s32First;
+//
+//    @ExcelProperty(value = {"S3", "教学名师奖\n"})
+//    private Double s32Second;
+//
+//    @ExcelProperty(value = {"S3", "其它教学奖励\n"})
+//    private Double s32Third;
+//
+//    @ExcelProperty(value = {"S3", "教学技能奖\n"})
+//    private Double s32Fourth;
+//
+//    @ExcelProperty(value = {"S3", "教学事故\n"})
+//    private Double s32Fifth;
+//
+//    @ExcelProperty(value = {"S3", "S32\n"})
+//    private Double s32;
+//
+//    @ExcelProperty(value = {"S3", "S3"})
+//    private Double s3;
+//
+//    // ------------------------------------------------------------------------
+//
+//    @ExcelProperty(value = {"S4", "教改项目"})
+//    private Double s41First;
+//
+//    @ExcelProperty(value = {"S4", "实验教学示范中心建设项目\n"})
+//    private Double s41Second;
+//
+//    @ExcelProperty(value = {"S4", "教学团队"})
+//    private Double s41Third;
+//
+//    @ExcelProperty(value = {"S4", "S41"})
+//    private Double s41;
+//
+//    @ExcelProperty(value = {"S4", "专业建设"})
+//    private Double s42First;
+//
+//    @ExcelProperty(value = {"S4", "课程建设\n"})
+//    private Double s42Second;
+//
+//    @ExcelProperty(value = {"S4", "教材建设\n"})
+//    private Double s42Third;
+//
+//    @ExcelProperty(value = {"S4", "S42\n"})
+//    private Double s42;
+//
+//    @ExcelProperty(value = {"S4", "公开发表论文\n"})
+//    private Double s43First;
+//
+//    @ExcelProperty(value = {"S4", "S43\n"})
+//    private Double s43;
+//
+//    @ExcelProperty(value = {"S4", "S4\n"})
+//    private Double s4;
 
     // ------------------------------------------------------------------------
 
     @ExcelProperty(value = "总分")
     private Double sScore;
 
-    // todo 这个备注信息哪里来的。。不需要的话我当没有了
-//    @ExcelProperty(value = "备注1（本人提出不参与）\n", index = 20)
-//    private String note;
+    // 历史数据也把这个导入了！
+    @ExcelProperty(value = "备注1（本人提出不参与）\n", index = 20)
+    private String sNote;
 
     private Integer sDetailYear;
 

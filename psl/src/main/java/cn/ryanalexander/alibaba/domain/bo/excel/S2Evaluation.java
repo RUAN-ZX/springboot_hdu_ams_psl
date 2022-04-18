@@ -2,11 +2,9 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
 
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.po.EvaluationPO;
-import cn.ryanalexander.alibaba.domain.po.ShoulderBothPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.EvaluationService;
-import cn.ryanalexander.alibaba.service.ShoulderBothService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -84,7 +82,7 @@ public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
         try{
             if(headInfoMap != null) // null的含义就是 我不想更新这个时间
                 this.evaluationTerm =
-                        ExcelDataProcessUtil.getTermFromHead(headInfoMap.get(0).get(0));
+                        DataUtil.getTermFromHead(headInfoMap.get(0).get(0));
         }
         catch (Exception e){
             System.out.println("Invalid currentHeadInfo, a integer for current date(year) Expected");

@@ -34,7 +34,6 @@
         </foreach>
     </insert>
 
-
     <select id="selectOneByTid" resultType="java.lang.String">
         select account_name from account where account_id=#{teacherId} limit 1
     </select>
@@ -51,4 +50,6 @@
             select ifnull((select account_id from account where account_name = #{item}), 0)
         </foreach>
     </select>
+
+
 </mapper>

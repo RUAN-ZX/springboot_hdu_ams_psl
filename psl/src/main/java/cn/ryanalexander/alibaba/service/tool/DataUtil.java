@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author ryan 2022/3/24 20:34
  * @since 1.0.0
  **/
-public class ExcelDataProcessUtil {
+public class DataUtil {
     private static final String[] MULTI_FLAG={"多人","/","、"};
     public static boolean multiStart(String courseTeacherName){
         // 但凡有一个符合就GG
@@ -64,4 +64,43 @@ public class ExcelDataProcessUtil {
         return TitleGradeMap.getOrDefault(grade, 1);
     }
 
+
+    public static double string2double(String doubleNum){
+        return string2double(doubleNum, 0.0);
+    }
+    public static double string2double(String doubleNum, double defaultDouble){
+        if(doubleNum == null || doubleNum.equals("null") || doubleNum.equals("#N/A"))
+            return defaultDouble;
+
+        double result = defaultDouble;
+        try{
+            result = Double.parseDouble(doubleNum);
+            return result;
+        }catch (Exception e){
+            return result;
+        }
+    }
+    public static int string2integer(String integerNum){
+        return string2integer(integerNum, 0);
+    }
+    public static int string2integer(String integerNum, int defaultInt){
+        if(integerNum == null || integerNum.equals("null") || integerNum.equals("#N/A"))
+            return defaultInt;
+        int result = defaultInt;
+        try{
+            result = Integer.parseInt(integerNum);
+            return result;
+        }catch (Exception e){
+            return result;
+        }
+    }
+
+    public static double getAvg(double data1, double data2){
+        boolean data1Absence = data1 > 0.00001;
+        boolean data2Absence = data2 > 0.00001;
+        if(data1Absence && data2Absence) return (data1 + data2) / 2;
+        else if(data1Absence) return data1;
+        else if(data2Absence) return data2;
+        else return 0.0;
+    }
 }

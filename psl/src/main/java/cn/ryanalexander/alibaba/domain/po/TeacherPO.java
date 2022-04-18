@@ -1,11 +1,9 @@
 package cn.ryanalexander.alibaba.domain.po;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.TitleInfo;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -61,27 +59,28 @@ public class TeacherPO implements Serializable {
     /**
      * 
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     public TeacherPO(TitleInfo titleInfo){
-        teacherName = titleInfo.getTitleTeacherName();
-        teacherId = titleInfo.getTitleTeacherId();
+        teacherName = titleInfo.getTeacherName();
+        teacherId = DataUtil.string2integer(titleInfo.getTeacherId());
 
-        teacherLevel = ExcelDataProcessUtil.transformTitleGrade(titleInfo.getTitleLevel());
-        teacherType = titleInfo.getTitleType();
-        teacherName = titleInfo.getTitleName();
+        teacherLevel = DataUtil.transformTitleGrade(titleInfo.getTeacherLevel());
+        teacherType = titleInfo.getTeacherType();
+        teacherTitleName = titleInfo.getTeacherTitleName();
 
-        teacherTeam = titleInfo.getTitleTeam();
-        teacherTitleYear = titleInfo.getTitleYear();
-
+        teacherTeam = titleInfo.getTeacherTeam();
+        teacherTitleYear = DataUtil.string2integer(titleInfo.getTeacherTitleYear());
     }
     @Override
     public boolean equals(Object that) {

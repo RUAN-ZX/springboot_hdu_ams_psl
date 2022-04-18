@@ -1,5 +1,7 @@
 package cn.ryanalexander.alibaba.domain.po;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.TitleInfo;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -40,6 +42,11 @@ public class AccountPO implements Serializable {
      */
     private String accountPwd;
 
+    public AccountPO(TitleInfo titleInfo){
+        accountId = DataUtil.string2integer(titleInfo.getTeacherId());
+        accountName = titleInfo.getTeacherName();
+
+    }
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

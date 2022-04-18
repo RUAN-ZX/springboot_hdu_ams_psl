@@ -16,4 +16,15 @@
         post_graduate_id,post_graduate_year,post_graduate_teacher_id,
         post_graduate_teacher_name,post_graduate_kpi
     </sql>
+    <insert id="saveOrUpdateBatch" parameterType="java.util.ArrayList">
+        insert into post_graduate(post_graduate_year, post_graduate_teacher_id,
+        post_graduate_teacher_name, post_graduate_kpi) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.postGraduateYear},#{item.postGraduateTeacherId},
+            #{item.postGraduateTeacherName},#{item.postGraduateKpi})
+        </foreach>
+        AS t1(r1, r2, r3, r4) ON DUPLICATE KEY UPDATE
+        post_graduate_year = r1, post_graduate_teacher_id = r2,
+        post_graduate_teacher_name = r3, post_graduate_kpi = r4
+    </insert>
 </mapper>

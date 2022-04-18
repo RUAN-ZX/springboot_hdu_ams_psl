@@ -3,6 +3,7 @@ package cn.ryanalexander.alibaba.domain.po;
 import cn.ryanalexander.alibaba.domain.bo.excel.S1ShoulderBoth;
 import cn.ryanalexander.alibaba.domain.bo.excel.out.S1234;
 import cn.ryanalexander.alibaba.domain.bo.excel.out.S1Workload;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -53,10 +54,10 @@ public class ShoulderBothPO implements Serializable {
         shoulderBothYear = s1ShoulderBoth.getShoulderBothYear();
     }
     public ShoulderBothPO(S1Workload s1Workload){
-        shoulderBothHours = s1Workload.getShoulderBothHours();
-        shoulderBothTeacherId = s1Workload.getTeacherId();
+        shoulderBothHours = DataUtil.string2integer(s1Workload.getShoulderBothHours());
+        shoulderBothTeacherId = DataUtil.string2integer(s1Workload.getTeacherId());
         shoulderBothTeacherName = s1Workload.getTeacherName();
-        shoulderBothYear = s1Workload.getSYear();
+        shoulderBothYear = DataUtil.string2integer(s1Workload.getSYear());
     }
 
     @Override

@@ -6,7 +6,7 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.CourseService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -119,7 +119,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
 
     @Override
     public boolean multiStart(){
-        return ExcelDataProcessUtil.multiStart(courseTeacherName);
+        return DataUtil.multiStart(courseTeacherName);
     }
     @Override
     public boolean prevIsMultiHeadOperation(ExcelEntity mask){
@@ -169,7 +169,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
         if(share.courseHoursStd == null && share.courseNum != null){
             // 获取比例 原来是通过给定学时 但是这不适用于多个多人课头 所以 这里直接设计成 默认通过课号写的百分比来搞定！
 //        double ratio = share.getCourseHours() / result.courseHours;
-            double ratio = ExcelDataProcessUtil.getRatio(share.courseNum);
+            double ratio = DataUtil.getRatio(share.courseNum);
             result.courseHoursStd *= ratio; // 分成
             // 总课时什么的没必要分成 就是作为一个课程信息的展示 多好啊
         }
@@ -191,7 +191,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
         double prior = this.coursePrior;
         this.courseHoursExp = hours;
 
-        double capacity_factor_1 = ExcelDataProcessUtil.getCapacityFactorByProperty(
+        double capacity_factor_1 = DataUtil.getCapacityFactorByProperty(
                 this.courseProperties,
                 this.courseCapacity
         );

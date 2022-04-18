@@ -1,18 +1,19 @@
 package cn.ryanalexander.alibaba.domain.bo.excel;
 
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.ExceptionInfo;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 
@@ -26,10 +27,11 @@ import java.util.ArrayList;
  * @author RyanAlexander 2022-03-23 11:20
  */
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-//@ApiModel("工号和邮箱")
+@ApiModel("工号和邮箱")
+@ToString
+@ExcelIgnoreUnannotated
 public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
     @ExcelProperty(value = "职工号")
     public Integer accountId;
@@ -41,8 +43,8 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
     public String accountMail;
 
     public AccountIdAndEmail(TitleInfo titleInfo){
-        accountId = titleInfo.getTitleTeacherId();
-        accountName = titleInfo.getTitleTeacherName();
+        accountId = DataUtil.string2integer(titleInfo.getTeacherId());
+        accountName = titleInfo.getTeacherName();
     }
     @Override
     public boolean isValidated() {

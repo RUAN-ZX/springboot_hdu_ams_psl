@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
 * @author ryan
 * @description 针对表【s_detail】的数据库操作Service实现
-* @createDate 2022-04-16 19:55:42
+* @createDate 2022-04-17 20:46:59
 */
 @Service
 public class SDetailServiceImpl extends ServiceImpl<SDetailMapper, SDetailPO>

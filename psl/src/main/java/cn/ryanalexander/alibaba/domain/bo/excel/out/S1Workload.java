@@ -7,6 +7,9 @@ import cn.ryanalexander.alibaba.domain.po.PostGraduatePO;
 import cn.ryanalexander.alibaba.domain.po.SDetailPO;
 import cn.ryanalexander.alibaba.domain.po.ShoulderBothPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.mapper.PostGraduateMapper;
+import cn.ryanalexander.alibaba.mapper.ShoulderBothMapper;
+import cn.ryanalexander.alibaba.service.PostGraduateService;
 import cn.ryanalexander.alibaba.service.ShoulderBothService;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -38,7 +41,7 @@ import java.util.Map;
 public class S1Workload implements ExcelEntity<S1Workload> {
     // List index就完事了
     @ExcelProperty(value = "序号")
-    private Integer id;
+    private String id;
 
     @ExcelProperty(value = "团队")
     private String teacherTeam;
@@ -47,31 +50,31 @@ public class S1Workload implements ExcelEntity<S1Workload> {
     private String teacherName;
 
     @ExcelProperty(value = "职工号")
-    private Integer teacherId;
+    private String teacherId;
 
     // 除了研究生 双肩挑的所有。。。
     @ExcelProperty(value = "本科教学业绩点")
-    private Double teacherHoursStd;
+    private String teacherHoursStd;
 
     @ExcelProperty(value = "研究生标准课时总计")
-    private Double postGraduateHours; // postGraduateKpi * 100
+    private String postGraduateHours; // postGraduateKpi * 100
 
     @ExcelProperty(value = "双肩挑")
-    private Integer shoulderBothHours;
+    private String shoulderBothHours;
 
     @ExcelProperty(value = "小计")
-    private Double s1Hours;
+    private String s1Hours;
 
     @ExcelProperty(value = "S1")
-    private Double s1Score_;
+    private String s1Score_;
 
     @ExcelProperty(value = "S1封顶")
-    private Double s1Score; // 100最多拉
+    private String s1Score; // 100最多拉
 
     @ExcelProperty(value = "备注")
     private String note; // 没数据的 让老师后边自个儿往excel里边加得了
 
-    private Integer sYear;
+    private String sYear;
 
     // 用于PO转ExcelEntity 实现表输出的
     public S1Workload(SDetailPO sDetailPO){
@@ -105,9 +108,10 @@ public class S1Workload implements ExcelEntity<S1Workload> {
     }
     @Override
     public void stdCalculator(List<Map<Integer, String>> headInfoMap){
+//        System.out.println(headInfoMap);
         try{
             if(headInfoMap != null) // null的含义就是 我不想更新这个时间
-                this.sYear = Integer.valueOf(headInfoMap.get(0).get(0));
+                this.sYear = headInfoMap.get(0).get(0);
         }
         catch (Exception e){
             System.out.println("Invalid currentHeadInfo, a integer for current date(year) Expected");
@@ -117,7 +121,16 @@ public class S1Workload implements ExcelEntity<S1Workload> {
 
     @Override
     public void transformAndSave(ArrayList<S1Workload> list, int size) {
-        ShoulderBothService shoulderBothService = (ShoulderBothService) SpringUtil.getBean("shoulderBothServiceImpl");
+//        ShoulderBothService shoulderBothService = (ShoulderBothService) SpringUtil.getBean("shoulderBothServiceImpl");
+//        PostGraduateService postGraduateService =
+//                (PostGraduateService) SpringUtil.getBean("postGraduateServiceImpl");
+
+        ShoulderBothMapper shoulderBothMapper =
+                (ShoulderBothMapper) SpringUtil.getBean("shoulderBothMapper");
+        PostGraduateMapper postGraduateMapper =
+                (PostGraduateMapper) SpringUtil.getBean("postGraduateMapper");
+
+
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
         ArrayList<String> accountNameList = new ArrayList<>(size);
@@ -136,7 +149,7 @@ public class S1Workload implements ExcelEntity<S1Workload> {
             try{
                 s1Workload = list.get(i);
                 // 作为读表的时候是不看表原有teacherId的！
-                s1Workload.setTeacherId(accountIdList.get(i));
+                s1Workload.setTeacherId(String.valueOf(accountIdList.get(i)));
                 // 有些字段实在太长 删减点 别太过了
                 s1Workload.fieldStandardized();
 
@@ -150,8 +163,8 @@ public class S1Workload implements ExcelEntity<S1Workload> {
             }
         }
         try{
-            shoulderBothService.saveBatch(shoulderBothPOS);
-
+            shoulderBothMapper.saveOrUpdateBatch(shoulderBothPOS);
+            postGraduateMapper.saveOrUpdateBatch(postGraduatePOS);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -159,6 +172,7 @@ public class S1Workload implements ExcelEntity<S1Workload> {
         }
         finally {
             shoulderBothPOS.clear();
+            postGraduatePOS.clear();
             accountIdList.clear();
             accountNameList.clear();
         }

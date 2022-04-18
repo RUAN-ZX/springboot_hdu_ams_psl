@@ -6,7 +6,7 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.ShortTermPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.ShortTermService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -126,7 +126,7 @@ public class S1ShortTerm implements ExcelEntity<S1ShortTerm>, Cloneable{
 
     @Override
     public boolean multiStart(){
-        return ExcelDataProcessUtil.multiStart(shortTermTeacherName);
+        return DataUtil.multiStart(shortTermTeacherName);
     }
 
     @Override // 没有学期 没有课程名字 又不是开头 只能是中间了！
@@ -203,7 +203,7 @@ public class S1ShortTerm implements ExcelEntity<S1ShortTerm>, Cloneable{
         double hours = this.shortTermHours;
         double factor = this.shortTermFactor;
         double reform = this.shortTermReform;
-        double capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
+        double capacity_factor = DataUtil.getCapacityFactorByProperty(
                 this.shortTermProperties,
                 this.shortTermCapacity
         );

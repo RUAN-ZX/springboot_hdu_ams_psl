@@ -2,6 +2,7 @@ package cn.ryanalexander.alibaba.domain.po;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.S1PostGraduate;
 import cn.ryanalexander.alibaba.domain.bo.excel.out.S1Workload;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -52,9 +53,9 @@ public class PostGraduatePO implements Serializable {
     }
 
     public PostGraduatePO(S1Workload s1Workload) {
-        postGraduateKpi = s1Workload.getPostGraduateHours() / 100.0;
-        postGraduateTeacherId = s1Workload.getTeacherId();
-        postGraduateYear = s1Workload.getSYear();
+        postGraduateKpi = DataUtil.string2double(s1Workload.getPostGraduateHours());
+        postGraduateTeacherId = DataUtil.string2integer(s1Workload.getTeacherId());
+        postGraduateYear = DataUtil.string2integer(s1Workload.getSYear());
         postGraduateTeacherName = s1Workload.getTeacherName();
     }
     @Override

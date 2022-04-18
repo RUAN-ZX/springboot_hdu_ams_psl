@@ -1,7 +1,12 @@
 package cn.ryanalexander.alibaba.mapper;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.AccountIdAndEmail;
+import cn.ryanalexander.alibaba.domain.bo.excel.TitleInfo;
 import cn.ryanalexander.alibaba.domain.po.TeacherPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author ryan
@@ -10,7 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.ryanalexander.alibaba.domain.po.TeacherPO
 */
 public interface TeacherMapper extends BaseMapper<TeacherPO> {
-
+    void saveOrUpdateBatch(@Param("items") List<TeacherPO> list);
 }
 
 

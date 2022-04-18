@@ -15,7 +15,7 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
 import cn.ryanalexander.alibaba.service.CourseService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -116,7 +116,7 @@ public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
 
     @Override
     public boolean multiStart(){
-        return ExcelDataProcessUtil.multiStart(courseTeacherName);
+        return DataUtil.multiStart(courseTeacherName);
     }
 
     // 多行 多人头出现
@@ -169,7 +169,7 @@ public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
 
         if(share.courseHoursStd == null && share.courseNum != null){
             // todo 这个地方写分成比例！
-            double ratio = ExcelDataProcessUtil.getRatio(share.courseNum);
+            double ratio = DataUtil.getRatio(share.courseNum);
             result.courseHoursStd *= ratio; // 分成
             // 总课时什么的没必要分成 就是作为一个课程信息的展示 多好啊
         }
@@ -195,7 +195,7 @@ public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
 
         this.courseHoursExp = hoursExp;
 
-        double capacity_factor = ExcelDataProcessUtil.getCapacityFactorByProperty(
+        double capacity_factor = DataUtil.getCapacityFactorByProperty(
                 "I",
                 this.courseCapacity
         );

@@ -7,13 +7,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
- *
+ * @TableName s_detail
  */
 @TableName(value ="s_detail")
 @Data
+@NoArgsConstructor
 public class SDetailPO implements Serializable {
     /**
      * 
@@ -35,41 +37,6 @@ public class SDetailPO implements Serializable {
      * 
      */
     private Integer sDetailYear;
-
-    /**
-     * 
-     */
-    private Double s1KpiCourseTheory;
-
-    /**
-     * 
-     */
-    private Double s1KpiCourseExperiment;
-
-    /**
-     * 
-     */
-    private Double s1KpiAchievement1;
-
-    /**
-     * 
-     */
-    private Double s1KpiAchievement2;
-
-    /**
-     * 
-     */
-    private Double s1KpiSpecialAssignment;
-
-    /**
-     * 
-     */
-    private Double s1KpiShoulderBoth;
-
-    /**
-     * 
-     */
-    private Double s1KpiPostgraduate;
 
     /**
      * 
@@ -109,22 +76,12 @@ public class SDetailPO implements Serializable {
     /**
      * 
      */
-    private Integer sRank;
-
-    /**
-     * 
-     */
-    private String s3Data;
+    private String s34Data;
 
     /**
      * 
      */
     private Double s3Score;
-
-    /**
-     * 
-     */
-    private String s4Data;
 
     /**
      * 
@@ -135,6 +92,11 @@ public class SDetailPO implements Serializable {
      * 
      */
     private Double sScore;
+
+    /**
+     * 
+     */
+    private String sNote;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -152,13 +114,6 @@ public class SDetailPO implements Serializable {
         sb.append(", sDetailTeacherId=").append(sDetailTeacherId);
         sb.append(", sDetailTeacherName=").append(sDetailTeacherName);
         sb.append(", sDetailYear=").append(sDetailYear);
-        sb.append(", s1KpiCourseTheory=").append(s1KpiCourseTheory);
-        sb.append(", s1KpiCourseExperiment=").append(s1KpiCourseExperiment);
-        sb.append(", s1KpiAchievement1=").append(s1KpiAchievement1);
-        sb.append(", s1KpiAchievement2=").append(s1KpiAchievement2);
-        sb.append(", s1KpiSpecialAssignment=").append(s1KpiSpecialAssignment);
-        sb.append(", s1KpiShoulderBoth=").append(s1KpiShoulderBoth);
-        sb.append(", s1KpiPostgraduate=").append(s1KpiPostgraduate);
         sb.append(", s1Kpi=").append(s1Kpi);
         sb.append(", s1Score=").append(s1Score);
         sb.append(", s2Score1=").append(s2Score1);
@@ -166,12 +121,11 @@ public class SDetailPO implements Serializable {
         sb.append(", s2ScoreAvg=").append(s2ScoreAvg);
         sb.append(", s2Rank=").append(s2Rank);
         sb.append(", s2Score=").append(s2Score);
-        sb.append(", sRank=").append(sRank);
-        sb.append(", s3Data=").append(s3Data);
+        sb.append(", s34Data=").append(s34Data);
         sb.append(", s3Score=").append(s3Score);
-        sb.append(", s4Data=").append(s4Data);
         sb.append(", s4Score=").append(s4Score);
         sb.append(", sScore=").append(sScore);
+        sb.append(", sNote=").append(sNote);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -5,8 +5,9 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.AchievementPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.mapper.AchievementMapper;
 import cn.ryanalexander.alibaba.service.AchievementService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -58,6 +59,11 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
     @ExcelProperty("备注")
     private String achievementNote;
 
+    @ExcelProperty("分值")
+    private Double achievementKpiS34;
+    @ExcelProperty("计分项")
+    private String achievementKpiCategory;
+
 //    private String achievementEvidence1;
 //    private String achievementEvidence2;
 //    private String achievementEvidence3;
@@ -76,7 +82,7 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
 
     @Override
     public boolean multiStart(){
-        return ExcelDataProcessUtil.multiStart(achievementTeacherName);
+        return DataUtil.multiStart(achievementTeacherName);
     }
 
     // 多行 多人头出现
@@ -129,7 +135,7 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
             if(headMapList != null){
                 this.achievementYear = Integer.valueOf(headMapList.get(0).get(0));
                 this.achievementType =
-                        ExcelDataProcessUtil.transformAchievementType(headMapList.get(0).get(100));
+                        DataUtil.transformAchievementType(headMapList.get(0).get(100));
             }
         }
         catch (Exception e){
@@ -139,7 +145,9 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
     }
     @Override
     public void transformAndSave(ArrayList<S1Achievement> list, int size) {
-        AchievementService achievementService = (AchievementService) SpringUtil.getBean("achievementServiceImpl");
+        AchievementMapper achievementMapper =
+                (AchievementMapper) SpringUtil.getBean("achievementMapper");
+
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
         ArrayList<String> accountNameList = new ArrayList<>(size);
@@ -165,7 +173,7 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
             }
         }
         try{
-            achievementService.saveBatch(achievementPOS);
+            achievementMapper.saveOrUpdateBatch(achievementPOS);
 
         }
         catch (Exception e){

@@ -3,12 +3,10 @@ package cn.ryanalexander.alibaba.domain.bo.excel;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
-import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.domain.po.SpecialAssignmentPO;
 import cn.ryanalexander.alibaba.mapper.AccountMapper;
-import cn.ryanalexander.alibaba.service.CourseService;
 import cn.ryanalexander.alibaba.service.SpecialAssignmentService;
-import cn.ryanalexander.alibaba.service.tool.ExcelDataProcessUtil;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -61,7 +59,7 @@ public class S1SpecialAssignment implements ExcelEntity<S1SpecialAssignment>, Cl
 
     @Override
     public boolean multiStart() {
-        return ExcelDataProcessUtil.multiStart(specialAssignmentTeacherName);
+        return DataUtil.multiStart(specialAssignmentTeacherName);
     }
 
     // 多行 多人头出现
