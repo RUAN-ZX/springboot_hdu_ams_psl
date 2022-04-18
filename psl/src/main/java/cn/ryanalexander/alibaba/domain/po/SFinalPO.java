@@ -1,6 +1,7 @@
 package cn.ryanalexander.alibaba.domain.po;
 
 import cn.ryanalexander.alibaba.domain.bo.excel.out.SFinal;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -54,29 +55,24 @@ public class SFinalPO implements Serializable {
     /**
      * 
      */
-    private Integer sFinalHoursAll;
+    private Integer sFinalCourseMain;
+
+    /**
+     * 
+     */
+    private String sFinalNote;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-    public SFinalPO(SFinal sFinal){
 
-    }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", sFinalId=").append(sFinalId);
-        sb.append(", sFinalTeacherName=").append(sFinalTeacherName);
-        sb.append(", sFinalTeacherId=").append(sFinalTeacherId);
-        sb.append(", sFinalScore=").append(sFinalScore);
-        sb.append(", sFinalYear=").append(sFinalYear);
-        sb.append(", sFinalGrade=").append(sFinalGrade);
-        sb.append(", sFinalTitleLevel=").append(sFinalTitleLevel);
-        sb.append(", sFinalHoursAll=").append(sFinalHoursAll);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public SFinalPO(SFinal sFinal){
+        sFinalTeacherId = DataUtil.string2integer(sFinal.getSFinalTeacherId());
+        sFinalTeacherName = sFinal.getSFinalTeacherName();
+        sFinalYear = sFinal.getSFinalYear();
+        sFinalNote = sFinal.getSNote();
+        sFinalCourseMain = DataUtil.string2integer(sFinal.getSFinalCourseMain());
+        sFinalGrade = sFinal.getSFinalGrade();
+        sFinalScore = DataUtil.string2double(sFinal.getSFinalScore());
+        sFinalTitleLevel = DataUtil.transformTitleGrade(sFinal.getSFinalTitleLevel());
     }
 }

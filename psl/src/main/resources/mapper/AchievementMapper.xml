@@ -45,11 +45,11 @@
         </foreach>
         AS t1(r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14) ON DUPLICATE KEY UPDATE
         achievement_teacher_id=r1,achievement_teacher_name=r2,
-        achievement_year=r3, achievement_name=r4,
-        achievement_level=r5, achievement_category=r6,
-        achievement_evidence1=r7, achievement_evidence2=r8,
-        achievement_evidence3=r9, achievement_kpi_s34=r10,
-        achievement_kpi_category=r11, achievement_rank=r12,
-        achievement_kpi=r13, achievement_note=r14
+        achievement_year=r3,achievement_name=r4,
+        achievement_level=r5,achievement_category=r6,
+        achievement_evidence1=r7,achievement_evidence2=r8,
+        achievement_evidence3=r9,achievement_kpi_s34=r10,
+        achievement_kpi_category=r11,achievement_rank=r12,
+        achievement_kpi=r13,achievement_note=r14
     </insert>
 </mapper>

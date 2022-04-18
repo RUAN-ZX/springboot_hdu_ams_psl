@@ -335,13 +335,14 @@ CREATE TABLE `s_final`(
   `s_final_teacher_name` VARCHAR(25) NOT NULL, # 教师名字
 	`s_final_teacher_id` INT(8) NOT NULL, 
 	`s_final_score` DOUBLE(10,2) DEFAULT NULL, # 考核总分 历史数据自然按历史数据来！
-	`s_final_year` INT(4) DEFAULT NULL,
+	`s_final_year` INT(4) NOT NULL,
 	`s_final_grade` CHAR(1) DEFAULT NULL, # 考核等级
 	`s_final_title_level` TINYINT(1) UNSIGNED DEFAULT NULL, # 当年的职称！
 	`s_final_course_main` INT(8) DEFAULT NULL,# 承担主讲课程学时数是否不低于64学时 主讲课程学时？
+	`s_final_note` VARCHAR(32) DEFAULT NULL, # 教科办说明情况
 -- 	`s_rank` SMALLINT(4) UNSIGNED DEFAULT NULL, # 不一定参与评价 所以这个rank没意义 我们只能提供参考罢了
-	
-	PRIMARY KEY (`s_final_id`)
+	PRIMARY KEY (`s_final_id`), # 这里的teacherId值得相信！
+	UNIQUE KEY `uk_s_final_tid_year` (`s_final_year`,`s_final_teacher_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # academy 学院

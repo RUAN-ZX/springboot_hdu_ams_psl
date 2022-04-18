@@ -32,7 +32,7 @@ public class DataUtil {
     }
 
     private static final HashMap<String, Integer> ThesisDesignGradeMap = new HashMap<>();
-    {
+    static {
         ThesisDesignGradeMap.put("优秀", 0);
         ThesisDesignGradeMap.put("良好", 1);
         ThesisDesignGradeMap.put("中等", 2);
@@ -40,12 +40,11 @@ public class DataUtil {
         ThesisDesignGradeMap.put("不及格", 4);
     }
     private static final HashMap<String, Integer> TitleGradeMap = new HashMap<>();
-    {
-        TitleGradeMap.put("优秀", 0);
-        TitleGradeMap.put("良好", 1);
-        TitleGradeMap.put("中等", 2);
-        TitleGradeMap.put("及格", 3);
-        TitleGradeMap.put("不及格", 4);
+    static {
+        TitleGradeMap.put("正高", 0);
+        TitleGradeMap.put("副高", 1);
+        TitleGradeMap.put("中级", 2);
+        TitleGradeMap.put("初级", 3);
     }
     public static int transformThesisDesignGrade(String grade){
         return ThesisDesignGradeMap.getOrDefault(grade, 1);

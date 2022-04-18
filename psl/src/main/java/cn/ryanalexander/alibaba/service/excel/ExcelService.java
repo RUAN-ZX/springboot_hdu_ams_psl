@@ -31,26 +31,27 @@ public class ExcelService {
         sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
         sheetAndExcelEntity.put("职称信息表", TitleInfo.class);
 //
-//        sheetAndExcelEntity.put("理论", S1CourseTheory.class);
-//        sheetAndExcelEntity.put("短学期", S1ShortTerm.class);
-//        sheetAndExcelEntity.put("实验", S1CourseExperiment.class);
-//        sheetAndExcelEntity.put("毕业设计", S1ThesisDesign.class);
+        sheetAndExcelEntity.put("理论", S1CourseTheory.class);
+        sheetAndExcelEntity.put("短学期", S1ShortTerm.class);
+        sheetAndExcelEntity.put("实验", S1CourseExperiment.class);
+        sheetAndExcelEntity.put("毕业设计", S1ThesisDesign.class);
 //
 //        // 历史数据则可以通过工作量表获取 新数据应该有
         sheetAndExcelEntity.put("标志性", S1Achievement.class);
         sheetAndExcelEntity.put("非标志性业绩点", S1Achievement.class);
         sheetAndExcelEntity.put("其他业绩", S1Achievement.class);
-//        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+
 //        sheetAndExcelEntity.put("研究生理论课工作量", S1PostGraduate.class);
 //        sheetAndExcelEntity.put("双肩挑", S1ShoulderBoth.class);
 //
-//        sheetAndExcelEntity.put("学评教", S2Evaluation.class);
+        sheetAndExcelEntity.put("学评教", S2Evaluation.class);
 
         // 汇总表需要灵活处理！
 //        sheetAndExcelEntity.put("成绩明细表", S1234.class);
         // 让老师修剪自己的表 满足工作量表的要求！
-//        sheetAndExcelEntity.put("工作量", S1Workload.class);
-//        sheetAndExcelEntity.put("成绩汇总表", SFinal.class);
+        sheetAndExcelEntity.put("工作量", S1Workload.class);
+        sheetAndExcelEntity.put("成绩汇总表", SFinal.class);
     }
     private final static String chineseRegex = "([\u4e00-\u9fa5]+)";
     private final ArrayList<String> noModalSheetList = new ArrayList<>();

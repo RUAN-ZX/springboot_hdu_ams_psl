@@ -47,7 +47,7 @@
 <!--    使用ifnull 实现不去重 毕竟有些查不到的结果即为0即可 就放着 -->
     <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.Integer">
         <foreach collection="items" item="item" separator="union all">
-            select ifnull((select account_id from account where account_name = #{item}), 0)
+            select ifnull((select account_id from account where account_name=#{item} limit 1), 0)
         </foreach>
     </select>
 

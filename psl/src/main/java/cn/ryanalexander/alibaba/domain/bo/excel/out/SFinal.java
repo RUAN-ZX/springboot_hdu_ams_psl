@@ -1,5 +1,18 @@
 package cn.ryanalexander.alibaba.domain.bo.excel.out;
 
+import cn.ryanalexander.alibaba.domain.bo.excel.ExcelEntity;
+import cn.ryanalexander.alibaba.domain.exceptions.AppException;
+import cn.ryanalexander.alibaba.domain.po.PostGraduatePO;
+import cn.ryanalexander.alibaba.domain.po.SDetailPO;
+import cn.ryanalexander.alibaba.domain.po.SFinalPO;
+import cn.ryanalexander.alibaba.domain.po.ShoulderBothPO;
+import cn.ryanalexander.alibaba.mapper.AccountMapper;
+import cn.ryanalexander.alibaba.mapper.PostGraduateMapper;
+import cn.ryanalexander.alibaba.mapper.SFinalMapper;
+import cn.ryanalexander.alibaba.mapper.ShoulderBothMapper;
+import cn.ryanalexander.alibaba.service.SFinalService;
+import cn.ryanalexander.alibaba.service.tool.DataUtil;
+import cn.ryanalexander.alibaba.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModel;
@@ -7,6 +20,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p><b></b></p>
@@ -20,34 +37,127 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("S1工作量表")
+@ApiModel("成绩汇总表")
 @ToString
 @ExcelIgnoreUnannotated
-public class SFinal {
+public class SFinal implements ExcelEntity<SFinal>{
     // List index就完事了
     @ExcelProperty(value = "序号")
     private String id;
 
     @ExcelProperty(value = "工号")
-    private String teacherId;
+    private String sFinalTeacherId;
 
     @ExcelProperty(value = "姓名")
-    private String teacherName;
+    private String sFinalTeacherName;
 
     @ExcelProperty(value = "职称")
-    private String teacherLevel; // 不是名字 是等级！
+    private String sFinalTitleLevel; // 不是名字 是等级！
 
     // 理论+实验 纯课时 没有标准！
-    // todo 前边对总课时的统计要确保了！
+    // 这个标准还是个问题
     @ExcelProperty(value = "承担主讲课程学时数是否不低于64学时")
-    private String teacherHours;
+    private String sFinalCourseMain;
 
-    @ExcelProperty(value = "考核分数\n")
-    private String sScore; // postGraduateKpi * 100
+    @ExcelProperty(value = "考核分数")
+    private String sFinalScore; // postGraduateKpi * 100
 
-    @ExcelProperty(value = "考核等级\n")
-    private String sGrade; // postGraduateKpi * 100
+    @ExcelProperty(value = "考核等级")
+    private String sFinalGrade; // postGraduateKpi * 100
 
-    @ExcelProperty(value = "备注\n")
+    @ExcelProperty(value = "备注")
     private String sNote; // postGraduateKpi * 100
+
+    private Integer sFinalYear;
+    // 用于PO转ExcelEntity 实现表输出的
+    public SFinal(SDetailPO sDetailPO){
+
+    }
+    @Override
+    public boolean isValidated() {
+        // 有名字 有百分占比 正常情况！
+        return sFinalTeacherName != null;
+    }
+
+    @Override
+    public boolean multiStart(){
+        return false;
+    }
+    // 这里 之前也是multiStart 应该怎么处理
+    @Override
+    public boolean prevIsMultiHeadOperation(ExcelEntity mask){
+        return false;
+    }
+
+    @Override // 下一行的补充数据
+    public boolean multiContinue(){
+        return false;
+    }
+    @Override
+    public void fieldStandardized(){
+        // 用对象前 先检测null teacherName一定有的。。
+        if(this.sFinalTeacherName.length() > 3)
+            this.sFinalTeacherName = this.sFinalTeacherName.substring(0, 3);
+    }
+    @Override
+    public void stdCalculator(List<Map<Integer, String>> headInfoMap){
+//        System.out.println(headInfoMap);
+        try{
+            if(headInfoMap != null) // null的含义就是 我不想更新这个时间
+                this.sFinalYear = DataUtil.string2integer(headInfoMap.get(0).get(0).substring(0,4));
+        }
+        catch (Exception e){
+            System.out.println("Invalid currentHeadInfo, a integer for current date(year) Expected");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void transformAndSave(ArrayList<SFinal> list, int size) {
+        SFinalMapper sFinalMapper =
+                (SFinalMapper) SpringUtil.getBean("SFinalMapper");
+
+//        SFinalService sFinalService =
+//                (SFinalService) SpringUtil.getBean("sFinalServiceImpl");
+
+//        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
+//
+//        ArrayList<String> accountNameList = new ArrayList<>(size);
+//        // 这里 因为标准课时 前边累加了 都是指定系数1 没有直接指定标准课时的 所以不calculation
+//        for (SFinal sFinal : list)
+//            accountNameList.add(sFinal.sFinalTeacherName);
+//
+//        ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
+
+        ArrayList<SFinalPO> sFinalPOS = new ArrayList<>(size);
+
+        // accountId 注入到CourseTheory
+//        SFinal sFinal = null;
+        for (SFinal sFinal : list) {
+            try {
+//                sFinal = aFinal;
+                // 作为读表的时候是不看表原有teacherId的！
+//                sFinal.setSFinalTeacherId(String.valueOf(accountIdList.get(i)));
+                // 有些字段实在太长 删减点 别太过了
+                sFinal.fieldStandardized();
+                System.out.println(sFinal);
+                sFinalPOS.add(new SFinalPO(sFinal));
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+            }
+        }
+        try{
+            sFinalMapper.saveOrUpdateBatch(sFinalPOS);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+        }
+        finally {
+            sFinalPOS.clear();
+//            accountIdList.clear();
+//            accountNameList.clear();
+        }
+    }
 }

@@ -69,7 +69,10 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
 //    private String achievementEvidence3;
 
     private Integer achievementYear;
+
+//    @ExcelProperty("工号")
     private Integer achievementTeacherId;
+
     private Integer achievementType;
 
     @Override

@@ -29,4 +29,5 @@
         s1_kpi_achievement2,s1_kpi_special_assignment,s1_kpi_shoulder_both,
         s1_kpi_postgraduate,s1_kpi,s1_score
     </sql>
+
 </mapper>
