@@ -1,8 +1,13 @@
 package cn.ryanalexander.alibaba.controller;
 
 import cn.ryanalexander.alibaba.domain.dto.Result;
+import cn.ryanalexander.alibaba.domain.po.CoursePO;
+import cn.ryanalexander.alibaba.domain.po.SFinalPO;
+import cn.ryanalexander.alibaba.mapper.SFinalMapper;
 import cn.ryanalexander.alibaba.service.SDetailService;
 import cn.ryanalexander.alibaba.service.SFinalService;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +33,22 @@ public class SController {
     @Resource
     private SDetailService sDetailService;
 
-    @ApiOperation("get SDetail By TeacherId")
+    @Resource
+    private SFinalMapper sFinalMapper;
+
+    @ApiOperation("get SFinal and SDetail By TeacherId")
     @PostMapping("/getByTeacherIdAndYear")
     public Result getSDetailByTeacherId(String teacherId, String year){
         ArrayList<Object> result = new ArrayList<>();
-        result.add(sDetailService.getSDetailByTeacherId(teacherId, year));
         result.add(sFinalService.getSFinalByTeacherId(teacherId, year));
-        return new Result(result);
+        result.add(sDetailService.getSDetailByTeacherId(teacherId, year));
+        return new Result(JSONObject.toJSON(result));
+    }
+    @ApiOperation("get Years choice By TeacherId")
+    @PostMapping("/getYearsByTeacherId")
+    public Result getYearsByTeacherId(String teacherId){
+        return new Result(sFinalMapper.selectObjs(new QueryWrapper<SFinalPO>()
+                .select("distinct s_final_year")
+                .eq("s_final_teacher_id", teacherId)));
     }
 }

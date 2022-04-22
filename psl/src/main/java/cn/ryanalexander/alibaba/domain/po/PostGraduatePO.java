@@ -8,7 +8,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -16,6 +19,8 @@ import lombok.Data;
  */
 @TableName(value ="post_graduate")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostGraduatePO implements Serializable {
     /**
      * 

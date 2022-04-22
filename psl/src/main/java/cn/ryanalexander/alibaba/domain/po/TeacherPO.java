@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -14,6 +17,8 @@ import lombok.Data;
  */
 @TableName(value ="teacher")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeacherPO implements Serializable {
     /**
      * 

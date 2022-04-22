@@ -303,7 +303,8 @@ CREATE TABLE `s_detail`(
 -- 用于导出表List<List<String>> 只有数据 表头List<string>另外从rule导入
 -- 用于前端 利用index相同的特性 把rule数组和数据结合使用！拼接为detail!
 	
-	`s34_data` VARCHAR(200) DEFAULT NULL,
+	`s3_data` VARCHAR(100) DEFAULT NULL,
+	`s4_data` VARCHAR(100) DEFAULT NULL,
 	
 	`s3_score` DOUBLE(10,2) NOT NULL, 
 	`s4_score` DOUBLE(10,2) NOT NULL, 

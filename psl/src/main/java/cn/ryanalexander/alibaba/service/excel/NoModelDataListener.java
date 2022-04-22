@@ -64,7 +64,8 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         log.info("解析到一条数据:{}", JSON.toJSONString(data));
         SDetailPO dataPO = new SDetailPO();
-        HashMap<String, Double> sData = new HashMap<>();
+        HashMap<String, Double> s3Data = new HashMap<>();
+        HashMap<String, Double> s4Data = new HashMap<>();
 
         dataPO.setSDetailYear(Integer.valueOf(sDetailYear));
         // reverseHeadMap1.get("姓名") 获取名字所在col index 然后data getByIndex
@@ -84,20 +85,29 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
         dataPO.setS2Rank(DataUtil.string2integer(data.get(s2Pos + 1)));
         dataPO.setS2Score(DataUtil.string2double(data.get(reverseHeadMap2.get("S2"))));
 
-        int s2Start = reverseHeadMap2.get("S2") + 1;
+        int s3Start = reverseHeadMap2.get("S2") + 1;
+        int s3End = reverseHeadMap2.get("S3");
+        int s4Start = s3End + 1;
         int s4End = reverseHeadMap2.get("S4");
-        dataPO.setS3Score(DataUtil.string2double(data.get(reverseHeadMap2.get("S3"))));
+        dataPO.setS3Score(DataUtil.string2double(data.get(s3End)));
         dataPO.setS4Score(DataUtil.string2double(data.get(s4End)));
 
-        for(int i = s2Start ; i < s4End ; ++i){
+        for(int i = s3Start ; i < s3End ; ++i){
             String currentData = data.getOrDefault(i, null);
             String currentHead = headMap2.getOrDefault(i, null);
             if(currentData != null && currentHead != null && !currentHead.contains("S")){
-                sData.put(currentHead, DataUtil.string2double(data.get(i)));
+                s3Data.put(currentHead, DataUtil.string2double(data.get(i)));
             }
-
         }
-        dataPO.setS34Data(JSON.toJSONString(sData));
+        for(int i = s4Start ; i < s4End ; ++i){
+            String currentData = data.getOrDefault(i, null);
+            String currentHead = headMap2.getOrDefault(i, null);
+            if(currentData != null && currentHead != null && !currentHead.contains("S")){
+                s4Data.put(currentHead, DataUtil.string2double(data.get(i)));
+            }
+        }
+        dataPO.setS3Data(JSON.toJSONString(s3Data));
+        dataPO.setS4Data(JSON.toJSONString(s4Data));
         dataPO.setSScore(DataUtil.string2double(data.get(reverseHeadMap1.get("总分"))));
 //        String stringData = JSON.toJSONString(sData);
 //        System.out.println(JSON.parse(stringData));

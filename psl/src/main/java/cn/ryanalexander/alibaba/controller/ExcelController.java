@@ -49,7 +49,7 @@ public class ExcelController {
     public Result updateExcel(){
         String url = StaticConfiguration.getExcelReadUrl();
         excelService.modelRead(url);
-//        excelService.noModelRead(url);
+        excelService.noModelRead(url);
         return new Result();
     }
 

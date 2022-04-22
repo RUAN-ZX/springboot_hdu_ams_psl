@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 
@@ -22,23 +23,15 @@ import java.util.*;
 @SpringBootTest
 public class MyBatisPlusServiceTest {
 
-    @Autowired
-    private AccountService accountService;
+
 
     private final Logger logger = LoggerFactory.getLogger(MyBatisPlusServiceTest.class);
 
-    @Test
-    public void testGetCount(){
-        String a = "(2019-2020-1)-B0405450-42119-1合班";
-        System.out.println(a.length());
-    }
+
 
     @Test
-    public void testSelect(){
-        QueryWrapper<AccountPO> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("teacher_name", "高");
-        List<AccountPO> list = accountService.getBaseMapper().selectList(queryWrapper);
-        list.forEach(System.out::println);
+    public void testGetCount(){
+        System.out.println(new BCryptPasswordEncoder().encode("loverfucker"));
     }
 
     @Test

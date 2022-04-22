@@ -42,9 +42,6 @@ public class ExcelService {
         sheetAndExcelEntity.put("其他业绩", S1Achievement.class);
         sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
 
-//        sheetAndExcelEntity.put("研究生理论课工作量", S1PostGraduate.class);
-//        sheetAndExcelEntity.put("双肩挑", S1ShoulderBoth.class);
-//
         sheetAndExcelEntity.put("学评教", S2Evaluation.class);
 
         // 汇总表需要灵活处理！

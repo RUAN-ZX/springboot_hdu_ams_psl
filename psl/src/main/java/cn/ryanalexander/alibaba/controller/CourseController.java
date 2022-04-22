@@ -53,17 +53,18 @@ public class CourseController {
             case "1":
                 return new Result(courseMapper.selectList(new QueryWrapper<CoursePO>()
                         .eq("course_teacher_id", teacherId)
-                        .ne("course_term", time))
+                        .eq("course_term", time)
+                        .ne("course_properties", "I"))
                 );
             case "2":
                 return new Result(shortTermMapper.selectList(new QueryWrapper<ShortTermPO>()
                         .eq("short_term_teacher_id", teacherId)
-                        .ne("short_term_term", time))
+                        .eq("short_term_term", time))
                 );
             default:
                 return new Result(thesisDesignMapper.selectList(new QueryWrapper<ThesisDesignPO>()
                         .eq("thesis_design_teacher_id", teacherId)
-                        .ne("thesis_design_year", time))
+                        .eq("thesis_design_year", time))
                 );
         }
 

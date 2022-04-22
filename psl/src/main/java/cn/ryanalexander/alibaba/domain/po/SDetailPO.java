@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @TableName(value ="s_detail")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class SDetailPO implements Serializable {
     /**
      * 
@@ -76,7 +79,8 @@ public class SDetailPO implements Serializable {
     /**
      * 
      */
-    private String s34Data;
+    private String s3Data;
+    private String s4Data;
 
     /**
      * 
@@ -121,7 +125,6 @@ public class SDetailPO implements Serializable {
         sb.append(", s2ScoreAvg=").append(s2ScoreAvg);
         sb.append(", s2Rank=").append(s2Rank);
         sb.append(", s2Score=").append(s2Score);
-        sb.append(", s34Data=").append(s34Data);
         sb.append(", s3Score=").append(s3Score);
         sb.append(", s4Score=").append(s4Score);
         sb.append(", sScore=").append(sScore);

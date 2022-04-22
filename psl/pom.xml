@@ -24,6 +24,13 @@
             <artifactId>pulsar-client-messagecrypto-bc</artifactId>
             <version>2.6.1</version>
         </dependency>
+
+        <!-- SpringCloud Ailibaba Nacos Config -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
