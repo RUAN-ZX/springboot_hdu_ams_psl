@@ -12,25 +12,16 @@
     <packaging>pom</packaging><!-- 这里添加，注意不是jar或war -->
 
     <modules>
-
-        <module>common</module>
-        <module>provider-payment-9001</module>
-        <module>provider-payment-9002</module>
-        <module>sentinel-8401</module>
-        <module>consumer-order-80</module>
-        <module>seata-storage-2002</module>
-        <module>seata-account-2003</module>
         <module>psl</module>
-        <module>mybatisTest</module>
     </modules>
 
     <!-- 统一管理jar包版本 这里就是一个变量替换 子文件也可以用 但是推荐父亲文件里边用 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
-        <spring.version>2.2.2.RELEASE</spring.version>
+        <spring.version>2.3.4.RELEASE</spring.version>
         <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
         <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>
 
@@ -221,9 +212,21 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>
+                    <source>11</source>
+                    <target>11</target>
+                    <fork>true</fork>
+<!--                    <skipTests>true</skipTests>-->
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.6.3</version>
+                <version>${spring.version}</version>
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>

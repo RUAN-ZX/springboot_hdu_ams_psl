@@ -6,6 +6,7 @@ import cn.ryanalexander.alibaba.domain.po.CoursePO;
 import cn.ryanalexander.alibaba.mapper.AchievementMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class AchievementController {
     private AchievementMapper achievementMapper;
 
     @ApiOperation("get Achievement By TeacherId")
-    @PostMapping("/getByTeacherIdAndYear")
+    @GetMapping("/getByTeacherIdAndYear")
     public Result getByTeacherId(String teacherId, String year){
         return new Result(achievementMapper.selectList(new QueryWrapper<AchievementPO>()
                 .eq("achievement_teacher_id", teacherId)
@@ -35,7 +36,7 @@ public class AchievementController {
     }
 
     @ApiOperation("get years record by teacher Id")
-    @PostMapping("/getYears")
+    @GetMapping("/getYears")
     public Result getYears(String teacherId){
         return new Result(achievementMapper.selectObjs(new QueryWrapper<AchievementPO>()
                 .select("distinct achievement_year")

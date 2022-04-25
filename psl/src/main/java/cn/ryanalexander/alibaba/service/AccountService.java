@@ -14,6 +14,7 @@ public interface AccountService extends IService<AccountPO> {
     void updatePwdById(String t_id, String t_pwd);
 
     JSONObject refreshBothToken(String tid);
+    String refreshAccess(String tid);
 
     String getEmailById(String Tid);
 

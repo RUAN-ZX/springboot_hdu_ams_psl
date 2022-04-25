@@ -14,7 +14,7 @@ import java.util.Date;
  * @author ryan 2022/4/18 10:53
  * @since 1.0.0
  **/
-@Component
+//@Component
 public class MPMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {

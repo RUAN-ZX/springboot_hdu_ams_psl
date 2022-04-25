@@ -12,6 +12,7 @@ CREATE TABLE `account` (
   `account_mail` VARCHAR(50) DEFAULT NULL, # 保持最新状态就行了！
 	`account_phone` CHAR(11) DEFAULT NULL, # 13713524786
   `account_pwd` VARCHAR(20) DEFAULT NULL, 
+	`account_role` TINYINT(1) UNSIGNED DEFAULT NULL, # 0 1 2 teacher manager root
   PRIMARY KEY (`account_id`),
 	UNIQUE KEY `uk_account_id_name` (`account_id`,`account_name`)
 --   CONSTRAINT `tdid_did_fk` FOREIGN KEY (`TDid`) REFERENCES `D` (`Did`)

@@ -5,6 +5,8 @@ import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.alibaba.domain.exceptions.code.ErrorCodeEnum;
 import cn.ryanalexander.alibaba.domain.exceptions.AppException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,8 @@ import java.util.List;
 @Slf4j
 @ControllerAdvice
 public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
-	
+	// HandlerInterceptorAdapter postHandler拦截器无法更改response 用BodyAdvice还可行 至少可以统一封装
+    //todo 不知道可否实现每次请求完刷新access 而且在返回头里边！
 	
 	//定义不走控制器增强器的返回类型
     /**
@@ -46,19 +49,13 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         Class<?> parameterType = methodParameter.getParameterType();
-        if (notSupports.contains(parameterType)) {
-            return false;
-        }
-        return true;
+        return !notSupports.contains(parameterType);
     }
 	
 	//封装返回数据
     @Override
-    public Result beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        if (o != null) {
-            return new Result(o);
-        }
-        return null;
+    public Result beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+        return new Result(body); // 配合 WebConfiguration 我们配置了不适用String转换器！
     }
 
 	
@@ -78,7 +75,7 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(value = AppException.class)
     public Result errorHandler(AppException e) {
         log.error(e.toString(), e);
-        return new Result(e.getErrorCode(), e.getExceptionInfoList(), e.getMessage());
+        return new Result(new ErrorCode(SubjectEnum.USER), e.getExceptionInfoList(), e.getMessage());
     }
 
 

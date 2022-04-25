@@ -1,6 +1,8 @@
 package cn.ryanalexander.alibaba.config;
 
 
+import cn.ryanalexander.alibaba.service.tool.StaticConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -12,12 +14,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
+    @Resource
+    private StaticConfiguration StaticConfiguration;
 
     private ApiInfo getApiInfo(){
         Contact contact = new Contact("阮菜鸡", "http://sayhitotheworld.ryanalexander.cn/", "1162179851@qq.com");
@@ -33,7 +38,7 @@ public class SwaggerConfig {
         );
     }
     @Bean
-    public Docket docket_1(Environment environment){
+    public Docket docket(Environment environment){
 
         Profiles profiles = Profiles.of("dev");
         boolean b = environment.acceptsProfiles(profiles);
@@ -41,7 +46,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enable(b)
                 .apiInfo(getApiInfo())
-                .groupName("interface 1")
+                .groupName("psl")
+                .enable(StaticConfiguration.getSwaggerEnable())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("cn.ryanalexander.alibaba"))
 //                .paths(PathSelectors.ant("/ryan/**"))
@@ -49,21 +55,21 @@ public class SwaggerConfig {
 
     }
 
-    @Bean
-    public Docket docket_2(Environment environment){
-
-        Profiles profiles = Profiles.of("dev");
-        boolean b = environment.acceptsProfiles(profiles);
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .enable(b)
-                .apiInfo(getApiInfo())
-                .groupName("interface 2")
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ryanalexander.minipro"))
-//                .paths(PathSelectors.ant("/ryan/**"))
-                .build();
-
-    }
+//    @Bean
+//    public Docket docket_2(Environment environment){
+//
+//        Profiles profiles = Profiles.of("dev");
+//        boolean b = environment.acceptsProfiles(profiles);
+//
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .enable(b)
+//                .apiInfo(getApiInfo())
+//                .groupName("interface 2")
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("com.ryanalexander.minipro"))
+////                .paths(PathSelectors.ant("/ryan/**"))
+//                .build();
+//
+//    }
 
 }

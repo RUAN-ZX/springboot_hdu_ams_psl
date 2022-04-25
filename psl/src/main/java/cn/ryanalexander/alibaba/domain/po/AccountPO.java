@@ -49,7 +49,6 @@ public class AccountPO implements Serializable {
     public AccountPO(TitleInfo titleInfo){
         accountId = DataUtil.string2integer(titleInfo.getTeacherId());
         accountName = titleInfo.getTeacherName();
-
     }
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

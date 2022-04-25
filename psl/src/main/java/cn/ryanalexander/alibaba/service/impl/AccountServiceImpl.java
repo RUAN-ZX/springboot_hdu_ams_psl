@@ -51,9 +51,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 
     // TODO: 2022/3/24 这里的逻辑还有大问题 如果redis主键更新了 mail炸了 或者反之 这个rollback是个大问题！
     private void updateKey(String accountId, RedisKeyEnum key,
-                           String value, int nums, TimeUnit timeUnit){
+                           String value, int nums){
         try{
-            redisTemplate.opsForValue().set(accountId+":" + key.key, value, nums, timeUnit);
+            // todo 统一设置为分钟
+            redisTemplate.opsForValue().set(accountId+":" + key.key, value, nums, TimeUnit.MINUTES);
         }
         catch (Exception e){
 //            throw new AppException(e, RedisTemplate.class.getSimpleName(), "updateKey");
@@ -91,21 +92,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         verifyKey(accountId, RedisKeyEnum.CAPTCHA, captcha);
     }
 
-//    @Transactional
-    // todo 这里的transactional设计是个问题！
-    public void getCaptcha(String accountId, String accountName, String accountMail){
-        String captcha = this.generateVerCode(accountId);
 
-        try{// TODO: 2022/3/23 这里还需要改进异步调用 以及异步成功回调updateKey的逻辑！
-            emailService.sendCaptchaMails(captcha, accountName, accountMail);
-            int captchaExpire = staticConfiguration.getCaptchaExpire();
-            updateKey(accountId, RedisKeyEnum.CAPTCHA,
-                    captcha, captchaExpire, TimeUnit.MINUTES);
-        }
-        catch (MessagingException | IOException e){
-            throw new AppException(e, "Captcha", "getCaptcha");
-        }
-    }
 
     /**
      *
@@ -118,14 +105,39 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         int accessExpire = staticConfiguration.getAccessExpire();
         int refreshExpire = staticConfiguration.getRefreshExpire();
 
-        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire,TimeUnit.DAYS);
-        updateKey(Tid, RedisKeyEnum.REFRESH, refresh, refreshExpire,TimeUnit.DAYS);
+        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire);
+        updateKey(Tid, RedisKeyEnum.REFRESH, refresh, refreshExpire);
 
         JSONObject json_ = new JSONObject();
         json_.put(RedisKeyEnum.ACCESS.key, access);
         json_.put(RedisKeyEnum.REFRESH.key, refresh);
         return json_;
     }
+    // 一定是verify之后再refresh的！verify如果有问题 直接throw exception 然后输出code = 1
+    public String refreshAccess(String Tid){
+        String access = JwtService.getAccessToken(Tid);
+        int accessExpire = staticConfiguration.getAccessExpire();
+
+        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire);
+        return access;
+    }
+
+//    @Transactional
+    // todo 这里的transactional设计是个问题！
+    public void getCaptcha(String accountId, String accountName, String accountMail){
+        String captcha = this.generateVerCode(accountId);
+
+        try{// TODO: 2022/3/23 这里还需要改进异步调用 以及异步成功回调updateKey的逻辑！
+            emailService.sendCaptchaMails(captcha, accountName, accountMail);
+            int captchaExpire = staticConfiguration.getCaptchaExpire();
+            updateKey(accountId, RedisKeyEnum.CAPTCHA,
+                    captcha, captchaExpire);
+        }
+        catch (MessagingException | IOException e){
+            throw new AppException(e, "Captcha", "getCaptcha");
+        }
+    }
+
     // --------------------------
     @Override
     public void updatePwdById(String t_id, String t_pwd){

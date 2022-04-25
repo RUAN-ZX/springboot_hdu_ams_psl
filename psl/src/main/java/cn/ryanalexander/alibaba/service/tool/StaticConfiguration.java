@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 @ConfigurationProperties(prefix="service")
 public class StaticConfiguration {
+    private Boolean swaggerEnable;
     private String excelReadUrl;
     private String excelWriteUrl;
     private String mailUrl;

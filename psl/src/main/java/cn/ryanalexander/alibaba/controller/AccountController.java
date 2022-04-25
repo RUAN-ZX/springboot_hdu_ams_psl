@@ -10,11 +10,14 @@ import cn.ryanalexander.alibaba.domain.exceptions.NotFoundException;
 import cn.ryanalexander.alibaba.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.alibaba.domain.po.AccountPO;
 import cn.ryanalexander.alibaba.domain.po.SDetailPO;
+import cn.ryanalexander.alibaba.processor.annotationIntercept.Require;
+import cn.ryanalexander.alibaba.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.alibaba.service.*;
 import cn.ryanalexander.alibaba.service.tool.EmailService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,32 +31,32 @@ public class AccountController {
     @Resource
     private AccountService accountService;
 
-    @Resource
-    private EmailService emailservice;
-
-
-    @ApiOperation("通过token验证")
-    @PostMapping("/loginByAccess")
-    public Result loginByAccess(String accountId, String access){
-        accountService.verifyAccess(accountId,access);
-        JSONObject jsonObject = accountService.refreshBothToken(accountId);
-        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(accountId).getAccountName());
-        return new Result(jsonObject);
+    @Require(RoleEnum.TEACHER)
+    @ApiOperation("通过access登录 刷新refresh token")
+    @GetMapping("/loginByAccess")
+    public Object loginByAccess(String accountId){
+        JSONObject result = new JSONObject();
+        result.put(RedisKeyEnum.ACCESS.key, accountService.refreshAccess(accountId));
+        result.put(RedisKeyEnum.ACCOUNT.key, accountService.refreshAccess(accountId));
+        return result;
     }
 
-    @ApiOperation("通过refresh token更新access token")
-    @PostMapping("/refresh")
-    public Result refresh(String accountId, String refresh){
-//        if(accountService.verifyRefresh(Tid,refresh)){
-//            JSONObject jsonObject = accountService.refreshBothToken(Tid);
-//            jsonObject.put(KeyEnum.ACCOUNT.key, accountService.getById(Tid).getAccountName());
-//            return new Result(ErrorCodeEnum.SUCCESS, jsonObject);
-//        }
-//        else throw new UnKnownException(AccountController.class, "refresh");
-        accountService.verifyRefresh(accountId,refresh); // 如果有问题 里边就排除完毕 不需要外边看了
+    // 无所谓 是个用户都应该享有这种权利！
+    @Require(RoleEnum.TEACHER)
+    @ApiOperation("客户端定时刷新 or loginByAccess都行 类似续杯1小时")
+    @GetMapping("/refreshAccess")
+    public Object refreshAccess(String accountId){
+        return accountService.refreshAccess(accountId);
+    }
+
+    // 用过一次就失效！
+    @Require(RoleEnum.EXPIRED)
+    @ApiOperation("通过refresh token更新access token 适用于中间1分钟客户端没跑 但是没超过15天")
+    @GetMapping("/refresh")
+    public Object refresh(String accountId){
         JSONObject jsonObject = accountService.refreshBothToken(accountId);
         jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(accountId).getAccountName());
-        return new Result(jsonObject);
+        return jsonObject;
     }
 
     /**
@@ -73,8 +76,8 @@ public class AccountController {
      *
      */
     @ApiOperation("登录 或者说注册 反正验证一波")
-    @PostMapping("/loginByPwd")
-    public Result loginByPwd(String accountId, String accountPwd){
+    @GetMapping("/loginByPwd")
+    public Object loginByPwd(String accountId, String accountPwd){
 //        String accountId = JSONObject.parseObject(AesService.decrypt(temp))
 //                .getString("accountId");
 //
@@ -106,37 +109,37 @@ public class AccountController {
 
         JSONObject jsonObject = accountService.refreshBothToken(accountId);
         jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
-        return new Result(jsonObject);
+        return jsonObject;
     }
     @ApiOperation("获取验证码")
-    @PostMapping("/getCaptcha")
-    public Result getCaptcha(String accountId) throws Exception {
-
+    @GetMapping("/getCaptcha")
+    public Object getCaptcha(String accountId) throws Exception {
         Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
         AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
         String Tname = accountPO.getAccountName();
         String Temail = accountPO.getAccountMail();
 
         accountService.getCaptcha(accountId, Tname, Temail);
-        return new Result("验证码已发送到您的邮箱"+Temail+" 10分钟内有效");
+        return Temail;
     }
 
-
+    @Require(RoleEnum.TEACHER)
     @ApiOperation("更改密码")
-    @PostMapping("/updatePwd")
-    public Result updatePwd(String accountId, String accountPwd, String access){
-        // TODO: 2022/3/23 迟早需要设计成 打了注解的标注必须verify access token 没打的不用 这种形式！
+    @GetMapping("/updatePwd")
+    public Object updatePwd(String accountId, String accountPwd){
         // 现在已经实现了 只要verify出了问题 里边直接throw异常就好 所以解耦的差不多了
-        accountService.verifyAccess(accountId,access);
         accountService.updatePwdById(accountId,accountPwd);
-        return new Result("修改完成");
+        return accountPwd;
     }
+
+    @Require(RoleEnum.TEACHER)
     @ApiOperation("获取Email地址")
-    @PostMapping("/getEmailById")
-    public Result getEmailById(String accountId, String access){
-        accountService.verifyAccess(accountId, access);
-        return new Result(accountService.getEmailById(accountId));
+    @GetMapping("/getEmailById")
+    public Object getEmailById(String accountId){
+        return accountService.getEmailById(accountId);
     }
+
+
 }
 
 
