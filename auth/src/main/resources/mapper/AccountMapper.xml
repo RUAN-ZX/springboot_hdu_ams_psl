@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.auth.mapper.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.auth.domain.po.AccountPO">
+            <id property="accountId" column="account_id" jdbcType="INTEGER"/>
+            <result property="accountPwd" column="account_pwd" jdbcType="VARCHAR"/>
+            <result property="accountName" column="account_name" jdbcType="VARCHAR"/>
+            <result property="accountMail" column="account_mail" jdbcType="VARCHAR"/>
+            <result property="accountStatus" column="account_status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        account_id,account_pwd,account_name,
+        account_mail,account_status
+    </sql>
+</mapper>

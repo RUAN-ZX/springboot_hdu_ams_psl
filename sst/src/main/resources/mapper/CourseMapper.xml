@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.sst.mapper.CourseMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.CoursePO">
+            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
+            <result property="courseUserId" column="course_user_id" jdbcType="OTHER"/>
+            <result property="courseClass1" column="course_class1" jdbcType="VARCHAR"/>
+            <result property="courseClass2" column="course_class2" jdbcType="VARCHAR"/>
+            <result property="courseClass3" column="course_class3" jdbcType="VARCHAR"/>
+            <result property="courseClass4" column="course_class4" jdbcType="VARCHAR"/>
+            <result property="courseClass5" column="course_class5" jdbcType="VARCHAR"/>
+            <result property="courseClass6" column="course_class6" jdbcType="VARCHAR"/>
+            <result property="courseClass7" column="course_class7" jdbcType="VARCHAR"/>
+            <result property="courseClass8" column="course_class8" jdbcType="VARCHAR"/>
+            <result property="courseDayWeek" column="course_day_week" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        course_id,course_user_id,course_class1,
+        course_class2,course_class3,course_class4,
+        course_class5,course_class6,course_class7,
+        course_class8,course_day_week
+    </sql>
+</mapper>

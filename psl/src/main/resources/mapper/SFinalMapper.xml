@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ryanalexander.alibaba.mapper.SFinalMapper">
+<mapper namespace="cn.ryanalexander.psl.mapper.SFinalMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.SFinalPO">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.SFinalPO">
             <id property="sFinalId" column="s_final_id" jdbcType="INTEGER"/>
             <result property="sFinalTeacherName" column="s_final_teacher_name" jdbcType="VARCHAR"/>
             <result property="sFinalTeacherId" column="s_final_teacher_id" jdbcType="INTEGER"/>
@@ -37,7 +37,7 @@
         s_final_course_main = r7,s_final_note = r8
     </insert>
 
-    <select id="selectSFinalByTeacherId" resultType="cn.ryanalexander.alibaba.domain.po.SFinalPO">
+    <select id="selectSFinalByTeacherId" resultType="cn.ryanalexander.psl.domain.po.SFinalPO">
         select * from s_final where s_final_teacher_id=#{teacherId} and s_final_year=#{year} limit 1;
     </select>
 </mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.sst.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.UserPO">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="userAlias" column="user_alias" jdbcType="VARCHAR"/>
+            <result property="userPwd" column="user_pwd" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+            <result property="userRole" column="user_role" jdbcType="TINYINT"/>
+            <result property="userStatus" column="user_status" jdbcType="TINYINT"/>
+            <result property="userPresentClassId" column="user_present_class_id" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,user_alias,user_pwd,
+        user_name,user_phone,user_role,
+        user_status,user_present_class_id
+    </sql>
+</mapper>

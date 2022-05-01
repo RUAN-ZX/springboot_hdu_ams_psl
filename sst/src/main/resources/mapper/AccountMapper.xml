@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.sst.mapper.AccountMapper">
+
+    <sql id="Base_Column_List">
+        account_id,account_name,account_mail,
+        account_phone,account_pwd
+    </sql>
+
+    <insert id="saveOrUpdateBatchByMail" parameterType="java.util.List">
+        insert into account(account_id, account_name, account_mail) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.accountId},#{item.accountName},#{item.accountMail})
+        </foreach>
+        AS t1(r1, r2, r3) ON DUPLICATE KEY UPDATE
+        account_mail = r3, account_name = r2
+    </insert>
+
+<!--    有一点需要注意 空集合不能传进来！ -->
+    <insert id="saveOrIgnoreBatchByNameAndId" parameterType="java.util.List">
+        insert ignore into account(account_id, account_name) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.accountId},#{item.accountName})
+        </foreach>
+    </insert>
+
+    <select id="selectOneByTid" resultType="java.lang.String">
+        select account_name from account where account_id=#{teacherId} limit 1
+    </select>
+<!--这个会去重！！！！所以根本不对应结果的-->
+<!--    <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.String">-->
+<!--        select account_id from account where account_name in-->
+<!--        <foreach collection="items" item="item" separator="," open="(" close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--    </select>-->
+<!--    使用ifnull 实现不去重 毕竟有些查不到的结果即为0即可 就放着 -->
+    <select id="selectBatchIdByName" parameterType="java.util.List" resultType="java.lang.Integer">
+        <foreach collection="items" item="item" separator="union all">
+            select ifnull((select account_id from account where account_name=#{item} limit 1), 0)
+        </foreach>
+    </select>
+
+
+</mapper>

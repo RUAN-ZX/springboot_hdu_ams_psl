@@ -2,36 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ryanalexander.alibaba.mapper.SDetailMapper">
+<mapper namespace="cn.ryanalexander.psl.mapper.SDetailMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.SDetailPO">
-            <id property="sDetailId" column="s_detail_id" jdbcType="INTEGER"/>
-            <result property="sDetailTeacherId" column="s_detail_teacher_id" jdbcType="INTEGER"/>
-            <result property="sDetailTeacherName" column="s_detail_teacher_name" jdbcType="VARCHAR"/>
-            <result property="sDetailYear" column="s_detail_year" jdbcType="SMALLINT"/>
-            <result property="s1Kpi" column="s1_kpi" jdbcType="DOUBLE"/>
-            <result property="s1Score" column="s1_score" jdbcType="DOUBLE"/>
-            <result property="s2Score1" column="s2_score1" jdbcType="DOUBLE"/>
-            <result property="s2Score2" column="s2_score2" jdbcType="DOUBLE"/>
-            <result property="s2ScoreAvg" column="s2_score_avg" jdbcType="DOUBLE"/>
-            <result property="s2Rank" column="s2_rank" jdbcType="SMALLINT"/>
-            <result property="s2Score" column="s2_score" jdbcType="DOUBLE"/>
-            <result property="s34Data" column="s34_data" jdbcType="VARCHAR"/>
-            <result property="s3Score" column="s3_score" jdbcType="DOUBLE"/>
-            <result property="s4Score" column="s4_score" jdbcType="DOUBLE"/>
-            <result property="sScore" column="s_score" jdbcType="DOUBLE"/>
-            <result property="sNote" column="s_note" jdbcType="VARCHAR"/>
-    </resultMap>
 
-    <sql id="Base_Column_List">
-        s_detail_id,s_detail_teacher_id,s_detail_teacher_name,
-        s_detail_year,s1_kpi,s1_score,
-        s2_score1,s2_score2,s2_score_avg,
-        s2_rank,s2_score,s34_data,
-        s3_score,s4_score,s_score,
-        s_note
-    </sql>
-    <select id="selectSDetailByTeacherId" resultType="cn.ryanalexander.alibaba.domain.po.SDetailPO">
+    <select id="selectSDetailByTeacherId" resultType="cn.ryanalexander.psl.domain.po.SDetailPO">
         select * from s_detail where s_detail_teacher_id=#{teacherId} and s_detail_year=#{year} limit 1;
     </select>
 </mapper>

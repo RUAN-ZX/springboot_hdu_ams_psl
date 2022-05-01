@@ -5,26 +5,35 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>cn.ryanalexander.alibaba</groupId>
+    <groupId>cn.ryanalexander</groupId>
     <artifactId>LearnCloud</artifactId>
     <version>1.0.0</version>
     <!--  mvn versions:set -DnewVersion=1.0.0  统一修改！ -->
-    <packaging>pom</packaging><!-- 这里添加，注意不是jar或war -->
+    <packaging>pom</packaging><!-- 这里添加，父亲用pom 儿子用jar -->
 
     <modules>
         <module>psl</module>
+        <module>sst</module>
+        <module>auth</module>
     </modules>
-
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
     <!-- 统一管理jar包版本 这里就是一个变量替换 子文件也可以用 但是推荐父亲文件里边用 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <spring.version>2.3.4.RELEASE</spring.version>
+<!--        <spring.boot.version>2.3.2.RELEASE</spring.boot.version>-->
+<!--        <spring.cloud.version>Hoxton.SR9</spring.cloud.version>-->
+<!--        <spring.cloud.alibaba.version>2.2.6.RELEASE</spring.cloud.alibaba.version>-->
+        <spring.boot.version>2.3.2.RELEASE</spring.boot.version>
         <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
         <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>
-
         <junit.version>4.13.2</junit.version>
 
         <lombok.version>1.18.12</lombok.version>
@@ -44,7 +53,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -69,22 +78,34 @@
     </dependencyManagement>
     <!--  常用工具可以不需要多版本控制了。。-->
     <dependencies>
-        <!--    我们自己的公共组件！-->
-<!--        <dependency>-->
-<!--            <artifactId>common</artifactId>-->
-<!--            <groupId>cn.ryanalexander.alibaba</groupId>-->
-<!--            <version>1.0.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-logging</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>*</groupId>-->
-<!--                    <artifactId>*</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--             自己的公共类-->
+        <dependency>
+            <groupId>cn.ryanalexander.common</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!--        nacos 获取config-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!--        服务发现-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--        RPC openfeign调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--hystrix 服务降级-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -133,11 +154,11 @@
         <!--    数据库连接相关    -->
 
         <!--druid-->
-            <dependency>
-              <groupId>com.alibaba</groupId>
-              <artifactId>druid</artifactId>
-              <version>${druid.version}</version>
-            </dependency>
+        <dependency>
+          <groupId>com.alibaba</groupId>
+          <artifactId>druid</artifactId>
+          <version>${druid.version}</version>
+        </dependency>
 
 
         <!--    工具类    -->
@@ -211,22 +232,22 @@
     <!--    为了添加热部署插件 -->
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>11</release>
-                    <source>11</source>
-                    <target>11</target>
-                    <fork>true</fork>
-<!--                    <skipTests>true</skipTests>-->
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.8.0</version>-->
+<!--                <configuration>-->
+<!--                    <release>11</release>-->
+<!--                    <source>11</source>-->
+<!--                    <target>11</target>-->
+<!--                    <fork>true</fork>-->
+<!--&lt;!&ndash;                    <skipTests>true</skipTests>&ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>

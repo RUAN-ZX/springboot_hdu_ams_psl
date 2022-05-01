@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.sst.mapper.MissionMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.MissionPO">
+            <id property="missionId" column="mission_id" jdbcType="OTHER"/>
+            <id property="missionQuestionId" column="mission_question_id" jdbcType="OTHER"/>
+            <result property="missionTeacherId" column="mission_teacher_id" jdbcType="INTEGER"/>
+            <result property="missionStudentId" column="mission_student_id" jdbcType="INTEGER"/>
+            <result property="missionClassId" column="mission_class_id" jdbcType="OTHER"/>
+            <result property="missionIsFinished" column="mission_is_finished" jdbcType="TINYINT"/>
+            <result property="missionTimeFinished" column="mission_time_finished" jdbcType="DATE"/>
+            <result property="missionTimeStart" column="mission_time_start" jdbcType="DATE"/>
+            <result property="missionTimeEnd" column="mission_time_end" jdbcType="DATE"/>
+            <result property="missionDescription" column="mission_description" jdbcType="VARCHAR"/>
+            <result property="missionLessonId" column="mission_lesson_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        mission_id,mission_question_id,mission_teacher_id,
+        mission_student_id,mission_class_id,mission_is_finished,
+        mission_time_finished,mission_time_start,mission_time_end,
+        mission_description,mission_lesson_id
+    </sql>
+</mapper>

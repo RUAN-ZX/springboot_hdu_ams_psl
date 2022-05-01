@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ryanalexander.alibaba.mapper.S1DetailMapper">
+<mapper namespace="cn.ryanalexander.psl.mapper.S1DetailMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.S1DetailPO">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.S1DetailPO">
             <id property="s1DetailId" column="s1_detail_id" jdbcType="INTEGER"/>
             <result property="s1DetailTeacherId" column="s1_detail_teacher_id" jdbcType="INTEGER"/>
             <result property="s1DetailTeacherName" column="s1_detail_teacher_name" jdbcType="VARCHAR"/>
@@ -29,5 +29,6 @@
         s1_kpi_achievement2,s1_kpi_special_assignment,s1_kpi_shoulder_both,
         s1_kpi_postgraduate,s1_kpi,s1_score
     </sql>
+
 
 </mapper>

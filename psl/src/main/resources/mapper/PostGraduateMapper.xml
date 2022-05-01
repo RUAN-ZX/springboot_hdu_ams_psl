@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ryanalexander.alibaba.mapper.PostGraduateMapper">
+<mapper namespace="cn.ryanalexander.psl.mapper.PostGraduateMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.PostGraduatePO">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.PostGraduatePO">
             <id property="postGraduateId" column="post_graduate_id" jdbcType="INTEGER"/>
             <result property="postGraduateYear" column="post_graduate_year" jdbcType="INTEGER"/>
             <result property="postGraduateTeacherId" column="post_graduate_teacher_id" jdbcType="INTEGER"/>

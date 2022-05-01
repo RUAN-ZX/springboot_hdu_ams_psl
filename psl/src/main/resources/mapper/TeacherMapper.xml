@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ryanalexander.alibaba.mapper.TeacherMapper">
+<mapper namespace="cn.ryanalexander.psl.mapper.TeacherMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.alibaba.domain.po.TeacherPO">
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.TeacherPO">
             <id property="teacherTitleId" column="teacher_title_id" jdbcType="INTEGER"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
