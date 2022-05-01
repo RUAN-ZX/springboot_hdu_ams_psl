@@ -35,12 +35,6 @@ public class Result {
         this.msg = errorCode.getMsg();
     }
 
-//    public Result(ErrorCode errorCode, Object data) {
-//        this.data = data;
-//        this.code = errorCode.getCode();
-//        this.msg = errorCode.getMsg();
-//    }
-
     public Result(ErrorCode errorCode, String msg) {
         this.code = errorCode.getCode();
         this.msg = msg;

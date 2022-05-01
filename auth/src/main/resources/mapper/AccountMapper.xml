@@ -4,16 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ryanalexander.auth.mapper.AccountMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.auth.domain.po.AccountPO">
-            <id property="accountId" column="account_id" jdbcType="INTEGER"/>
-            <result property="accountPwd" column="account_pwd" jdbcType="VARCHAR"/>
-            <result property="accountName" column="account_name" jdbcType="VARCHAR"/>
-            <result property="accountMail" column="account_mail" jdbcType="VARCHAR"/>
-            <result property="accountStatus" column="account_status" jdbcType="TINYINT"/>
-    </resultMap>
 
-    <sql id="Base_Column_List">
-        account_id,account_pwd,account_name,
-        account_mail,account_status
-    </sql>
+    <!--    查教务 统一导入的！ 重复了不管 如果需要更改 也是很少数 让老师自己改去 提交申请 一个改容易的！  -->
+    <insert id="saveOrIgnoreBatchByAccount" parameterType="java.util.List"
+            useGeneratedKeys="true" keyProperty="account_id">
+        insert ignore into account(account_mail, account_user_id, account_app) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.accountMail},#{item.accountUserId},#{item.accountApp})
+        </foreach>
+    </insert>
 </mapper>

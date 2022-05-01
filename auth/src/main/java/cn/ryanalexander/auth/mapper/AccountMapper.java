@@ -1,7 +1,11 @@
 package cn.ryanalexander.auth.mapper;
 
 import cn.ryanalexander.auth.domain.po.AccountPO;
+import cn.ryanalexander.common.domain.dto.Account;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.ArrayList;
 
 /**
 * @author ryan
@@ -10,7 +14,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.ryanalexander.auth.domain.po.AccountPO
 */
 public interface AccountMapper extends BaseMapper<AccountPO> {
+    void saveOrIgnoreBatchByAccount(@Param("items") ArrayList<Account> accounts);
 
+    // 因为对于insert ignore
+//    void getIdsByAccount(@Param("items") ArrayList<Account> accounts);
 }
 
 

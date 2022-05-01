@@ -1,9 +1,24 @@
+DROP DATABASE IF EXISTS `sst`;
 CREATE DATABASE `sst` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
 USE `sst`;
 
-DROP TABLE IF EXISTS `class`;
 
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `user_id` int(10) NOT NULL, # 与auth不需要相同！每个业务有自己的需要！
+  `user_account_id` int(10) NOT NULL, # 与auth相同！ 先auth登记 auth可行 我们拿auth返回的id制造我们的user！
+	
+  `user_alias` varchar(12) NOT NULL,
+  `user_name` varchar(12) NOT NULL,
+  `user_role` tinyint(1) DEFAULT '0', # 自己的拦截器 自己去鉴权就行了 反正也有userService 检查一下role 然后做限制！ 但是auth不会管这个 每个应用的role不一样！
+  `user_status` tinyint(1) DEFAULT '0',
+  `user_present_class_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+
+
+DROP TABLE IF EXISTS `class`;
 CREATE TABLE `class` (
   `class_id` int(10) NOT NULL AUTO_INCREMENT,
   `class_name` varchar(12) DEFAULT NULL, # 默认为空的班级名称
@@ -151,17 +166,6 @@ insert  into `sprites_inventory`(`sprites_inventory_id`,`sprites_inventory_user_
 
 /*Table structure for table `user` */
 
-DROP TABLE IF EXISTS `user`;
-
-CREATE TABLE `user` (
-  `user_id` int(10) NOT NULL, # 与auth相同！
-  `user_alias` varchar(12) NOT NULL,
-  `user_name` varchar(12) NOT NULL,
-  `user_role` tinyint(1) DEFAULT '0', # 自己的拦截器 自己去鉴权就行了 反正也有userService 检查一下role 然后做限制！ 但是auth不会管这个 每个应用的role不一样！
-  `user_status` tinyint(1) DEFAULT '0',
-  `user_present_class_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `user` */
 

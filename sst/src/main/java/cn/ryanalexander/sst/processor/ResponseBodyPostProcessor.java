@@ -52,7 +52,9 @@ public class ResponseBodyPostProcessor implements ResponseBodyAdvice<Object> {
 	//封装返回数据
     @Override
     public Result beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        return new Result(body); // 配合 WebConfiguration 我们配置了不适用String转换器！
+        return new Result(body);
+        // 配合 WebConfiguration 我们配置了适用String的转换器！
+        // 上面的notSupport名单实现了 如果是Result就不处理！
     }
 
 	

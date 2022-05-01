@@ -17,8 +17,13 @@ public class UserPO implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer userId;
+
+    /**
+     * 
+     */
+    private Integer userAccountId;
 
     /**
      * 
@@ -28,17 +33,7 @@ public class UserPO implements Serializable {
     /**
      * 
      */
-    private String userPwd;
-
-    /**
-     * 
-     */
     private String userName;
-
-    /**
-     * 
-     */
-    private String userPhone;
 
     /**
      * 
@@ -71,10 +66,9 @@ public class UserPO implements Serializable {
         }
         UserPO other = (UserPO) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getUserAccountId() == null ? other.getUserAccountId() == null : this.getUserAccountId().equals(other.getUserAccountId()))
             && (this.getUserAlias() == null ? other.getUserAlias() == null : this.getUserAlias().equals(other.getUserAlias()))
-            && (this.getUserPwd() == null ? other.getUserPwd() == null : this.getUserPwd().equals(other.getUserPwd()))
             && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getUserPhone() == null ? other.getUserPhone() == null : this.getUserPhone().equals(other.getUserPhone()))
             && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
             && (this.getUserStatus() == null ? other.getUserStatus() == null : this.getUserStatus().equals(other.getUserStatus()))
             && (this.getUserPresentClassId() == null ? other.getUserPresentClassId() == null : this.getUserPresentClassId().equals(other.getUserPresentClassId()));
@@ -85,10 +79,9 @@ public class UserPO implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getUserAccountId() == null) ? 0 : getUserAccountId().hashCode());
         result = prime * result + ((getUserAlias() == null) ? 0 : getUserAlias().hashCode());
-        result = prime * result + ((getUserPwd() == null) ? 0 : getUserPwd().hashCode());
         result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getUserPhone() == null) ? 0 : getUserPhone().hashCode());
         result = prime * result + ((getUserRole() == null) ? 0 : getUserRole().hashCode());
         result = prime * result + ((getUserStatus() == null) ? 0 : getUserStatus().hashCode());
         result = prime * result + ((getUserPresentClassId() == null) ? 0 : getUserPresentClassId().hashCode());
@@ -102,10 +95,9 @@ public class UserPO implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", userId=").append(userId);
+        sb.append(", userAccountId=").append(userAccountId);
         sb.append(", userAlias=").append(userAlias);
-        sb.append(", userPwd=").append(userPwd);
         sb.append(", userName=").append(userName);
-        sb.append(", userPhone=").append(userPhone);
         sb.append(", userRole=").append(userRole);
         sb.append(", userStatus=").append(userStatus);
         sb.append(", userPresentClassId=").append(userPresentClassId);

@@ -1,6 +1,7 @@
 package cn.ryanalexander.auth.service;
 
 import cn.ryanalexander.auth.domain.po.AccountPO;
+import cn.ryanalexander.common.enums.AppKeyEnum;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,10 +12,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface AccountService extends IService<AccountPO> {
 
-    void updatePwdById(String t_id, String t_pwd);
+    void updatePwdById(String accountId, String accountPwd);
 
-    JSONObject refreshBothToken(String tid);
-    JSONObject refreshAccess(String tid);
+    JSONObject refreshBothToken(String accountId, AppKeyEnum accountApp);
+    JSONObject refreshAccess(String accountId, AppKeyEnum accountApp);
 
     String getEmailById(String Tid);
 
@@ -29,8 +30,8 @@ public interface AccountService extends IService<AccountPO> {
         return true;
     }
 
-    void verifyRefresh(String accountId, String refresh);
-    void verifyAccess(String accountId, String refresh);
-    void verifyCaptcha(String accountId, String captcha);
-    void getCaptcha(String keyName, String callName, String roleName, String mailTo);
+    void verifyRefresh(String accountId, AppKeyEnum accountApp, String refresh);
+    void verifyAccess(String accountId, AppKeyEnum accountApp, String refresh);
+    void verifyCaptcha(String accountId, AppKeyEnum accountApp, String captcha);
+    void getCaptcha(String keyName, AppKeyEnum accountApp, String callName, String roleName, String mailTo);
 }

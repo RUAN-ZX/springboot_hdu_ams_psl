@@ -28,10 +28,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         Require require = method.getAnnotation(Require.class);
         // 判断接口是否有Require注解
         if (null == require) return true;
-        // todo 区分简单的几个身份！
+        // todo 这里注意 其实使用userId 因为可以明确 请求的user和account是同一个人！
+        // 没必要设置为accountId 没必要
         if(require.value() != RoleEnum.EXPIRED){
             String access = httpServletRequest.getHeader("access");
-            String accountId = httpServletRequest.getParameterMap().get("accountId")[0];
+            String accountId = httpServletRequest.getHeader("accountId");
 //            accountService.verifyAccess(accountId, access);
             if(require.value() != RoleEnum.ROOT){
 

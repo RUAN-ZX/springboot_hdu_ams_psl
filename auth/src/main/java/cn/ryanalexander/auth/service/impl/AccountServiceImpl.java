@@ -12,6 +12,7 @@ import cn.ryanalexander.common.domain.exceptions.InjectionException;
 import cn.ryanalexander.common.domain.exceptions.NotFoundException;
 import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.enums.AppKeyEnum;
 import cn.ryanalexander.common.service.tool.JwtService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -53,11 +54,12 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
     private static final Random RANDOM = new SecureRandom();
 
     // TODO: 2022/3/24 这里的逻辑还有大问题 如果redis主键更新了 mail炸了 或者反之 这个rollback是个大问题！
-    private void updateKey(String keyName, RedisKeyEnum key,
+    private void updateKey(String keyName, RedisKeyEnum redisKey, AppKeyEnum appKey,
                            String value, int nums){
         try{
+            String key = keyName + ":" + redisKey.key + ":" + appKey.key;
             // todo 统一设置为分钟
-            redisTemplate.opsForValue().set(keyName+":" + key.key, value, nums, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(key, value, nums, TimeUnit.MINUTES);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -72,27 +74,27 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         return new String(nonceChars);
     }
     // 反正总是会报错 不如统一为Result接口 对方就不会收到意外结果
-    private void verifyKey(String Tid, RedisKeyEnum event, String value){
-        String eventName = event.getKey();
+    private void verifyKey(String keyName, RedisKeyEnum redisKey, AppKeyEnum appKey, String value){
+        String key = keyName + ":" + redisKey.key + ":" + appKey.key;
         Optional<Object> codeNullable = Optional.ofNullable(
-                redisTemplate.opsForValue().get(Tid + ":" + eventName));
+                redisTemplate.opsForValue().get(key));
         Object code = codeNullable.orElseThrow(() ->
                 new AppException(null,
-                        new ExceptionInfo(eventName, "redis key 过期 或者压根就没有", "ryanRedisTemplate.opsForValue().get"),
+                        new ExceptionInfo(redisKey.key, "redis key 过期 或者压根就没有", "ryanRedisTemplate.opsForValue().get"),
                         new ErrorCode(SubjectEnum.USER)));
 
         if(!code.equals(value)) throw new AppException(
-                null, new ExceptionInfo(eventName, "redis key 错误", "code.equals"),
+                null, new ExceptionInfo(redisKey.key, "redis key 错误", "code.equals"),
                 new ErrorCode(SubjectEnum.USER));
     }
-    public void verifyAccess(String accountId, String access){
-        verifyKey(accountId, RedisKeyEnum.ACCESS, access);
+    public void verifyAccess(String accountId, AppKeyEnum accountApp, String access){
+        verifyKey(accountId, RedisKeyEnum.ACCESS, accountApp, access);
     }
-    public void verifyRefresh(String accountId, String refresh){
-        verifyKey(accountId, RedisKeyEnum.REFRESH, refresh);
+    public void verifyRefresh(String accountId, AppKeyEnum accountApp, String refresh){
+        verifyKey(accountId, RedisKeyEnum.REFRESH, accountApp, refresh);
     }
-    public void verifyCaptcha(String accountId, String captcha){
-        verifyKey(accountId, RedisKeyEnum.CAPTCHA, captcha);
+    public void verifyCaptcha(String accountId, AppKeyEnum accountApp, String captcha){
+        verifyKey(accountId, RedisKeyEnum.CAPTCHA, accountApp, captcha);
     }
 
 
@@ -102,14 +104,14 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
      * @param Tid
      * 使用空格分隔双token
      */
-    public JSONObject refreshBothToken(String Tid){
+    public JSONObject refreshBothToken(String Tid, AppKeyEnum accountApp){
         String access = JwtService.getAccessToken(Tid);
         String refresh = JwtService.getRefreshToken(Tid);
         int accessExpire = staticConfiguration.getAccessExpire();
         int refreshExpire = staticConfiguration.getRefreshExpire();
 
-        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire);
-        updateKey(Tid, RedisKeyEnum.REFRESH, refresh, refreshExpire);
+        updateKey(Tid, RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
+        updateKey(Tid, RedisKeyEnum.REFRESH, accountApp, refresh, refreshExpire);
 
         JSONObject json_ = new JSONObject();
         json_.put(RedisKeyEnum.ACCESS.key, access);
@@ -117,10 +119,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         return json_;
     }
     // 一定是verify之后再refresh的！verify如果有问题 直接throw exception 然后输出code = 1
-    public JSONObject refreshAccess(String Tid){
+    public JSONObject refreshAccess(String Tid, AppKeyEnum accountApp){
         String access = JwtService.getAccessToken(Tid);
         int accessExpire = staticConfiguration.getAccessExpire();
-        updateKey(Tid, RedisKeyEnum.ACCESS, access, accessExpire);
+        updateKey(Tid, RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
 
         JSONObject result = new JSONObject();
         result.put(RedisKeyEnum.ACCESS.key, access);
@@ -131,14 +133,14 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 //    @Transactional
     // todo 这里的transactional设计是个问题！
     @Async // 放在emailService.sendCaptchaMails里边就没必要了 一般精确到service即可
-    public void getCaptcha(String keyName, String callName, String roleName, String mailTo){
+    public void getCaptcha(String keyName, AppKeyEnum accountApp, String callName, String roleName, String mailTo){
         String captcha = this.generateVerCode();
 
         try{// callName: 黄继业 | roleName: 老师 | 黄继业老师
             emailService.sendCaptchaMails(captcha, callName + roleName, mailTo);
 //            int captchaExpire = 24*60*2;
             int captchaExpire = staticConfiguration.getCaptchaExpire();
-            updateKey(keyName, RedisKeyEnum.CAPTCHA,
+            updateKey(keyName, RedisKeyEnum.CAPTCHA, accountApp,
                     captcha, captchaExpire);
         }
         catch (MessagingException | IOException e){
