@@ -107,7 +107,7 @@ public class AccountController {
     }
     @ApiOperation("获取验证码")
     @GetMapping("/getCaptcha")
-    public Object getCaptcha(String accountId) throws Exception {
+    public Object getCaptcha(String accountId){
         Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
         AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
         String Tname = accountPO.getAccountName();

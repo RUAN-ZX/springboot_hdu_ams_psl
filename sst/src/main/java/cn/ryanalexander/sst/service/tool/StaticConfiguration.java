@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 public class StaticConfiguration {
     private Boolean swaggerEnable;
     private String excelReadUrl;
-    private String excelWriteUrl;
     private String mailUrl;
     private int captchaExpire;
     private int accessExpire;

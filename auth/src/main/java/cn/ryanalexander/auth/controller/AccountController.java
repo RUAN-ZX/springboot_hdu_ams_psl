@@ -3,24 +3,22 @@ package cn.ryanalexander.auth.controller;
 import cn.ryanalexander.auth.config.redis.RedisKeyEnum;
 import cn.ryanalexander.auth.domain.po.AccountPO;
 import cn.ryanalexander.auth.mapper.AccountMapper;
-import cn.ryanalexander.auth.processor.annotationIntercept.Require;
 import cn.ryanalexander.auth.service.AccountService;
 import cn.ryanalexander.common.domain.dto.Account;
-import cn.ryanalexander.common.domain.exceptions.InjectionException;
+import cn.ryanalexander.common.domain.dto.MailInfo;
 import cn.ryanalexander.common.domain.exceptions.InvalidException;
 import cn.ryanalexander.common.domain.exceptions.NotFoundException;
-import cn.ryanalexander.common.enums.AppKeyEnum;
-import com.alibaba.fastjson.JSONArray;
+
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -31,10 +29,11 @@ import java.util.Optional;
  *
  * <p><b>2022-5-1 因为时间有限 目前计划尽量减少auth对PSL的侵入性 只会使用redis相关的验证</b></p>
  * <p><b>使用的“accountId”统一口径 为teacherId！</b></p>
+ *
+ * <p><b>2022-5-2 由于get请求速度快 有缓存 而不安全的特性可以被我们内网环境覆盖！除非黑客劫持了内网中的主机</b></p>
+ * <p><b>当然 对于register 更改密码之类的 过于敏感 且涉及到utf-8字符 使用post</b></p>
+ * <p><b>客户端则是类似 敏感信息用post 一般的信息获取用get 反正access在请求头里边</b></p>
 
- * <p>2022-05-01 </p>
-
- * @since
  * @author RyanAlexander 2022-05-01 19:43
  */
 @RestController
@@ -59,17 +58,18 @@ public class AccountController {
 //        return result;
 //    }
     @ApiOperation("单体用户注册")
-    @GetMapping("/registerAccountInfo")
-    public Object registerAccountInfo(Account account){
+    @PostMapping("/registerAccountInfo")
+    public Object registerAccountInfo(@RequestBody Account account){
         // 这里account包含了APP！
+        System.out.println(account);
         AccountPO accountPO = new AccountPO(account);
-        accountService.save(accountPO);
-        return accountPO.getAccountId(); // mybatis直接把自动生成的id放到实体类里边了 真棒！
+        System.out.println(accountPO);
+        accountMapper.insert(accountPO);
+        return accountService.refreshBothToken(account.getAccountUserId(), account.getAccountApp()); // mybatis直接把自动生成的id放到实体类里边了 真棒！
     }
     // 覆盖信息 比如改改密码 改改mail之类的 反正具体业务类自己验证 这里就是个通用Service
-    @Require
     @ApiOperation("更改有关认证的信息！")
-    @GetMapping("/changeAccountInfo")
+    @PostMapping("/changeAccountInfo")
     public Object changeAccountInfo(Account account){
         AccountPO accountPO = new AccountPO(account);
         accountService.saveOrUpdate(accountPO);
@@ -77,7 +77,7 @@ public class AccountController {
     }
     // 注意 不能复用register单体 因为效率太低 只能额外处理batch这种情况！
     @ApiOperation("用于批量注册 批量导入用户 存在重复记录的可能！")
-    @GetMapping("/registerBatch")
+    @PostMapping("/registerBatch")
     public Object registerBatch(ArrayList<Account> accounts){
         // todo HDU教务查目前根本用不到！ 目前不打算验证与实现
         accountMapper.saveOrIgnoreBatchByAccount(accounts);
@@ -90,20 +90,20 @@ public class AccountController {
 
     @ApiOperation("验证access的正确性")
     @GetMapping("/verifyAccess")
-    public void verifyAccess(String accountId, String access, AppKeyEnum accountApp){
-        accountService.verifyAccess(accountId, accountApp, access);
+    public void verifyAccess(int userId, int accountApp, String access){
+        accountService.verifyAccess(userId, accountApp, access);
     }
 
     @ApiOperation("验证refresh的正确性")
     @GetMapping("/verifyRefresh")
-    public void verifyRefresh(String accountId, String refresh, AppKeyEnum accountApp){
-        accountService.verifyRefresh(accountId, accountApp, refresh);
+    public void verifyRefresh(int userId, int accountApp, String refresh){
+        accountService.verifyRefresh(userId, accountApp, refresh);
     }
 
     @ApiOperation("验证captcha的正确性")
     @GetMapping("/verifyCaptcha")
-    public void verifyCaptcha(String accountId, String captcha, AppKeyEnum accountApp){
-        accountService.verifyCaptcha(accountId, accountApp, captcha);
+    public void verifyCaptcha(String keyName, int accountApp, String captcha){
+        accountService.verifyCaptcha(keyName, accountApp, captcha);
     }
 
     // ==================================================================================
@@ -111,53 +111,62 @@ public class AccountController {
     @ApiOperation("通过refresh token更新access token 适用于中间1分钟客户端没跑 但是没超过15天" +
             "\n也可以用于超过15天或者新用户的登录")
     @GetMapping("/refreshBothToken")
-    public Object refreshBothToken(String accountId, AppKeyEnum accountApp){
-        return accountService.refreshBothToken(accountId, accountApp);
+    public Object refreshBothToken(int userId, int accountApp){
+        return accountService.refreshBothToken(userId, accountApp);
     }
 
     @ApiOperation("客户端定时刷新 or 作为loginByAccess的组成Service 续杯5分钟")
     @GetMapping("/refreshAccess")
-    public Object refreshAccess(String accountId, AppKeyEnum accountApp){
-        return accountService.refreshAccess(accountId, accountApp);
+    public Object refreshAccess(int userId, int accountApp){
+        return accountService.refreshAccess(userId, accountApp);
     }
 
     // ==================================================================================
 
     @ApiOperation("注册或更换邮箱 验证邮箱是否为本人时使用")
     @GetMapping("/sendCaptcha")
-    public Object sendCaptcha(String accountMail, AppKeyEnum accountApp){
-        accountService.getCaptcha(accountMail, accountApp, "您好","", accountMail);
-        return accountMail;
+    public Object sendCaptcha(MailInfo mailInfo){
+        accountService.verifyMail(mailInfo.getMailTo()); // 不行会直接throw exception 结束一切！
+        mailInfo.setKeyName(mailInfo.getMailTo()); // verify以后可以有资格作为key了！
+        accountService.getCaptcha(mailInfo);
+        // 您好，您的验证码是。。。
+        return "OK";
     }
-    // 目前是 用户登录会获取两个ID 一个是用于认证的accountId 一个是用于查询的userId
+    //
     // todo 因为暂时不打算让psl创建真正的ACCOUNT 所以口径一致 统一使用teacherId 创建token 验证 都是一个id！
     @ApiOperation("用户已经邮箱注册 获取登记在案的邮箱验证码")
     @GetMapping("/getCaptcha")
-    public Object getCaptcha(String accountId, AppKeyEnum accountApp, String roleName){
-        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
-        AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
-        String accountName = accountPO.getAccountName();
-        String accountMail = accountPO.getAccountMail();
+    public Object getCaptcha(int userId, MailInfo mailInfo){
+        Optional<AccountPO> accountNullable = Optional.ofNullable(
+                accountMapper.selectOne(new QueryWrapper<AccountPO>()
+                        .eq("account_user_id", userId)
+                        .eq("account_app",mailInfo.getAccountApp())
+                        .last("limit 1")));
 
-        accountService.getCaptcha(accountId, accountApp, accountName, roleName, accountMail);
-        return accountMail;
+        AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
+//        String accountName = accountPO.getAccountName(); // 应用自己决定吧！
+        mailInfo.setMailTo(accountPO.getAccountMail()); // 必须使用auth里边的邮箱！
+        mailInfo.setKeyName(String.valueOf(userId));
+
+        accountService.getCaptcha(mailInfo);
+        return accountPO.getAccountMail();
     }
 
     // ==================================================================================
 
     @ApiOperation("用户名+密码 | 邮箱+密码 | 手机号+密码 登录")
-    @GetMapping("/loginByPwd")
-    public Object loginByPwd(String accountId, AppKeyEnum accountApp, String accountPwd){
+    @PostMapping("/loginByPwd")
+    public Object loginByPwd(int userId, int accountApp, String accountPwd){
         Optional<AccountPO> accountNullable = Optional.ofNullable(
             accountService.getOne(
-                new QueryWrapper<AccountPO>().eq("account_id", accountId)
+                new QueryWrapper<AccountPO>().eq("account_id", userId)
         ));
         AccountPO accountPO = accountNullable.orElseThrow(() ->
                 new InvalidException(AccountPO.class, "getById", "Wrong Account id"));
 
 
         if(AccountService.isCaptcha(accountPwd)){
-            accountService.verifyCaptcha(accountId, accountApp, accountPwd);
+            accountService.verifyCaptcha(String.valueOf(userId), accountApp, accountPwd);
         }
         else if(accountPO.getAccountPwd() == null){
             throw new NotFoundException(AccountController.class, "loginByPwd", "pwd not found!");
@@ -166,18 +175,21 @@ public class AccountController {
             throw new InvalidException(AccountController.class, "loginByPwd", "pwd not right");
         }
 
-        JSONObject jsonObject = accountService.refreshBothToken(accountId, accountApp);
+        JSONObject jsonObject = accountService.refreshBothToken(userId, accountApp);
         jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
         return jsonObject;
     }
 
     @ApiOperation("更改密码")
-    @GetMapping("/updatePwd")
-    public Object updatePwd(String accountId, String accountPwd){
+    @PostMapping("/updatePwd")
+    public Object updatePwd(int userId, int accountApp, String accountPwd){
         // 现在已经实现了 只要verify出了问题 里边直接throw异常就好 所以解耦的差不多了
-        accountService.updatePwdById(accountId, accountPwd);
+        accountService.updatePwdById(userId, accountPwd);
         return accountPwd;
     }
+
+    // ==================================================================================
+
 
 }
 

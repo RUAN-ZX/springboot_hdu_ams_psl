@@ -2,6 +2,7 @@ package cn.ryanalexander.sst.mapper;
 
 import cn.ryanalexander.sst.domain.po.UserPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author ryan
@@ -10,7 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.ryanalexander.sst.domain.po.UserPO
 */
 public interface UserMapper extends BaseMapper<UserPO> {
-
+    void insertOne(@Param("item") UserPO userPO);
 }
 
 

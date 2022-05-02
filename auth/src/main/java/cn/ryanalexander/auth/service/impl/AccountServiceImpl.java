@@ -6,15 +6,13 @@ import cn.ryanalexander.auth.mapper.AccountMapper;
 import cn.ryanalexander.auth.service.AccountService;
 import cn.ryanalexander.auth.service.tool.EmailService;
 import cn.ryanalexander.auth.service.tool.StaticConfiguration;
-import cn.ryanalexander.common.domain.exceptions.AppException;
-import cn.ryanalexander.common.domain.exceptions.ExceptionInfo;
-import cn.ryanalexander.common.domain.exceptions.InjectionException;
-import cn.ryanalexander.common.domain.exceptions.NotFoundException;
+import cn.ryanalexander.common.domain.dto.MailInfo;
+import cn.ryanalexander.common.domain.exceptions.*;
 import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
-import cn.ryanalexander.common.enums.AppKeyEnum;
 import cn.ryanalexander.common.service.tool.JwtService;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,10 +52,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
     private static final Random RANDOM = new SecureRandom();
 
     // TODO: 2022/3/24 这里的逻辑还有大问题 如果redis主键更新了 mail炸了 或者反之 这个rollback是个大问题！
-    private void updateKey(String keyName, RedisKeyEnum redisKey, AppKeyEnum appKey,
+    private void updateKey(String keyName, RedisKeyEnum redisKey, int appKey,
                            String value, int nums){
         try{
-            String key = keyName + ":" + redisKey.key + ":" + appKey.key;
+            String key = keyName + ":" + redisKey.key + ":" + appKey;
             // todo 统一设置为分钟
             redisTemplate.opsForValue().set(key, value, nums, TimeUnit.MINUTES);
         }
@@ -74,8 +72,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         return new String(nonceChars);
     }
     // 反正总是会报错 不如统一为Result接口 对方就不会收到意外结果
-    private void verifyKey(String keyName, RedisKeyEnum redisKey, AppKeyEnum appKey, String value){
-        String key = keyName + ":" + redisKey.key + ":" + appKey.key;
+    private void verifyKey(String keyName, RedisKeyEnum redisKey, int appKey, String value){
+        String key = keyName + ":" + redisKey.key + ":" + appKey;
         Optional<Object> codeNullable = Optional.ofNullable(
                 redisTemplate.opsForValue().get(key));
         Object code = codeNullable.orElseThrow(() ->
@@ -87,31 +85,32 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
                 null, new ExceptionInfo(redisKey.key, "redis key 错误", "code.equals"),
                 new ErrorCode(SubjectEnum.USER));
     }
-    public void verifyAccess(String accountId, AppKeyEnum accountApp, String access){
-        verifyKey(accountId, RedisKeyEnum.ACCESS, accountApp, access);
+    public void verifyAccess(int accountId, int accountApp, String access){
+        verifyKey(String.valueOf(accountId), RedisKeyEnum.ACCESS, accountApp, access);
     }
-    public void verifyRefresh(String accountId, AppKeyEnum accountApp, String refresh){
-        verifyKey(accountId, RedisKeyEnum.REFRESH, accountApp, refresh);
+    public void verifyRefresh(int accountId, int accountApp, String refresh){
+        verifyKey(String.valueOf(accountId), RedisKeyEnum.REFRESH, accountApp, refresh);
     }
-    public void verifyCaptcha(String accountId, AppKeyEnum accountApp, String captcha){
-        verifyKey(accountId, RedisKeyEnum.CAPTCHA, accountApp, captcha);
+    // 与上边两个不同 上面的固定式userId作为键 但是这里可能是邮箱
+    public void verifyCaptcha(String keyName, int accountApp, String captcha){
+        verifyKey(keyName, RedisKeyEnum.CAPTCHA, accountApp, captcha);
     }
 
 
 
     /**
      *
-     * @param Tid
+     * @param userId
      * 使用空格分隔双token
      */
-    public JSONObject refreshBothToken(String Tid, AppKeyEnum accountApp){
-        String access = JwtService.getAccessToken(Tid);
-        String refresh = JwtService.getRefreshToken(Tid);
+    public JSONObject refreshBothToken(int userId, int accountApp){
+        String access = JwtService.getAccessToken(userId);
+        String refresh = JwtService.getRefreshToken(userId);
         int accessExpire = staticConfiguration.getAccessExpire();
         int refreshExpire = staticConfiguration.getRefreshExpire();
 
-        updateKey(Tid, RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
-        updateKey(Tid, RedisKeyEnum.REFRESH, accountApp, refresh, refreshExpire);
+        updateKey(String.valueOf(userId), RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
+        updateKey(String.valueOf(userId), RedisKeyEnum.REFRESH, accountApp, refresh, refreshExpire);
 
         JSONObject json_ = new JSONObject();
         json_.put(RedisKeyEnum.ACCESS.key, access);
@@ -119,10 +118,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         return json_;
     }
     // 一定是verify之后再refresh的！verify如果有问题 直接throw exception 然后输出code = 1
-    public JSONObject refreshAccess(String Tid, AppKeyEnum accountApp){
-        String access = JwtService.getAccessToken(Tid);
+    public JSONObject refreshAccess(int userId, int accountApp){
+        String access = JwtService.getAccessToken(userId);
         int accessExpire = staticConfiguration.getAccessExpire();
-        updateKey(Tid, RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
+        updateKey(String.valueOf(userId), RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
 
         JSONObject result = new JSONObject();
         result.put(RedisKeyEnum.ACCESS.key, access);
@@ -133,15 +132,20 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 //    @Transactional
     // todo 这里的transactional设计是个问题！
     @Async // 放在emailService.sendCaptchaMails里边就没必要了 一般精确到service即可
-    public void getCaptcha(String keyName, AppKeyEnum accountApp, String callName, String roleName, String mailTo){
+    public void getCaptcha(MailInfo mailInfo){
         String captcha = this.generateVerCode();
 
         try{// callName: 黄继业 | roleName: 老师 | 黄继业老师
-            emailService.sendCaptchaMails(captcha, callName + roleName, mailTo);
-//            int captchaExpire = 24*60*2;
-            int captchaExpire = staticConfiguration.getCaptchaExpire();
-            updateKey(keyName, RedisKeyEnum.CAPTCHA, accountApp,
-                    captcha, captchaExpire);
+            emailService.sendCaptchaMails(captcha,
+                    mailInfo.getCallName() + mailInfo.getRoleName(),
+                    mailInfo.getMailTo(),
+                    mailInfo.getMailHtmlUrl());
+
+            updateKey(mailInfo.getKeyName(),
+                    RedisKeyEnum.CAPTCHA,
+                    mailInfo.getAccountApp(),
+                    captcha,
+                    mailInfo.getCaptchaExpire());
         }
         catch (MessagingException | IOException e){
             throw new AppException(e, "Captcha", "getCaptcha");
@@ -151,33 +155,35 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 
     // --------------------------
     @Override
-    public void updatePwdById(String t_id, String t_pwd){
+    public void updatePwdById(int userId, String userPwd){
         Optional<AccountMapper> accountMapper = Optional.ofNullable(this.accountMapper);
 
         AccountPO accountPONullable = accountMapper.orElseThrow(
             () -> new InjectionException(AccountService.class)
-        ).selectById(t_id);
+        ).selectById(userId);
 
         Optional<AccountPO> accountOptional = Optional.ofNullable(accountPONullable);
         AccountPO accountPO = accountOptional.orElseThrow(
             () -> new NotFoundException(AccountPO.class, "accountMapper.selectById")
         );
-        accountPO.setAccountPwd(t_pwd);
+        accountPO.setAccountPwd(userPwd);
 
         this.accountMapper.updateById(accountPO);
     }
 
-    public String getEmailById(String Tid) {
-        Optional<AccountPO> accountOptional =
-                Optional.ofNullable(accountMapper.selectById(Tid));
-
-        AccountPO accountPO = accountOptional.orElseThrow(
-                () -> new NotFoundException(AccountPO.class, "accountMapper.selectById")
-        );
-        // TODO: 2022/3/23 应当重写这种select方法为好 主要是service层需要添加Optional 省的每次调用都要头疼是否捕获成功的问题！
-
-        return accountPO.getAccountMail();
+    @Override
+    public void verifyMail(String mail) {
+        if (existMail(mail) != null)
+            throw new InvalidException(AccountServiceImpl.class, "verifyMail", "邮箱已经存在了");
     }
+    @Override
+    public AccountPO existMail(String mail){
+        // 不用担心 你select什么 他就填充PO什么字段！
+        return accountMapper.selectOne(new QueryWrapper<AccountPO>()
+                .select("account_id")
+                .eq("account_mail", mail).last("limit 1"));
+    }
+
 }
 
 

@@ -57,11 +57,11 @@ public class EmailService {
     }
 
 
-    public void sendCaptchaMails(String captcha, String name, String mailTo) throws MessagingException, IOException {
+    public void sendCaptchaMails(String captcha, String name, String mailTo, String mailHtmlUrl) throws MessagingException, IOException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
-        String content = readFile(StaticConfiguration.getMailUrl());
+        String content = readFile(mailHtmlUrl);
 
         helper.setText(content.replace("老师，", name + "，").replace("123456", captcha),
                 true);

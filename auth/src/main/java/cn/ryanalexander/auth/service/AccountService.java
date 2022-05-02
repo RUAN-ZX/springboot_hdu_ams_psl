@@ -1,7 +1,8 @@
 package cn.ryanalexander.auth.service;
 
 import cn.ryanalexander.auth.domain.po.AccountPO;
-import cn.ryanalexander.common.enums.AppKeyEnum;
+
+import cn.ryanalexander.common.domain.dto.MailInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,12 +13,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface AccountService extends IService<AccountPO> {
 
-    void updatePwdById(String accountId, String accountPwd);
+    void updatePwdById(int accountId, String accountPwd);
 
-    JSONObject refreshBothToken(String accountId, AppKeyEnum accountApp);
-    JSONObject refreshAccess(String accountId, AppKeyEnum accountApp);
+    JSONObject refreshBothToken(int accountId, int accountApp);
+    JSONObject refreshAccess(int accountId, int accountApp);
 
-    String getEmailById(String Tid);
+
 
     static boolean isCaptcha(String str) {
         if(str.length()!=6) return false;
@@ -30,8 +31,14 @@ public interface AccountService extends IService<AccountPO> {
         return true;
     }
 
-    void verifyRefresh(String accountId, AppKeyEnum accountApp, String refresh);
-    void verifyAccess(String accountId, AppKeyEnum accountApp, String refresh);
-    void verifyCaptcha(String accountId, AppKeyEnum accountApp, String captcha);
-    void getCaptcha(String keyName, AppKeyEnum accountApp, String callName, String roleName, String mailTo);
+    void verifyRefresh(int accountId, int accountApp, String refresh);
+    void verifyAccess(int accountId, int accountApp, String refresh);
+    void verifyCaptcha(String keyName, int accountApp, String captcha);
+    void verifyMail(String mail);
+
+    AccountPO existMail(String mail);
+
+    void getCaptcha(MailInfo mailInfo);
+
+
 }

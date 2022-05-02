@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -14,6 +17,8 @@ import lombok.Data;
  */
 @TableName(value ="account")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountPO implements Serializable {
     /**
      * 
@@ -58,6 +63,7 @@ public class AccountPO implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
     public AccountPO(Account account){
         this.accountMail = account.getAccountMail();
         this.accountName = account.getAccountName();
@@ -66,7 +72,9 @@ public class AccountPO implements Serializable {
 
         this.accountApp = account.getAccountApp();
         this.accountUserId = account.getAccountUserId();
+        this.accountStatus = account.getAccountStatus();
     }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {

@@ -1,11 +1,14 @@
 package cn.ryanalexander.sst.processor.annotationIntercept;
 
+import cn.ryanalexander.common.enums.AppKeyEnum;
+import cn.ryanalexander.sst.service.AccountFeignService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
@@ -14,8 +17,9 @@ import java.lang.reflect.Method;
 @Component
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
-//    @Resource
-//    private AccountService accountService;
+    @Lazy
+    @Autowired
+    private AccountFeignService accountFeignService;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest,
@@ -28,20 +32,25 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         Require require = method.getAnnotation(Require.class);
         // 判断接口是否有Require注解
         if (null == require) return true;
-        // todo 这里注意 其实使用userId 因为可以明确 请求的user和account是同一个人！
-        // 没必要设置为accountId 没必要
-        if(require.value() != RoleEnum.EXPIRED){
-            String access = httpServletRequest.getHeader("access");
-            String accountId = httpServletRequest.getHeader("accountId");
-//            accountService.verifyAccess(accountId, access);
-            if(require.value() != RoleEnum.ROOT){
 
-            }
-        }
-        else {
+        // todo 这里注意 其实使用userId 因为可以明确 请求的user和account是同一个人！
+        RoleEnum role = require.value();
+        int userId = Integer.parseInt(httpServletRequest.getParameterMap().get("accountId")[0]);
+
+        if(role != RoleEnum.EXPIRED){
+            String access = httpServletRequest.getHeader("access");
+            accountFeignService.verifyAccess(userId, AppKeyEnum.SST.key, access);
+        } else {
             String refresh = httpServletRequest.getHeader("refresh");
-            String accountId = httpServletRequest.getParameterMap().get("accountId")[0];
-//            accountService.verifyRefresh(accountId, refresh);
+            accountFeignService.verifyRefresh(userId, AppKeyEnum.SST.key, refresh);
+        }
+
+
+        if(require.value() == RoleEnum.TEACHER){
+
+        }
+        else if(require.value() == RoleEnum.ROOT){
+
         }
 
 

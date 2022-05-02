@@ -1,17 +1,12 @@
 package cn.ryanalexander.sst.service;
 
 import cn.ryanalexander.common.domain.dto.Account;
+import cn.ryanalexander.common.domain.dto.MailInfo;
 import cn.ryanalexander.common.domain.dto.Result;
 import cn.ryanalexander.common.enums.AppKeyEnum;
-import feign.Headers;
-import feign.RequestLine;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cloud.openfeign.SpringQueryMap;
+import org.springframework.web.bind.annotation.*;
 
 //@FeignClient(name = "nacos-provide",fallback = RemoteHystrix.class)
 // hystrix 降级
@@ -26,44 +21,49 @@ public interface AccountFeignService {
 //    @Headers({"refresh: {token}"})
 //    void verifyRefresh(String accountId, String refresh);
 
-    @GetMapping("/registerAccountInfo")
-    Result registerAccountInfo(Account account);
+    @PostMapping("/registerAccountInfo")
+    Result registerAccountInfo(@RequestBody Account account);
 
-    @GetMapping("/changeAccountInfo")
-    Result changeAccountInfo(Account account);
+    @PostMapping("/changeAccountInfo")
+    Result changeAccountInfo(@RequestBody Account account);
+
+    // ==================================================================================
+
+    @PostMapping("/loginByPwd")
+    Result loginByPwd(@RequestBody Account account);
+    // 填充需要的部分 int accountApp, String accountPwd 如果是邮箱那就带上email 如果是手机号就带上phone！
+    // 如果用用户名就是accountName PSL那个其实是accountName
+
+    @PostMapping("/updatePwd")
+    Result updatePwd(@RequestBody Account account);
 
     // ==================================================================================
 
     @GetMapping("/verifyRefresh")
-    Result verifyRefresh(@RequestParam("accountId")String accountId, AppKeyEnum appKeyEnum, @RequestParam("refresh")String refresh);
+    Result verifyRefresh(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp, @RequestParam("refresh") String refresh);
 
     @GetMapping("/verifyAccess")
-    Result verifyAccess(@RequestParam("accountId")String accountId, AppKeyEnum appKeyEnum, @RequestParam("access")String access);
+    Result verifyAccess(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp, @RequestParam("access") String access);
 
     @GetMapping("/verifyCaptcha")
-    Result verifyCaptcha(@RequestParam("accountId")String accountId, AppKeyEnum appKeyEnum, @RequestParam("captcha")String captcha);
+    Result verifyCaptcha(@RequestParam("keyName") String keyName, @RequestParam("accountApp") int accountApp, @RequestParam("captcha") String captcha);
 
     // ==================================================================================
 
     @GetMapping("/getCaptcha")
-    Result getCaptcha(@RequestParam("accountId")String accountId, AppKeyEnum appKeyEnum, @RequestParam("roleName")String roleName);
+    Result getCaptcha(@RequestParam("userId") int userId, @SpringQueryMap MailInfo mailInfo);
 
     @GetMapping("/sendCaptcha")
-    Result sendCaptcha(@RequestParam("accountMail")String accountMail, AppKeyEnum appKeyEnum);
+    Result sendCaptcha(@SpringQueryMap MailInfo mailInfo);
 
     // ==================================================================================
 
     @GetMapping("/refreshBothToken")
-    Result refreshBothToken(String accountId, AppKeyEnum accountApp);
+    Result refreshBothToken(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp);
 
     @GetMapping("/refreshAccess")
-    Result refreshAccess(String accountId, AppKeyEnum accountApp);
+    Result refreshAccess(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp);
 
     // ==================================================================================
 
-    @GetMapping("/loginByPwd")
-    Result loginByPwd(String accountId, AppKeyEnum accountApp, String accountPwd);
-
-    @GetMapping("/updatePwd")
-   Result updatePwd(String accountId, String accountPwd);
 }
