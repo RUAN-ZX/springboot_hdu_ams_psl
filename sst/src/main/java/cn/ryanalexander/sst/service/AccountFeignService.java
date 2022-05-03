@@ -29,6 +29,9 @@ public interface AccountFeignService {
 
     // ==================================================================================
 
+//    @PostMapping("/loginByPwd")
+//    Result loginByPwd(@RequestBody Account account);
+
     @PostMapping("/loginByPwd")
     Result loginByPwd(@RequestBody Account account);
     // 填充需要的部分 int accountApp, String accountPwd 如果是邮箱那就带上email 如果是手机号就带上phone！

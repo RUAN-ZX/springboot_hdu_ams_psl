@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -76,12 +77,13 @@ public class UserController {
         Result result = accountFeignService.registerAccountInfo(account);
 
         // Result里边的data包装的JSON会被转换为LinkedHashMap
-        // // TODO: 2022/5/2  考虑清楚 传参的时候应该用什么数据结构？没必要JSON解析 但是有没有别的合适的数据结构？
+        // 如果传键值对 直接用JSONObject 或者Map都行了 当然接收一定要Map或者HashMap
+        // 如果是对象 那就只能自个儿序列化 JSONString 然后后边parse了
         // 可能可以直接使用LinkedHashMap？ 因为保持顺序！
         if(result.getCode() == 0){
-            LinkedHashMap linkedHashMap = (LinkedHashMap) result.getData();
-            linkedHashMap.put("userId", accountUserId);
-            return linkedHashMap;
+            Map<String, String> dataMap = (Map<String, String>) result.getData();
+            dataMap.put("userId", String.valueOf(accountUserId));
+            return dataMap;
         } else throw new AppException(new ErrorCode(SubjectEnum.INTERNAL),"RPC Failed");
 
     }
@@ -129,42 +131,61 @@ public class UserController {
         return accountFeignService.sendCaptcha(mailInfo);
     }
 
-    @Require
-    @ApiOperation("通过access登录 刷新refresh token")
-    @GetMapping("/loginByAccess")
-    public Object loginByAccess(int userId){
-
-        return new Object();
-    }
+//    @Require
+//    @ApiOperation("通过access登录")
+//    @GetMapping("/loginByAccess")
+//    public Object loginByAccess(int userId){
+//        return new Object();
+//    }
 
     // 无所谓 是个用户都应该享有这种权利！
     @Require
-    @ApiOperation("客户端定时刷新 or loginByAccess都行 类似续杯1小时")
+    @ApiOperation("客户端定时刷新 or loginByAccess都行 类似续杯10分钟")
     @GetMapping("/refreshAccess")
     public Object refreshAccess(int userId){
-        return new Object();
+        return accountFeignService.refreshAccess(userId, AppKeyEnum.SST.key);
     }
 
-    // 用过一次就失效！
+    // 前端没必要使用access自动登录了 10分钟真不太可能 10分钟以内 微信也会保留页面的！10分钟差不多缓存清理了 那就refresh认证咯
+    // 也不太可能抓到这个机会吧。。
+    // 所以这接口直接作为自动登录的接口完事了 反正refreshToken也只会使用一次！
     @Require(RoleEnum.EXPIRED)
-    @ApiOperation("通过refresh token更新access token 适用于中间1分钟客户端没跑 但是没超过15天")
+    @ApiOperation("通过refresh token更新access token 适用于中间十多分钟客户端没跑 但是没超过15天")
     @GetMapping("/refresh")
-    public Object refresh(String userId){
+    public Object refresh(int userId){
+        return accountFeignService.refreshBothToken(userId, AppKeyEnum.SST.key).getData();
+    }
+
+    // @Param keyName 用户名 | 邮箱 | 手机号
+    @ApiOperation("邮箱登录")
+    @GetMapping("/loginByMailPwd")
+    public Object loginByMailPwd(String accountMail, String accountPwd){
+        Account account = new Account();
+        account.setAccountMail(accountMail);
+        account.setAccountPwd(accountPwd);
+        account.setAccountApp(AppKeyEnum.SST.key);
+
+        accountFeignService.loginByPwd(account);
         return new Object();
     }
 
-    @ApiOperation("登录 或者说注册 反正验证一波")
-    @GetMapping("/loginByPwd")
-    public Object loginByPwd(String userId, String accountPwd){
+    // @Param keyName 用户名 | 邮箱 | 手机号
+    @ApiOperation("用户名登录")
+    @GetMapping("/loginByNamePwd")
+    public Object loginByNamePwd(String accountName, String accountPwd){
+        Account account = new Account();
+        account.setAccountName(accountName);
+        account.setAccountPwd(accountPwd);
+        account.setAccountApp(AppKeyEnum.SST.key);
 
+        accountFeignService.loginByPwd(account);
         return new Object();
     }
-
 
     @Require
     @ApiOperation("更改密码")
     @GetMapping("/updatePwd")
-    public Object updatePwd(String userId, String accountPwd){
+    public Object updatePwd(int userId, String accountPwd){
         return new Object();
     }
 }

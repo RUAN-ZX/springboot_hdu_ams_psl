@@ -40,20 +40,16 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         if(role != RoleEnum.EXPIRED){
             String access = httpServletRequest.getHeader("access");
             accountFeignService.verifyAccess(userId, AppKeyEnum.SST.key, access);
+            if(role == RoleEnum.TEACHER){
+
+            }
+            else if(role == RoleEnum.ROOT){
+
+            }
         } else {
             String refresh = httpServletRequest.getHeader("refresh");
             accountFeignService.verifyRefresh(userId, AppKeyEnum.SST.key, refresh);
         }
-
-
-        if(require.value() == RoleEnum.TEACHER){
-
-        }
-        else if(require.value() == RoleEnum.ROOT){
-
-        }
-
-
         return true;
     }
 }

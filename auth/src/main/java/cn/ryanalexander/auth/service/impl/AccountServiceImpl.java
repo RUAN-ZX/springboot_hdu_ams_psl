@@ -23,6 +23,8 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -103,7 +105,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
      * @param userId
      * 使用空格分隔双token
      */
-    public JSONObject refreshBothToken(int userId, int accountApp){
+    public Map<String, String> refreshBothToken(int userId, int accountApp){
         String access = JwtService.getAccessToken(userId);
         String refresh = JwtService.getRefreshToken(userId);
         int accessExpire = staticConfiguration.getAccessExpire();
@@ -112,20 +114,19 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         updateKey(String.valueOf(userId), RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
         updateKey(String.valueOf(userId), RedisKeyEnum.REFRESH, accountApp, refresh, refreshExpire);
 
-        JSONObject json_ = new JSONObject();
-        json_.put(RedisKeyEnum.ACCESS.key, access);
-        json_.put(RedisKeyEnum.REFRESH.key, refresh);
-        return json_;
+        Map<String, String> map = new HashMap<>();
+        map.put(RedisKeyEnum.ACCESS.key, access);
+        map.put(RedisKeyEnum.REFRESH.key, refresh);
+        return map;
     }
-    // 一定是verify之后再refresh的！verify如果有问题 直接throw exception 然后输出code = 1
-    public JSONObject refreshAccess(int userId, int accountApp){
+    // 一定是verify之后再refresh的 这个交给各个应用去判断！
+    public Map<String, String> refreshAccess(int userId, int accountApp){
         String access = JwtService.getAccessToken(userId);
         int accessExpire = staticConfiguration.getAccessExpire();
         updateKey(String.valueOf(userId), RedisKeyEnum.ACCESS, accountApp, access, accessExpire);
 
-        JSONObject result = new JSONObject();
+        Map<String, String> result = new HashMap<>();
         result.put(RedisKeyEnum.ACCESS.key, access);
-
         return result;
     }
 

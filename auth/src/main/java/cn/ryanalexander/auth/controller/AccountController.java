@@ -6,6 +6,7 @@ import cn.ryanalexander.auth.mapper.AccountMapper;
 import cn.ryanalexander.auth.service.AccountService;
 import cn.ryanalexander.common.domain.dto.Account;
 import cn.ryanalexander.common.domain.dto.MailInfo;
+import cn.ryanalexander.common.domain.exceptions.AppException;
 import cn.ryanalexander.common.domain.exceptions.InvalidException;
 import cn.ryanalexander.common.domain.exceptions.NotFoundException;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -111,13 +113,13 @@ public class AccountController {
     @ApiOperation("通过refresh token更新access token 适用于中间1分钟客户端没跑 但是没超过15天" +
             "\n也可以用于超过15天或者新用户的登录")
     @GetMapping("/refreshBothToken")
-    public Object refreshBothToken(int userId, int accountApp){
+    public Map<String, String> refreshBothToken(int userId, int accountApp){
         return accountService.refreshBothToken(userId, accountApp);
     }
 
     @ApiOperation("客户端定时刷新 or 作为loginByAccess的组成Service 续杯5分钟")
     @GetMapping("/refreshAccess")
-    public Object refreshAccess(int userId, int accountApp){
+    public Map<String, String> refreshAccess(int userId, int accountApp){
         return accountService.refreshAccess(userId, accountApp);
     }
 
@@ -154,16 +156,44 @@ public class AccountController {
 
     // ==================================================================================
 
+    // todo 设置兼容多种登录方式 用户名+密码 | 邮箱+密码 | 手机号+密码
     @ApiOperation("用户名+密码 | 邮箱+密码 | 手机号+密码 登录")
     @PostMapping("/loginByPwd")
-    public Object loginByPwd(int userId, int accountApp, String accountPwd){
-        Optional<AccountPO> accountNullable = Optional.ofNullable(
-            accountService.getOne(
-                new QueryWrapper<AccountPO>().eq("account_id", userId)
-        ));
+    public Map<String, String> loginByPwd(@RequestBody Account account){
+        // 检测这些属性
+        String accountName = account.getAccountName();
+        String accountMail = account.getAccountMail();
+        String accountPhone = account.getAccountPhone();
+
+        int accountApp = account.getAccountApp();
+        String accountPwd = account.getAccountPwd();
+
+        Optional<AccountPO> accountNullable;
+        if(accountName != null){
+            accountNullable = Optional.ofNullable(
+                accountService.getOne(
+                        new QueryWrapper<AccountPO>().eq("account_name", accountName)
+                ));
+        }
+        else if(accountMail != null){
+            accountNullable = Optional.ofNullable(
+                    accountService.getOne(
+                            new QueryWrapper<AccountPO>().eq("account_mail", accountMail)
+                    ));
+        }
+        else if(accountPhone != null){
+            accountNullable = Optional.ofNullable(
+                    accountService.getOne(
+                            new QueryWrapper<AccountPO>().eq("account_phone", accountPhone)
+                    ));
+        }
+        else throw new InvalidException(AccountController.class,"loginByPwd","登录需要邮箱 手机 用户名 三选一！");
+
         AccountPO accountPO = accountNullable.orElseThrow(() ->
                 new InvalidException(AccountPO.class, "getById", "Wrong Account id"));
 
+        // 使用各个应用自己的userId 别搞AccountId
+        int userId = accountPO.getAccountUserId();
 
         if(AccountService.isCaptcha(accountPwd)){
             accountService.verifyCaptcha(String.valueOf(userId), accountApp, accountPwd);
@@ -175,9 +205,9 @@ public class AccountController {
             throw new InvalidException(AccountController.class, "loginByPwd", "pwd not right");
         }
 
-        JSONObject jsonObject = accountService.refreshBothToken(userId, accountApp);
-        jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
-        return jsonObject;
+        Map<String, String> result = accountService.refreshBothToken(userId, accountApp);
+        result.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
+        return result;
     }
 
     @ApiOperation("更改密码")

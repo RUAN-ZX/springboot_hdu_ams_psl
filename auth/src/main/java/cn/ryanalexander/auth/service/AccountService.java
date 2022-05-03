@@ -6,6 +6,8 @@ import cn.ryanalexander.common.domain.dto.MailInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
 * @author ryan
 * @description 针对表【teacher】的数据库操作Service
@@ -15,8 +17,8 @@ public interface AccountService extends IService<AccountPO> {
 
     void updatePwdById(int accountId, String accountPwd);
 
-    JSONObject refreshBothToken(int accountId, int accountApp);
-    JSONObject refreshAccess(int accountId, int accountApp);
+    Map<String, String> refreshBothToken(int accountId, int accountApp);
+    Map<String, String> refreshAccess(int accountId, int accountApp);
 
 
 
