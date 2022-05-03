@@ -40,18 +40,18 @@ public interface AccountFeignService {
     // ==================================================================================
 
     @GetMapping("/verifyRefresh")
-    Result verifyRefresh(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp, @RequestParam("refresh") String refresh);
+    Result verifyRefresh(@RequestParam int userId, @RequestParam int accountApp, @RequestParam String refresh);
 
     @GetMapping("/verifyAccess")
-    Result verifyAccess(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp, @RequestParam("access") String access);
+    Result verifyAccess(@RequestParam int userId, @RequestParam int accountApp, @RequestParam String access);
 
     @GetMapping("/verifyCaptcha")
-    Result verifyCaptcha(@RequestParam("keyName") String keyName, @RequestParam("accountApp") int accountApp, @RequestParam("captcha") String captcha);
+    Result verifyCaptcha(@RequestParam String keyName, @RequestParam int accountApp, @RequestParam String captcha);
 
     // ==================================================================================
 
     @GetMapping("/getCaptcha")
-    Result getCaptcha(@RequestParam("userId") int userId, @SpringQueryMap MailInfo mailInfo);
+    Result getCaptcha(@RequestParam int userId, @SpringQueryMap MailInfo mailInfo);
 
     @GetMapping("/sendCaptcha")
     Result sendCaptcha(@SpringQueryMap MailInfo mailInfo);
@@ -59,10 +59,10 @@ public interface AccountFeignService {
     // ==================================================================================
 
     @GetMapping("/refreshBothToken")
-    Result refreshBothToken(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp);
+    Result refreshBothToken(@RequestParam int userId, @RequestParam int accountApp);
 
     @GetMapping("/refreshAccess")
-    Result refreshAccess(@RequestParam("userId") int userId, @RequestParam("accountApp") int accountApp);
+    Result refreshAccess(@RequestParam int userId, @RequestParam int accountApp);
 
     // ==================================================================================
 

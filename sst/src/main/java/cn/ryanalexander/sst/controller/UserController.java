@@ -96,12 +96,12 @@ public class UserController {
 //        return accountFeignService.registerAccountInfo(account);
 //    }
 
-    @Require
+//    @Require
     @ApiOperation("已经注册的邮箱 获取验证码")
     @GetMapping("/getCaptcha")
     public Object getCaptcha(int userId) {
         UserPO userPO = userMapper.selectOne(new QueryWrapper<UserPO>()
-                .eq("user_id",userId).last("limit 1"));
+                .eq("user_id", userId).last("limit 1"));
 
         MailInfo mailInfo = new MailInfo();
         mailInfo.setAccountApp(AppKeyEnum.SST.key);

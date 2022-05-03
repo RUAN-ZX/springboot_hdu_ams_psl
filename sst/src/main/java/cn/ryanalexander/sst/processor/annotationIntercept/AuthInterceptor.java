@@ -35,7 +35,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         // todo 这里注意 其实使用userId 因为可以明确 请求的user和account是同一个人！
         RoleEnum role = require.value();
-        int userId = Integer.parseInt(httpServletRequest.getParameterMap().get("accountId")[0]);
+        int userId = Integer.parseInt(httpServletRequest.getParameterMap().get("userId")[0]);
 
         if(role != RoleEnum.EXPIRED){
             String access = httpServletRequest.getHeader("access");
