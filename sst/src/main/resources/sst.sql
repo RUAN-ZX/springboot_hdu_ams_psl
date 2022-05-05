@@ -131,57 +131,50 @@ CREATE TABLE `question` (
 insert  into `question`(`question_id`,`question_teacher_id`,`question_stem`,`question_answer_a`,`question_answer_b`,`question_answer_c`,`question_answer_d`,`question_subject_id`,`question_true_answer`) values (1,3,'某个处于放大状态的电路，当输入电压为10mV ，输出电压为6.5V,输入电压为15mV 时，输出电压为7V （以上均为直流电压），它的电压增益为','700','650','100','-100',1,3),(2,3,' 当输入信号频率为f L 或f H 时，电压增益的幅值约下降为中频时的','0.5','0.7','0.9','1',1,2),(3,3,'当输入信号频率为fL 或fH 时, 电压增系下降了','2dB','3dB','4dB','6dB',1,2),(4,3,'某放大电路在负载开路时的输出电压为4V ，接3K Ω的负载电阻后输出电压降为3V ，这说明放大电路的输出电阻为','10K Ω','2K Ω','1 K Ω','0.5K Ω',1,3),(5,3,'用两个AU 相同的放大电路A 和B 分别对同一个具有相同内阻信号进行放大，测试结果输出电压VOA>VOB ，由此可知A 比B','一样','差','好','无法判别',1,2),(6,1,'已知逻辑函数Y=AB+AC+ BC与其相等的函数为',' AB',' AB+AC','AB+BC','AB+C',2,4),(7,1,'一个数据选择器的地址输入端有3个时，最多可以有几个数据信号输出。','4','6','8','16',2,3),(8,1,'在四变量卡诺图中，逻辑上不相邻的一组最小项为','m1与m3','m4 与m6','m5 与m13','m2 与m8',2,4),(9,1,'L=AB+C 的对偶式为：','A+BC','(A+B) C','A+B+C','ABC',2,2),(10,1,'半加器和的输出端与输入端的逻辑关系是','与非','或非','与或非','异或',2,4),(11,2,'常用的传输介质中，带宽最宽、信号传输衰减最小、抗干扰能力最强的一类传输介质是','光纤','双绞线','同轴电缆','无线信道',3,1),(12,2,'数据解封装的过程是','段—包—帧—流—数据','流—帧—包—段—数据',' 数据—包—段—帧—流','数据—段—包—帧—流',3,2),(13,2,'完成路径选择功能是在OSI模型的','物理层','数据链路层','网络层','运输层',3,3),(14,2,'在OSI中，为实现有效、可靠数据传输，必须对传输操作进行严格的控制和管理，完成这项工作的层次是','物理层','数据链路层','网络层','运输层',3,2),(15,2,'若网络形状是由站点和连接站点的链路组成的一个闭合环,则称这种拓扑结构为','星形拓扑','总线拓扑','环形拓扑','树形拓扑',3,3);
 
 
--- DROP TABLE IF EXISTS `sprite`;
--- CREATE TABLE `sprite` (
---   `sprite_id` int(10) NOT NULL AUTO_INCREMENT,
---   `sprite_name` varchar(25) NOT NULL,
--- 	
---   `sprite_inventory_attack` int(5) NOT NULL,
---   `sprite_inventory_defence` int(5) NOT NULL,
---   `sprite_inventory_full_health` int(5) NOT NULL,
---   `sprite_inventory_true_health` int(5) DEFAULT NULL,
---   `sprite_inventory_full_experience` int(5) NOT NULL,
---   `sprite_inventory_true_experience` int(5) NOT NULL,
---   PRIMARY KEY (`sprite_inventory_id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-
-/*Table structure for table `sprite_inventory` */
-DROP TABLE IF EXISTS `sprite_inventory`;
-CREATE TABLE `sprite_inventory` (
-  `sprite_inventory_id` int(10) NOT NULL AUTO_INCREMENT,
-  `sprite_inventory_user_id` int(10) NOT NULL,
-  `sprite_inventory_sprite_name` varchar(25) NOT NULL,
+DROP TABLE IF EXISTS `sprite`;
+CREATE TABLE `sprite` (
+  `sprite_id` int(10) NOT NULL AUTO_INCREMENT,
+  `sprite_name` varchar(24) NOT NULL,
 	
-  `sprite_inventory_level` int(5) NOT NULL,
-  `sprite_inventory_attack` int(5) NOT NULL,
-  `sprite_inventory_defence` int(5) NOT NULL,
-  `sprite_inventory_full_health` int(5) NOT NULL,
-  `sprite_inventory_true_health` int(5) DEFAULT NULL,
-  `sprite_inventory_full_experience` int(5) NOT NULL,
-  `sprite_inventory_true_experience` int(5) NOT NULL,
-  PRIMARY KEY (`sprite_inventory_id`)
+  `sprite_attack` int(5) NOT NULL,
+  `sprite_defence` int(5) NOT NULL,
+  `sprite_health` int(5) NOT NULL,
+  `sprite_experience` int(5) NOT NULL,
+  PRIMARY KEY (`sprite_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `sprite_inventory` */
+/*Table structure for table `sprite_record` */
+DROP TABLE IF EXISTS `sprite_record`;
+CREATE TABLE `sprite_record` (
+  `sprite_record_id` int(10) NOT NULL AUTO_INCREMENT,
+  `sprite_record_user_id` int(10) NOT NULL,
+  `sprite_record_sprite_id` int(10) NOT NULL,
+	
+  `sprite_record_health` int(5) DEFAULT NULL,
+  `sprite_record_experience` int(5) NOT NULL,
+  PRIMARY KEY (`sprite_record_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
-insert  into `sprite_inventory`(`sprite_inventory_id`,`sprite_inventory_user_id`,`sprite_inventory_sprite_name`,`sprite_inventory_level`,`sprite_inventory_attack`,`sprite_inventory_defence`,`sprite_inventory_full_health`,`sprite_inventory_true_health`,`sprite_inventory_full_experience`,`sprite_inventory_true_experience`) values (1,1,'peashooter',1,1,5,100,50,100,1),(2,6,'peashooter',2,50,10,100,67,100,2);
+/*Data for the table `sprite_record` */
+
+-- insert  into `sprite_record`(`sprite_record_id`,`sprite_record_user_id`,`sprite_record_sprite_name`,`sprite_record_level`,`sprite_record_attack`,`sprite_record_defence`,`sprite_record_full_health`,`sprite_record_true_health`,`sprite_record_full_experience`,`sprite_record_true_experience`) values (1,1,'peashooter',1,1,5,100,50,100,1),(2,6,'peashooter',2,50,10,100,67,100,2);
 
 /*Table structure for table `user` */
 
-/*Table structure for table `item_inventory` */
+/*Table structure for table `item_record` */
 
-DROP TABLE IF EXISTS `item_inventory`;
+DROP TABLE IF EXISTS `item_record`;
 
-CREATE TABLE `item_inventory` (
-  `item_inventory_id` int(10) NOT NULL AUTO_INCREMENT,
-  `item_inventory_user_id` int(10) NOT NULL,
-  `item_inventory_item_name` varchar(25) NOT NULL,
-  `item_inventory_item_num` int(10) NOT NULL,
-  PRIMARY KEY (`item_inventory_id`)
+CREATE TABLE `item_record` (
+  `item_record_id` int(10) NOT NULL AUTO_INCREMENT,
+  `item_record_user_id` int(10) NOT NULL,
+  `item_record_item_name` varchar(25) NOT NULL,
+  `item_record_item_num` int(10) NOT NULL,
+  PRIMARY KEY (`item_record_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `item_inventory` */
+/*Data for the table `item_record` */
 
-insert into `item_inventory`(`item_inventory_id`,`item_inventory_user_id`,`item_inventory_item_name`,`item_inventory_item_num`) values (1,6,'potion',5),(2,6,'ball',4),(3,1,'potion',3),(4,1,'ball',5),(5,2,'potion',6);
+insert into `item_record`(`item_record_id`,`item_record_user_id`,`item_record_item_name`,`item_record_item_num`) values (1,6,'potion',5),(2,6,'ball',4),(3,1,'potion',3),(4,1,'ball',5),(5,2,'potion',6);
 
 

@@ -6,15 +6,10 @@ import cn.ryanalexander.sst.domain.po.UserPO;
 import cn.ryanalexander.sst.mapper.ClassMapper;
 import cn.ryanalexander.sst.mapper.RecordMapper;
 import cn.ryanalexander.sst.mapper.UserMapper;
-import cn.ryanalexander.sst.processor.annotationIntercept.Require;
-import cn.ryanalexander.sst.processor.annotationIntercept.RoleEnum;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
-import netscape.javascript.JSObject;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,9 +26,9 @@ import java.util.List;
  * @since 1.0.0
  **/
 
-@Api(tags = "学生与班级的羁绊记录")
+@Api(tags = "学生、班级 记录")
 @RestController
-public class ClassRecordController {
+public class ClassController {
     @Resource
     private RecordMapper recordMapper;
 
