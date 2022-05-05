@@ -8,13 +8,13 @@
             <id property="spritesInventoryId" column="sprites_inventory_id" jdbcType="INTEGER"/>
             <result property="spritesInventoryUserId" column="sprites_inventory_user_id" jdbcType="INTEGER"/>
             <result property="spritesInventorySpriteName" column="sprites_inventory_sprite_name" jdbcType="VARCHAR"/>
-            <result property="spritesInventoryLevel" column="sprites_inventory_level" jdbcType="OTHER"/>
-            <result property="spritesInventoryAttack" column="sprites_inventory_attack" jdbcType="OTHER"/>
-            <result property="spritesInventoryDefence" column="sprites_inventory_defence" jdbcType="OTHER"/>
-            <result property="spritesInventoryFullHealth" column="sprites_inventory_full_health" jdbcType="OTHER"/>
-            <result property="spritesInventoryTrueHealth" column="sprites_inventory_true_health" jdbcType="OTHER"/>
-            <result property="spritesInventoryFullExperience" column="sprites_inventory_full_experience" jdbcType="OTHER"/>
-            <result property="spritesInventoryTrueExperience" column="sprites_inventory_true_experience" jdbcType="OTHER"/>
+            <result property="spritesInventoryLevel" column="sprites_inventory_level" jdbcType="INTEGER"/>
+            <result property="spritesInventoryAttack" column="sprites_inventory_attack" jdbcType="INTEGER"/>
+            <result property="spritesInventoryDefence" column="sprites_inventory_defence" jdbcType="INTEGER"/>
+            <result property="spritesInventoryFullHealth" column="sprites_inventory_full_health" jdbcType="INTEGER"/>
+            <result property="spritesInventoryTrueHealth" column="sprites_inventory_true_health" jdbcType="INTEGER"/>
+            <result property="spritesInventoryFullExperience" column="sprites_inventory_full_experience" jdbcType="INTEGER"/>
+            <result property="spritesInventoryTrueExperience" column="sprites_inventory_true_experience" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

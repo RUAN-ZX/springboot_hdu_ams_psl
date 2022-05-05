@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.ItemInventoryPO">
             <id property="itemInventoryId" column="item_inventory_id" jdbcType="INTEGER"/>
-            <result property="itemInventoryUserId" column="item_inventory_user_id" jdbcType="OTHER"/>
+            <result property="itemInventoryUserId" column="item_inventory_user_id" jdbcType="INTEGER"/>
             <result property="itemInventoryItemName" column="item_inventory_item_name" jdbcType="VARCHAR"/>
             <result property="itemInventoryItemNum" column="item_inventory_item_num" jdbcType="INTEGER"/>
     </resultMap>

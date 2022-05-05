@@ -38,7 +38,7 @@ public interface AccountFeignService {
     // 如果用用户名就是accountName PSL那个其实是accountName
 
     @PostMapping("/updatePwd")
-    Result updatePwd(@RequestBody Account account);
+    Result updatePwd(@RequestParam int userId, @RequestParam int accountApp, @RequestParam String accountPwd);
 
     // ==================================================================================
 

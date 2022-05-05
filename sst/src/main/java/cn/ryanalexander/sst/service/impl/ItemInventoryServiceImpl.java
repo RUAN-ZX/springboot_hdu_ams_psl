@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author ryan
 * @description 针对表【item_inventory】的数据库操作Service实现
-* @createDate 2022-04-27 21:34:14
+* @createDate 2022-05-04 15:31:41
 */
 @Service
 public class ItemInventoryServiceImpl extends ServiceImpl<ItemInventoryMapper, ItemInventoryPO>

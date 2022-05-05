@@ -15,7 +15,7 @@ import java.util.Map;
 */
 public interface AccountService extends IService<AccountPO> {
 
-    void updatePwdById(int accountId, String accountPwd);
+    void updatePwdById(int accountId, int accountApp, String accountPwd);
 
     Map<String, String> refreshBothToken(int accountId, int accountApp);
     Map<String, String> refreshAccess(int accountId, int accountApp);
@@ -23,12 +23,10 @@ public interface AccountService extends IService<AccountPO> {
 
 
     static boolean isCaptcha(String str) {
-        if(str.length()!=6) return false;
+        if(str.length() != 6) return false;
         for (int i = 0; i < str.length(); i++) {
-            System.out.println(str.charAt(i));
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            }
+//            System.out.println(str.charAt(i));
+            if (!Character.isDigit(str.charAt(i))) return false;
         }
         return true;
     }

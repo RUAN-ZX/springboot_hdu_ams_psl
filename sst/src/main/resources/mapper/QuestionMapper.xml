@@ -5,20 +5,20 @@
 <mapper namespace="cn.ryanalexander.sst.mapper.QuestionMapper">
 
     <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.QuestionPO">
-            <id property="questionId" column="question_id" jdbcType="OTHER"/>
-            <result property="questionTeacherId" column="question_teacher_id" jdbcType="OTHER"/>
+            <id property="questionId" column="question_id" jdbcType="INTEGER"/>
+            <result property="questionTeacherId" column="question_teacher_id" jdbcType="INTEGER"/>
+            <result property="questionSubjectId" column="question_subject_id" jdbcType="INTEGER"/>
             <result property="questionStem" column="question_stem" jdbcType="VARCHAR"/>
             <result property="questionAnswerA" column="question_answer_a" jdbcType="VARCHAR"/>
             <result property="questionAnswerB" column="question_answer_b" jdbcType="VARCHAR"/>
             <result property="questionAnswerC" column="question_answer_c" jdbcType="VARCHAR"/>
             <result property="questionAnswerD" column="question_answer_d" jdbcType="VARCHAR"/>
-            <result property="questionLessonId" column="question_lesson_id" jdbcType="TINYINT"/>
             <result property="questionTrueAnswer" column="question_true_answer" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        question_id,question_teacher_id,question_stem,
-        question_answer_a,question_answer_b,question_answer_c,
-        question_answer_d,question_lesson_id,question_true_answer
+        question_id,question_teacher_id,question_subject_id,
+        question_stem,question_answer_a,question_answer_b,
+        question_answer_c,question_answer_d,question_true_answer
     </sql>
 </mapper>

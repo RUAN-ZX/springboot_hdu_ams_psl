@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.CoursePO">
             <id property="courseId" column="course_id" jdbcType="INTEGER"/>
-            <result property="courseUserId" column="course_user_id" jdbcType="OTHER"/>
+            <result property="courseUserId" column="course_user_id" jdbcType="INTEGER"/>
             <result property="courseClass1" column="course_class1" jdbcType="VARCHAR"/>
             <result property="courseClass2" column="course_class2" jdbcType="VARCHAR"/>
             <result property="courseClass3" column="course_class3" jdbcType="VARCHAR"/>

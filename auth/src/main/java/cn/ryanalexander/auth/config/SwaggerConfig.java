@@ -4,52 +4,36 @@ package cn.ryanalexander.auth.config;
 import cn.ryanalexander.auth.service.tool.StaticConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
 
 @Configuration
-@EnableSwagger2
+@EnableOpenApi
 public class SwaggerConfig {
 
-    @Resource
-    private StaticConfiguration StaticConfiguration;
-
-    private ApiInfo getApiInfo(){
-        Contact contact = new Contact("沈盛涛", "http://sayhitotheworld.ryanalexander.cn/", "1162179851@qq.com");
-        return new ApiInfo(
-                "Ryan Document",
-                "但行好事，莫问前程",
-                "v1.0",
-                "urn:tos",
-                contact,
-                "Apache 2.0",
-                "http://www.apache.org/licenses/LICENSE-2.0",
-                new ArrayList()
-        );
-    }
     @Bean
-    public Docket docket(Environment environment){
-
-        Profiles profiles = Profiles.of("dev");
-        boolean b = environment.acceptsProfiles(profiles);
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .enable(b)
-                .apiInfo(getApiInfo())
-                .groupName("cn/ryanalexander/auth")
-                .enable(StaticConfiguration.getSwaggerEnable())
+    public Docket createRestApi() {
+        //返回文档摘要信息
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
+                .groupName("auth")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.ryanalexander.sst"))
+                .apis(RequestHandlerSelectors.basePackage("cn.ryanalexander.auth"))
                 .build();
+    }
 
+    //生成接口信息，包括标题、联系人等
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("AUTH服务")
+                .description("如有疑问，请联系我")
+                .contact(new Contact("沈盛涛", "http://sayhitotheworld.ryanalexander.cn/", "1162179851@qq.com"))
+                .version("1.0")
+                .build();
     }
 }

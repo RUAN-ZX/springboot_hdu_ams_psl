@@ -6,8 +6,8 @@
 
     <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.RecordPO">
             <id property="recordId" column="record_id" jdbcType="INTEGER"/>
-            <result property="recordStudentId" column="record_student_id" jdbcType="OTHER"/>
-            <result property="recordClassId" column="record_class_id" jdbcType="OTHER"/>
+            <result property="recordStudentId" column="record_student_id" jdbcType="INTEGER"/>
+            <result property="recordClassId" column="record_class_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

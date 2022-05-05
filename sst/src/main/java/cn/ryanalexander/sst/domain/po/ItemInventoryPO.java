@@ -23,7 +23,7 @@ public class ItemInventoryPO implements Serializable {
     /**
      * 
      */
-    private Object itemInventoryUserId;
+    private Integer itemInventoryUserId;
 
     /**
      * 

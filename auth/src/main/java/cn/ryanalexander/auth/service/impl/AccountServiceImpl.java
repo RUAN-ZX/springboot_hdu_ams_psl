@@ -156,7 +156,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
 
     // --------------------------
     @Override
-    public void updatePwdById(int userId, String userPwd){
+    public void updatePwdById(int userId, int accountApp, String userPwd){
         Optional<AccountMapper> accountMapper = Optional.ofNullable(this.accountMapper);
 
         AccountPO accountPONullable = accountMapper.orElseThrow(

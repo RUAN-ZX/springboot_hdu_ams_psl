@@ -72,7 +72,7 @@ public class AccountController {
     // 覆盖信息 比如改改密码 改改mail之类的 反正具体业务类自己验证 这里就是个通用Service
     @ApiOperation("更改有关认证的信息！")
     @PostMapping("/changeAccountInfo")
-    public Object changeAccountInfo(Account account){
+    public Object changeAccountInfo(@RequestBody Account account){
         AccountPO accountPO = new AccountPO(account);
         accountService.saveOrUpdate(accountPO);
         return accountPO.getAccountId(); // mybatis直接把自动生成的id放到实体类里边了 真棒！
@@ -169,6 +169,7 @@ public class AccountController {
         String accountPwd = account.getAccountPwd();
 
         Optional<AccountPO> accountNullable;
+        // 1 检查是何种登录方式 用户名是名字 邮箱 还是手机号
         if(accountName != null){
             accountNullable = Optional.ofNullable(
                 accountService.getOne(
@@ -190,23 +191,24 @@ public class AccountController {
         else throw new InvalidException(AccountController.class,"loginByPwd","登录需要邮箱 手机 用户名 三选一！");
 
         AccountPO accountPO = accountNullable.orElseThrow(() ->
-                new InvalidException(AccountPO.class, "getById", "Wrong Account id"));
+                new InvalidException(AccountPO.class, "getById", "用户不存在"));
 
         // 使用各个应用自己的userId 别搞AccountId
         int userId = accountPO.getAccountUserId();
 
+        // 2 检查密码 首先看是不是验证码 不是再设置密码 注意密码不能是6位的数字！
         if(AccountService.isCaptcha(accountPwd)){
             accountService.verifyCaptcha(String.valueOf(userId), accountApp, accountPwd);
         }
         else if(accountPO.getAccountPwd() == null){
-            throw new NotFoundException(AccountController.class, "loginByPwd", "pwd not found!");
+            throw new NotFoundException(AccountController.class, "loginByPwd", "未曾设置过密码");
         }
         else if(!accountPO.getAccountPwd().equals(accountPwd)){
-            throw new InvalidException(AccountController.class, "loginByPwd", "pwd not right");
+            throw new InvalidException(AccountController.class, "loginByPwd", "密码错误");
         }
-
+        // 生成token
         Map<String, String> result = accountService.refreshBothToken(userId, accountApp);
-        result.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
+        result.put(RedisKeyEnum.ACCOUNT.key, String.valueOf(userId));
         return result;
     }
 
@@ -214,8 +216,8 @@ public class AccountController {
     @PostMapping("/updatePwd")
     public Object updatePwd(int userId, int accountApp, String accountPwd){
         // 现在已经实现了 只要verify出了问题 里边直接throw异常就好 所以解耦的差不多了
-        accountService.updatePwdById(userId, accountPwd);
-        return accountPwd;
+        accountService.updatePwdById(userId,accountApp, accountPwd);
+        return userId;
     }
 
     // ==================================================================================

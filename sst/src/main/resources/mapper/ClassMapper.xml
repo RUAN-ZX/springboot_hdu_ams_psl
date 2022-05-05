@@ -6,10 +6,11 @@
 
     <resultMap id="BaseResultMap" type="cn.ryanalexander.sst.domain.po.ClassPO">
             <id property="classId" column="class_id" jdbcType="INTEGER"/>
-            <result property="classTeacherId" column="class_teacher_id" jdbcType="OTHER"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="classTeacherId" column="class_teacher_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        class_id,class_teacher_id
+        class_id,class_name,class_teacher_id
     </sql>
 </mapper>

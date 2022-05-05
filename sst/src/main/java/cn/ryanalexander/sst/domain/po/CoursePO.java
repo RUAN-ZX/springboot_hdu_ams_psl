@@ -23,7 +23,7 @@ public class CoursePO implements Serializable {
     /**
      * 
      */
-    private Object courseUserId;
+    private Integer courseUserId;
 
     /**
      * 

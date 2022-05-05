@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -13,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="record")
 @Data
+@AllArgsConstructor
 public class RecordPO implements Serializable {
     /**
      * 
@@ -23,12 +26,12 @@ public class RecordPO implements Serializable {
     /**
      * 
      */
-    private Object recordStudentId;
+    private Integer recordStudentId;
 
     /**
      * 
      */
-    private Object recordClassId;
+    private Integer recordClassId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

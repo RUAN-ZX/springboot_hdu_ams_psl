@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
 * @author ryan
 * @description 针对表【item_inventory】的数据库操作Mapper
-* @createDate 2022-04-27 21:34:14
+* @createDate 2022-05-04 15:31:41
 * @Entity cn.ryanalexander.sst.domain.po.ItemInventoryPO
 */
 public interface ItemInventoryMapper extends BaseMapper<ItemInventoryPO> {

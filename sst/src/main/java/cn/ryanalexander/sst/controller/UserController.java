@@ -18,18 +18,30 @@ import cn.ryanalexander.sst.service.UserService;
 import cn.ryanalexander.sst.service.tool.StaticConfiguration;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.cloud.openfeign.support.FeignUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.service.ParameterType;
 
 import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Api(tags = "用户 账户操作")
 @RestController
 public class UserController {
     // 如果该Service有多个实现类，设置注入哪个ServiceImpl类
@@ -70,6 +82,7 @@ public class UserController {
 
         Account account = new Account();
         account.setAccountMail(accountMail);
+        account.setAccountName(userName); // 用户name 真名 设置为用户名！
         account.setAccountPwd(accountPwd);
         account.setAccountApp(AppKeyEnum.SST.key); // 客户端无需 也无权提供！
         account.setAccountUserId(accountUserId);
@@ -98,7 +111,7 @@ public class UserController {
 //        return accountFeignService.registerAccountInfo(account);
 //    }
 
-//    @Require
+    @Require
     @ApiOperation("已经注册的邮箱 获取验证码")
     @GetMapping("/getCaptcha")
     public Object getCaptcha(int userId) {
@@ -157,6 +170,9 @@ public class UserController {
     }
 
     // @Param keyName 用户名 | 邮箱 | 手机号
+    @ApiResponses({
+        @ApiResponse(responseCode = "0", description = "返回Map<String, String> 包含access:accessToken | refresh:refreshToken | account:userId")
+    })
     @ApiOperation("邮箱登录")
     @GetMapping("/loginByMailPwd")
     public Object loginByMailPwd(String accountMail, String accountPwd){
@@ -165,12 +181,10 @@ public class UserController {
         account.setAccountPwd(accountPwd);
         account.setAccountApp(AppKeyEnum.SST.key);
 
-        accountFeignService.loginByPwd(account);
-        return new Object();
+        return accountFeignService.loginByPwd(account);
     }
 
     // @Param keyName 用户名 | 邮箱 | 手机号
-    @ApiOperation("用户名登录")
     @GetMapping("/loginByNamePwd")
     public Object loginByNamePwd(String accountName, String accountPwd){
         Account account = new Account();
@@ -178,15 +192,29 @@ public class UserController {
         account.setAccountPwd(accountPwd);
         account.setAccountApp(AppKeyEnum.SST.key);
 
-        accountFeignService.loginByPwd(account);
-        return new Object();
+        return accountFeignService.loginByPwd(account);
     }
 
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(paramType = "query", name = "accountPwd", value = "新的密码", required = true, dataType = "String")
+//            @ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "String")
+//    })
     @Require
     @ApiOperation("更改密码")
     @GetMapping("/updatePwd")
-    public Object updatePwd(int userId, String accountPwd){
-        return new Object();
+    public Object updatePwd(
+            @Parameter(description = "新的密码", required = true) int userId,
+            @Parameter(description = "用户ID", required = true) String accountPwd){
+        // 不用担心 userId穿透到别的用户 因为Require会检查的! 不匹配直接拒绝
+        return accountFeignService.updatePwd(userId, AppKeyEnum.SST.key, accountPwd);
+    }
+
+    //    @Require
+    @ApiOperation("获取自己的个人信息")
+    @GetMapping("/getPersonalInfo")
+    public UserPO getPersonalInfo(int userId){
+        return userMapper.selectOne(new QueryWrapper<UserPO>()
+                .eq("user_id", userId).last("limit 1"));
     }
 }
 
