@@ -1,6 +1,7 @@
 package cn.ryanalexander.sst.controller;
 
 import cn.ryanalexander.common.domain.dto.Result;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.sst.domain.dto.MissionDTO;
 import cn.ryanalexander.sst.domain.po.*;
 import cn.ryanalexander.sst.mapper.*;
@@ -157,6 +158,9 @@ public class MissionController {
         // todo 其实应该检测这个question是否属于老师
         List<MissionPO> missionPOS = missionMapper.selectList(new QueryWrapper<MissionPO>()
                 .eq("mission_question_id", questionId));
+
+        if(missionPOS.size() == 0) return new ArrayList<>();
+
         List<Integer> studentIds = new ArrayList<>();
         for (MissionPO missionPo: missionPOS) {
             studentIds.add(missionPo.getMissionStudentId());
@@ -183,7 +187,11 @@ public class MissionController {
         List<Object> missionStudentIds = recordMapper.selectObjs(new QueryWrapper<RecordPO>()
                 .eq("record_class_id", classId));
 
-        List<MissionPO> missionPOS = new ArrayList<>(missionStudentIds.size());
+        int size = missionStudentIds.size();
+
+        if(size == 0) return new Result(new ErrorCode(), "没有同学 没什么好发布的");
+
+        List<MissionPO> missionPOS = new ArrayList<>(size);
 
         for(Object studentId : missionStudentIds ){
             MissionPO missionPO = new MissionPO(missionDTO);

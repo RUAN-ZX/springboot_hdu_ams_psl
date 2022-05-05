@@ -63,7 +63,10 @@ public class SpriteController {
                 spriteRecordMapper.selectList(new QueryWrapper<SpriteRecordPO>()
                         .eq("sprite_record_user_id", userId));
 
-        List<JSONObject> result = new ArrayList<>(spriteRecordPOS.size());
+        int size = spriteRecordPOS.size();
+        if(size == 0) return new ArrayList<>();
+
+        List<JSONObject> result = new ArrayList<>(size);
         for (SpriteRecordPO spriteRecordPO : spriteRecordPOS) {
             JSONObject spriteRecord = (JSONObject) JSONObject.toJSON(spriteRecordPO);
             SpritePO spritePO = spriteMapper.selectOne(new QueryWrapper<SpritePO>()

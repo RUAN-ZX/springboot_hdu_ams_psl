@@ -1,5 +1,6 @@
 package cn.ryanalexander.sst.controller;
 
+import cn.ryanalexander.common.domain.exceptions.AppException;
 import cn.ryanalexander.sst.domain.po.ClassPO;
 import cn.ryanalexander.sst.domain.po.RecordPO;
 import cn.ryanalexander.sst.domain.po.UserPO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +47,7 @@ public class ClassController {
         List<Object> classIds = recordMapper.selectObjs(new QueryWrapper<RecordPO>()
                 .select("record_class_id")
                 .eq("record_student_id", userId));
+        if(classIds.size() == 0) return new ArrayList<ClassPO>();
         return classMapper.selectList(new QueryWrapper<ClassPO>()
                 .in("class_id", classIds));
     }
@@ -57,6 +60,8 @@ public class ClassController {
         List<Object> classMateIds = recordMapper.selectObjs(new QueryWrapper<RecordPO>()
                 .select("record_student_id")
                 .eq("record_class_id", classId));
+        
+        if(classMateIds.size() == 0) return new ArrayList<UserPO>();
 
         return userMapper.selectList(new QueryWrapper<UserPO>()
                 .select("user_alias", "user_name")

@@ -65,6 +65,8 @@ public class QuestionController {
         List<JSONObject> result = new ArrayList<>();
         List<Integer> subjectIds = new ArrayList<>();
 
+        if(questionPOS.size() == 0) return new ArrayList<>();
+
         for(QuestionPO questionPO : questionPOS ){
             subjectIds.add(questionPO.getQuestionSubjectId());
         }
