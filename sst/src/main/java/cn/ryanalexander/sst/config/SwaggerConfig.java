@@ -23,8 +23,6 @@ import javax.annotation.Resource;
 public class SwaggerConfig {
     @Resource
     private StaticConfiguration staticConfiguration;
-
-
     @Bean
     public Docket createRestApi() {
 //        List<RequestParameter> parameters = new ArrayList<>();
@@ -46,9 +44,9 @@ public class SwaggerConfig {
     //生成接口信息，包括标题、联系人等
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SST项目")
+                .title("SST的项目")
                 .description("如有疑问，请联系我")
-                .contact(new Contact("沈盛涛", "http://sayhitotheworld.ryanalexander.cn/", "1162179851@qq.com"))
+                .contact(new Contact("沈盛涛", "https://blog.csdn.net/qq_43173045", "1162179851@qq.com"))
                 .version("1.0")
                 .build();
     }

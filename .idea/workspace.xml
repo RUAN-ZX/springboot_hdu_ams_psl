@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="f">
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/cn/ryanalexander/auth/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/cn/ryanalexander/auth/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/target/classes/cn/ryanalexander/auth/config/SwaggerConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/auth/target/classes/cn/ryanalexander/auth/config/SwaggerConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/service/tool/EmailService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/service/tool/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sst/src/main/resources/sst.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sst/src/main/resources/sst.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -420,6 +415,7 @@
       <workItem from="1651801967275" duration="1639000" />
       <workItem from="1651803976278" duration="3385000" />
       <workItem from="1651810605259" duration="1749000" />
+      <workItem from="1651812970810" duration="996000" />
     </task>
     <task id="LOCAL-00001" summary="f">
       <created>1648010409144</created>
