@@ -12,14 +12,19 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import javax.annotation.Resource;
+
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
+    @Resource
+    private StaticConfiguration StaticConfiguration;
 
     @Bean
     public Docket createRestApi() {
         //返回文档摘要信息
         return new Docket(DocumentationType.OAS_30)
+                .enable(StaticConfiguration.getSwaggerEnable())
                 .apiInfo(apiInfo())
                 .groupName("auth")
                 .select()

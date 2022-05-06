@@ -1,30 +1,29 @@
 package cn.ryanalexander.sst.config;
 
+import cn.ryanalexander.sst.service.tool.StaticConfiguration;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
+
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.RequestParameterBuilder;
+
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.schema.ScalarType;
+
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.ParameterType;
-import springfox.documentation.service.RequestParameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
+
 
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
+    @Resource
+    private StaticConfiguration staticConfiguration;
+
 
     @Bean
     public Docket createRestApi() {
@@ -35,6 +34,7 @@ public class SwaggerConfig {
 //                .name("refresh").description("refresh").in(ParameterType.HEADER).build());
         //返回文档摘要信息
         return new Docket(DocumentationType.OAS_30)
+                .enable(staticConfiguration.getSwaggerEnable())
                 .apiInfo(apiInfo())
                 .groupName("sst")
                 .select()

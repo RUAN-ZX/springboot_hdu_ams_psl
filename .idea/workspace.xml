@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="f" />
+    <list default="true" id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="f">
+      <change beforePath="$PROJECT_DIR$/auth/src/main/java/cn/ryanalexander/auth/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/cn/ryanalexander/auth/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/target/classes/cn/ryanalexander/auth/config/SwaggerConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/auth/target/classes/cn/ryanalexander/auth/config/SwaggerConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/service/tool/EmailService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sst/src/main/java/cn/ryanalexander/sst/service/tool/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sst/src/main/resources/sst.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sst/src/main/resources/sst.sql" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -188,11 +195,11 @@
       <recent name="F:\JAVA\workspace\LearnCloud\account\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\JAVA\workspace\LearnCloud" />
       <recent name="F:\JAVA\workspace\LearnCloud\sst\src\main\resources" />
       <recent name="F:\JAVA\workspace\LearnCloud\psl\src\main\resources\testt" />
       <recent name="F:\JAVA\workspace\LearnCloud\psl\src\main\resources" />
       <recent name="F:\JAVA\workspace\LearnCloud\mybatisTest\src" />
-      <recent name="F:\JAVA\workspace\alibaba\psl\src\main\resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="cn.ryanalexander.alibaba.service" />
@@ -410,7 +417,9 @@
       <workItem from="1651450046258" duration="97968000" />
       <workItem from="1651759769097" duration="1826000" />
       <workItem from="1651801019109" duration="914000" />
-      <workItem from="1651801967275" duration="853000" />
+      <workItem from="1651801967275" duration="1639000" />
+      <workItem from="1651803976278" duration="3385000" />
+      <workItem from="1651810605259" duration="1749000" />
     </task>
     <task id="LOCAL-00001" summary="f">
       <created>1648010409144</created>
