@@ -135,6 +135,9 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -407,7 +410,7 @@
       <workItem from="1651450046258" duration="97968000" />
       <workItem from="1651759769097" duration="1826000" />
       <workItem from="1651801019109" duration="914000" />
-      <workItem from="1651801967275" duration="335000" />
+      <workItem from="1651801967275" duration="853000" />
     </task>
     <task id="LOCAL-00001" summary="f">
       <created>1648010409144</created>
