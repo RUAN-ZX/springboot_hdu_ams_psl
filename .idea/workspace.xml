@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="f">
+      <change beforePath="$PROJECT_DIR$/.gitignore_" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore11" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+    <option name="PARALLEL_COMPILATION" value="true" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="seata: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_account@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_account@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_account@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="seata_account: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_order@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_order@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_order@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="seata_order: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="seata_storage@1.15.235.161" type="feb32156:DbDataSourceImpl" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="InvalidFacetManager">
+    <ignored-facets>
+      <facet id="common/invalid/JRebel" />
+      <facet id="consumer-order-80/invalid/JRebel" />
+      <facet id="provider-payment-9001/invalid/JRebel" />
+      <facet id="provider-payment-9002/invalid/JRebel" />
+      <facet id="seata-account-2003/invalid/JRebel" />
+      <facet id="seata-storage-2002/invalid/JRebel" />
+      <facet id="sentinel-8401/invalid/JRebel" />
+    </ignored-facets>
+  </component>
+  <component name="JRebelWorkspace">
+    <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="F:\JAVA\maven\repository" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../maven" />
+        <option name="useMavenConfig" value="true" />
+        <option name="userSettingsFile" value="F:\JAVA\maven\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadAnnotationsAutomatically" value="true" />
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectId" id="21u85A0fhVjvA67mzpJnyAUpcXw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect" value="MySQL" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="jdk.selected.JAVA_MODULE" value="11" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/common/target/common.jar" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.46091953" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\JAVA\workspace\LearnCloud\psl\src\main\resources" />
+      <recent name="F:\JAVA\workspace\LearnCloud\common\src\main\java\cn\ryanalexander\common\domain" />
+      <recent name="F:\JAVA\workspace\LearnCloud\common\src\main\java\cn\ryanalexander" />
+      <recent name="F:\JAVA\workspace\LearnCloud\account\src\main\java" />
+      <recent name="F:\JAVA\workspace\LearnCloud\account\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\JAVA\workspace\LearnCloud\sst\src\main\resources" />
+      <recent name="F:\JAVA\workspace\LearnCloud\psl\src\main\resources\testt" />
+      <recent name="F:\JAVA\workspace\LearnCloud\psl\src\main\resources" />
+      <recent name="F:\JAVA\workspace\LearnCloud\mybatisTest\src" />
+      <recent name="F:\JAVA\workspace\alibaba\psl\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="cn.ryanalexander.alibaba.service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cn.ryanalexander.auth.service.impl" />
+      <recent name="cn.ryanalexander.auth.service" />
+      <recent name="cn.ryanalexander.common.domain" />
+      <recent name="cn.ryanalexander.sst.mapper" />
+      <recent name="cn.ryanalexander.sst.service.impl" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn versions:set  -DnewVersion=1.00" />
+      <command value="mvn versions:set  -DnewVersion=1.0.0" />
+      <command value="mvn clean" />
+      <command value="mvn clean:clean" />
+      <command value="mvn install:install-file -DgroupId=cn.ryanalexander.common -DartifactId=common -Dversion=1.0.0 -Dfile=F:\JAVA\workspace\LearnCloud\common\target\common.jar -Dpackaging=jar" />
+      <command value="mvn package" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.sstMain">
+    <configuration name="MyBatisPlusServiceTest.noModelWrite" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="psl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.ryanalexander.sst.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.ryanalexander.alibaba" />
+      <option name="MAIN_CLASS_NAME" value="cn.ryanalexander.alibaba.MyBatisPlusServiceTest" />
+      <option name="METHOD_NAME" value="noModelWrite" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBatisPlusServiceTest.redis" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="psl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.ryanalexander.sst.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.ryanalexander.alibaba" />
+      <option name="MAIN_CLASS_NAME" value="cn.ryanalexander.alibaba.MyBatisPlusServiceTest" />
+      <option name="METHOD_NAME" value="redis" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBatisPlusServiceTest.testGetCount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="psl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.ryanalexander.sst.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.ryanalexander.alibaba" />
+      <option name="MAIN_CLASS_NAME" value="cn.ryanalexander.alibaba.MyBatisPlusServiceTest" />
+      <option name="METHOD_NAME" value="testGetCount" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="authMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
+      <module name="auth" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.ryanalexander.auth.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cn.ryanalexander.auth.Main" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="pslMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="psl" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cn.ryanalexander.psl.Main" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sstMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
+      <module name="sst" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.ryanalexander.sst.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cn.ryanalexander.sst.Main" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.MyBatisPlusServiceTest.testGetCount" />
+      <item itemvalue="JUnit.MyBatisPlusServiceTest.noModelWrite" />
+      <item itemvalue="JUnit.MyBatisPlusServiceTest.redis" />
+      <item itemvalue="Spring Boot.pslMain" />
+      <item itemvalue="Spring Boot.sstMain" />
+      <item itemvalue="Spring Boot.authMain" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.sstMain" />
+        <item itemvalue="Spring Boot.authMain" />
+        <item itemvalue="JUnit.MyBatisPlusServiceTest.redis" />
+        <item itemvalue="JUnit.MyBatisPlusServiceTest.testGetCount" />
+        <item itemvalue="JUnit.MyBatisPlusServiceTest.noModelWrite" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <option name="contentProportion" value="0.2425107" />
+          <treeState>
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Not Started" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="88a4e240-a4d1-41bf-a05a-63db9d513f8f" name="Default Changelist" comment="" />
+      <created>1638779425430</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1638779425430</updated>
+      <workItem from="1638779431022" duration="10631000" />
+      <workItem from="1639017221677" duration="10441000" />
+      <workItem from="1639108491937" duration="428000" />
+      <workItem from="1639115884317" duration="10056000" />
+      <workItem from="1639212223396" duration="24789000" />
+      <workItem from="1639401407047" duration="125000" />
+      <workItem from="1641360134490" duration="748000" />
+      <workItem from="1641361858618" duration="1255000" />
+      <workItem from="1641446443771" duration="1193000" />
+      <workItem from="1641447663978" duration="1011000" />
+      <workItem from="1641448700424" duration="3844000" />
+      <workItem from="1641465106566" duration="24000" />
+      <workItem from="1641466037092" duration="1566000" />
+      <workItem from="1641469138990" duration="6000" />
+      <workItem from="1641469990392" duration="1943000" />
+      <workItem from="1646891197196" duration="33692000" />
+      <workItem from="1647141546362" duration="24794000" />
+      <workItem from="1647856501657" duration="57000" />
+      <workItem from="1647856606565" duration="2901000" />
+      <workItem from="1647859943387" duration="468000" />
+      <workItem from="1647860434891" duration="302000" />
+      <workItem from="1647860760484" duration="4714000" />
+      <workItem from="1647918192632" duration="72995000" />
+      <workItem from="1648087082660" duration="87090000" />
+      <workItem from="1648300893090" duration="10313000" />
+      <workItem from="1648355628949" duration="1000" />
+      <workItem from="1648979412187" duration="556000" />
+      <workItem from="1649232768520" duration="20000" />
+      <workItem from="1649410957091" duration="53398000" />
+      <workItem from="1649552367497" duration="34508000" />
+      <workItem from="1649653582534" duration="12351000" />
+      <workItem from="1649675360639" duration="3952000" />
+      <workItem from="1649729190131" duration="12364000" />
+      <workItem from="1649812606348" duration="594000" />
+      <workItem from="1649834705402" duration="2049000" />
+      <workItem from="1649912881958" duration="17461000" />
+      <workItem from="1650158187767" duration="62755000" />
+      <workItem from="1650339144566" duration="2062000" />
+      <workItem from="1650347205846" duration="7470000" />
+      <workItem from="1650454126940" duration="18312000" />
+      <workItem from="1650673998008" duration="48565000" />
+      <workItem from="1650939376343" duration="1197000" />
+      <workItem from="1650950467800" duration="8888000" />
+      <workItem from="1651066137696" duration="4623000" />
+      <workItem from="1651109247357" duration="15775000" />
+      <workItem from="1651144743583" duration="1537000" />
+      <workItem from="1651192884963" duration="18204000" />
+      <workItem from="1651365046781" duration="24026000" />
+      <workItem from="1651450046258" duration="97968000" />
+      <workItem from="1651759769097" duration="1826000" />
+      <workItem from="1651801019109" duration="914000" />
+    </task>
+    <task id="LOCAL-00001" summary="f">
+      <created>1648010409144</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1648010409144</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="f" />
+    <option name="LAST_COMMIT_MESSAGE" value="f" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="headMap" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

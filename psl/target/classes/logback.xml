@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="consolePattern"
+              value="%highlight(%-5level) %yellow(%d{MM-dd}) %cyan(%d{HH:mm:ss}) %magenta(%c %M) %boldGreen(%thread) %msg%n">
+    </property>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${consolePattern}</pattern>
+        </encoder>
+<!--        <filter class="ch.qos.logback.core.filter.LevelFilter">-->
+<!--            <level>ERROR</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMisMatch>DENY</onMisMatch>-->
+<!--        </filter>-->
+    </appender>
+
+    <!--  file  -->
+    <property name="filePattern"
+              value="%-5level %d{yyyy-MM-dd} %d{HH:mm:ss} %c %M %thread %msg%n">
+    </property>
+    <property name="fileDirWin" value="./"></property>
+    <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${filePattern}</pattern>
+        </encoder>
+        <file>${fileDirWin}/log.log</file>
+    </appender>
+
+    <appender name="asyncConsoleAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="consoleAppender"/>
+        <includeCallerData>true</includeCallerData>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1024</queueSize>
+        <!--    默认256 但是队列大小和内存有关 内存够大真的无所谓吧    -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="fileAppender"/>
+    </appender>
+    <!--  日志记录器 root logger  -->
+    <root level="INFO">
+        <appender-ref ref="asyncConsoleAppender"/>
+        <appender-ref ref="asyncFileAppender"/>
+    </root>
+</configuration>
