@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -29,9 +30,12 @@ public class CourseController {
     @Resource
     private CourseMapper courseMapper;
 
+//    @Require
     @ApiOperation("我的课程表 时尚时尚最时尚")
     @GetMapping("/getMyCourse")
-    public List<CoursePO> getMyCourse(int userId){
+    public List<CoursePO> getMyCourse(
+            @RequestHeader String access,
+            int userId){
         return courseMapper.selectList(new QueryWrapper<CoursePO>()
                 .eq("course_user_id", userId)
                 .last("limit 1"));

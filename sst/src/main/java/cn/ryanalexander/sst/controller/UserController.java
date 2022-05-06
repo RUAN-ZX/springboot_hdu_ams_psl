@@ -68,7 +68,7 @@ public class UserController {
 
         try{
             accountFeignService.verifyCaptcha(accountMail, AppKeyEnum.SST.key, captcha);
-        }catch (Exception e){
+        } catch (Exception e){
 //            e.printStackTrace();
             throw new AppException(new ErrorCode(SubjectEnum.INTERNAL),"邮箱验证码过期了");
         }
@@ -111,10 +111,12 @@ public class UserController {
 //        return accountFeignService.registerAccountInfo(account);
 //    }
 
-    @Require
+//    @Require
     @ApiOperation("已经注册的邮箱 获取验证码")
     @GetMapping("/getCaptcha")
-    public Object getCaptcha(int userId) {
+    public Object getCaptcha(
+            @RequestHeader String access,
+            int userId) {
         UserPO userPO = userMapper.selectOne(new QueryWrapper<UserPO>()
                 .eq("user_id", userId).last("limit 1"));
 
@@ -162,10 +164,13 @@ public class UserController {
     // 前端没必要使用access自动登录了 10分钟真不太可能 10分钟以内 微信也会保留页面的！10分钟差不多缓存清理了 那就refresh认证咯
     // 也不太可能抓到这个机会吧。。
     // 所以这接口直接作为自动登录的接口完事了 反正refreshToken也只会使用一次！
-    @Require(RoleEnum.EXPIRED)
+
+//    @Require(RoleEnum.EXPIRED)
     @ApiOperation("通过refresh token更新access token 适用于中间十多分钟客户端没跑 但是没超过15天")
     @GetMapping("/refresh")
-    public Object refresh(int userId){
+    public Object refresh(
+            @RequestHeader String refresh,
+            int userId){
         return accountFeignService.refreshBothToken(userId, AppKeyEnum.SST.key).getData();
     }
 
@@ -199,12 +204,13 @@ public class UserController {
 //            @ApiImplicitParam(paramType = "query", name = "accountPwd", value = "新的密码", required = true, dataType = "String")
 //            @ApiImplicitParam(paramType = "query", name = "userId", value = "用户ID", required = true, dataType = "String")
 //    })
-    @Require
+//    @Require
     @ApiOperation("更改密码")
     @GetMapping("/updatePwd")
     public Object updatePwd(
-            @Parameter(description = "新的密码", required = true) int userId,
-            @Parameter(description = "用户ID", required = true) String accountPwd){
+            @RequestHeader String access,
+            @Parameter(description = "用户ID", required = true) int userId,
+            @Parameter(description = "新的密码", required = true) String accountPwd){
         // 不用担心 userId穿透到别的用户 因为Require会检查的! 不匹配直接拒绝
         return accountFeignService.updatePwd(userId, AppKeyEnum.SST.key, accountPwd);
     }
@@ -212,7 +218,9 @@ public class UserController {
     //    @Require
     @ApiOperation("获取自己的个人信息")
     @GetMapping("/getPersonalInfo")
-    public UserPO getPersonalInfo(int userId){
+    public UserPO getPersonalInfo(
+            @RequestHeader String access,
+            int userId){
         return userMapper.selectOne(new QueryWrapper<UserPO>()
                 .eq("user_id", userId).last("limit 1"));
     }

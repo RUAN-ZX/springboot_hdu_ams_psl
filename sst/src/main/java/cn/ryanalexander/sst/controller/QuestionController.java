@@ -58,7 +58,9 @@ public class QuestionController {
 //    @Require(RoleEnum.TEACHER)
     @ApiOperation("老师查看所有设计的题目 注意不是mission是question")
     @GetMapping("/getAllQuestion")
-    public List<JSONObject> getAllQuestion(int userId){
+    public List<JSONObject> getAllQuestion(
+            @RequestHeader String access,
+            int userId){
         List<QuestionPO> questionPOS = questionMapper.selectList(
                 new QueryWrapper<QuestionPO>()
                 .eq("question_teacher_id", userId));
@@ -85,7 +87,7 @@ public class QuestionController {
 
     // --------------------------------------------------------------------------------
     // @RequestBody @Parameter(schema = @Schema(implementation = QuestionDTO.class)) QuestionPO questionPO
-    @Require(RoleEnum.TEACHER)
+//    @Require(RoleEnum.TEACHER)
     @ApiOperation("教师添加题目 返回添加完的id") // 返回添加的题目id
     @PostMapping("/addQuestion")
     public Integer addQuestion(
@@ -101,10 +103,12 @@ public class QuestionController {
         return questionPO.getQuestionId(); // mybatis自动填充id的
     }
 
-    @Require(RoleEnum.TEACHER)
+//    @Require(RoleEnum.TEACHER)
     @ApiOperation("修改题目 前端已经获取原题目的数据 改完以后打包过来完成修改")
     @PostMapping("/modifyQuestion")
     public Result modifyQuestion(
+            @RequestHeader String access,
+            int userId,
             @Parameter(schema = @Schema(implementation = QuestionPO.class)) QuestionPO questionPO){
         questionService.saveOrUpdate(questionPO); // 肯定是update的
         return new Result();

@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -71,7 +72,8 @@ public class ClassController {
 //    @Require(RoleEnum.STUDENT)
     @ApiOperation("学生加入班级")
     @GetMapping("/attendClass")
-    public String attendClass(int userId, int classId){
+    public String attendClass(
+            @RequestHeader String access, int userId, int classId){
         RecordPO recordPO = new RecordPO(null, userId, classId);
         recordMapper.insert(recordPO);
         return "Record id: " + recordPO.getRecordId();
@@ -81,6 +83,7 @@ public class ClassController {
     @ApiOperation("教师添加班级")
     @PostMapping("/addClass")
     public Integer addClass(
+            @RequestHeader String access,
             @Parameter(description = "创建班级的老师ID") int userId,
             String className){
         ClassPO classPO = new ClassPO(null, className, userId);
@@ -90,6 +93,7 @@ public class ClassController {
     @ApiOperation("教师查看自己创建的班级")
     @GetMapping("/getCreatedClass")
     public List<ClassPO> getCreatedClass(
+            @RequestHeader String access,
             @Parameter(description = "创建班级的老师ID")int userId
     ){
         return classMapper.selectList(new QueryWrapper<ClassPO>()
