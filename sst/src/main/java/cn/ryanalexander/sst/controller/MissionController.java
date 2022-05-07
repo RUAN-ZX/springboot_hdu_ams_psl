@@ -103,37 +103,30 @@ public class MissionController {
     public List<JSONObject> getMissionByTeacherId(int teacherId){
         List<MissionPO> missionPOS = missionMapper.selectList(new QueryWrapper<MissionPO>()
                 .eq("mission_teacher_id", teacherId));
-        int size = missionPOS.size();
-        List<Integer> questionIds = new ArrayList<>(size);
-        List<Integer> studentIds = new ArrayList<>(size);
-        List<Integer> subjectIds = new ArrayList<>(size);
+
+        if(missionPOS.size() == 0) return new ArrayList<>();
 
         List<JSONObject> result = new ArrayList<>();
 
-        for(MissionPO missionPO : missionPOS){
-            questionIds.add(missionPO.getMissionQuestionId());
-            studentIds.add(missionPO.getMissionStudentId());
-            subjectIds.add(missionPO.getMissionSubjectId());
-        }
+// todo 因为in会查重 导致问题 实际实现需要自己单独写UNION ALL来实现！
+//        List<Object> subjectsNames = subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
+//                .select("subject_name")
+//                .in("subject_id",subjectIds).last("limit 1"));
 
-        List<Object> questionStems = questionMapper.selectObjs(new QueryWrapper<QuestionPO>()
-                .select("question_stem")
-                .in("question_id",questionIds).last("limit 1"));
+        for(MissionPO mission : missionPOS){
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(mission);
+            jsonObject.put("questionStem", questionMapper.selectObjs(new QueryWrapper<QuestionPO>()
+                    .select("question_stem")
+                    .eq("question_id", mission.getMissionQuestionId()).last("limit 1")));
 
-        List<Object> studentNames = userMapper.selectObjs(new QueryWrapper<UserPO>()
-                .select("user_name")
-                .in("user_id",studentIds).last("limit 1"));
+            jsonObject.put("studentName", userMapper.selectObjs(new QueryWrapper<UserPO>()
+                    .select("user_name")
+                    .eq("user_id", mission.getMissionStudentId()).last("limit 1")));
 
-        List<Object> subjectsNames = subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
-                .select("subject_name")
-                .in("subject_id",subjectIds).last("limit 1"));
-
-
-        for(int i = 0 ; i < missionPOS.size() ; ++i){
-            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(missionPOS.get(i));
-            jsonObject.put("questionStem", questionStems.get(i));
-            jsonObject.put("studentName", studentNames.get(i));
-            jsonObject.put("subjectName", subjectsNames.get(i));
+            jsonObject.put("subjectName",
+                    subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
+                    .select("subject_name")
+                    .eq("subject_id", mission.getMissionSubjectId()).last("limit 1")));
             result.add(jsonObject);
         }
         return result;
@@ -161,18 +154,17 @@ public class MissionController {
 
         if(missionPOS.size() == 0) return new ArrayList<>();
 
-        List<Integer> studentIds = new ArrayList<>();
-        for (MissionPO missionPo: missionPOS) {
-            studentIds.add(missionPo.getMissionStudentId());
-        }
-        List<Object> studentNames = userMapper.selectObjs(new QueryWrapper<UserPO>()
-                .select("user_name")
-                .in("user_id", studentIds).last("limit 1"));
+        // todo 同样 unionAll 实现 性能更高
+//        List<Object> studentNames = userMapper.selectObjs(new QueryWrapper<UserPO>()
+//                .select("user_name")
+//                .in("user_id", studentIds).last("limit 1"));
 
         List<JSONObject> result = new ArrayList<>();
-        for(int i = 0 ; i < missionPOS.size() ; ++i){
-            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(missionPOS.get(i));
-            jsonObject.put("studentName", studentNames.get(i));
+        for(MissionPO mission : missionPOS){
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(mission);
+            jsonObject.put("studentName", userMapper.selectObjs(new QueryWrapper<UserPO>()
+                .select("user_name")
+                .in("user_id", mission.getMissionStudentId()).last("limit 1")));
         }
         return result;
     }

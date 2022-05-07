@@ -64,22 +64,24 @@ public class QuestionController {
         List<QuestionPO> questionPOS = questionMapper.selectList(
                 new QueryWrapper<QuestionPO>()
                 .eq("question_teacher_id", userId));
-        List<JSONObject> result = new ArrayList<>();
-        List<Integer> subjectIds = new ArrayList<>();
-
         if(questionPOS.size() == 0) return new ArrayList<>();
 
-        for(QuestionPO questionPO : questionPOS ){
-            subjectIds.add(questionPO.getQuestionSubjectId());
-        }
-        List<Object> subjectNames = subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
+        List<JSONObject> result = new ArrayList<>();
+// todo 同样需要Union All解决 in会去重· 另外考虑结果的顺序问题 否则对应全错！
+//        List<Integer> subjectIds = new ArrayList<>();
+//        for(QuestionPO questionPO : questionPOS ){
+//            subjectIds.add(questionPO.getQuestionSubjectId());
+//        }
+//        List<Object> subjectNames = subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
+//                .select("subject_name")
+//                .in("subject_id", subjectIds).last("limit 1"));
+
+        for(QuestionPO question : questionPOS){
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(question);
+
+            jsonObject.put("subject_name", subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
                 .select("subject_name")
-                .in("subject_id", subjectIds).last("limit 1"));
-
-        for(int i = 0 ; i < questionPOS.size() ; ++i){
-            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(questionPOS.get(i));
-
-            jsonObject.put("subject_name", subjectNames.get(i));
+                .in("subject_id", question.getQuestionSubjectId()).last("limit 1")));
             result.add(jsonObject);
         }
         return result;
