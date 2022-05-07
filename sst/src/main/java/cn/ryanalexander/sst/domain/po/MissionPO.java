@@ -87,6 +87,7 @@ public class MissionPO implements Serializable {
         this.missionTimeStart = missionDTO.getMissionTimeStart();
         this.missionTimeEnd = missionDTO.getMissionTimeEnd();
     }
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

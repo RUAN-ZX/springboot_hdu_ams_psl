@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +52,7 @@ public class MissionController {
 
     @Resource
     private RecordMapper recordMapper;
+
 
 //    @Require(RoleEnum.STUDENT)
     @ApiOperation("学生获取自己的Mission")
@@ -173,7 +175,7 @@ public class MissionController {
     @PostMapping("/assignMission")
     public Result assignMission(@RequestHeader String access,
                                 @Parameter(description = "老师ID 与access配对") @RequestParam int userId,
-                                @Parameter(schema = @Schema(implementation = MissionDTO.class)) MissionDTO missionDTO){
+                                @Parameter(schema = @Schema(implementation = MissionDTO.class)) @RequestBody MissionDTO missionDTO){
         int classId = missionDTO.getMissionClassId();
 
         List<Object> missionStudentIds = recordMapper.selectObjs(new QueryWrapper<RecordPO>()
@@ -189,6 +191,7 @@ public class MissionController {
             MissionPO missionPO = new MissionPO(missionDTO);
             missionPO.setMissionStudentId((Integer) studentId);
             missionPO.setMissionTeacherId(userId);
+
             missionPOS.add(missionPO);
         }
         missionService.saveBatch(missionPOS);
