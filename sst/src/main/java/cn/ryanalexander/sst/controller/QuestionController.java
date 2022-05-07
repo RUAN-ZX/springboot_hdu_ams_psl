@@ -38,18 +38,12 @@ import java.util.List;
 @Api(tags = "问题 题库")
 @RestController
 public class QuestionController {
-    @Resource
-    private MissionMapper missionMapper;
-
-    @Resource
-    private MissionService missionService;
 
     @Resource
     private QuestionMapper questionMapper;
     @Resource
     private QuestionService questionService;
-    @Resource
-    private UserMapper userMapper;
+
 
     @Resource
     private SubjectMapper subjectMapper;
@@ -94,7 +88,7 @@ public class QuestionController {
     @PostMapping("/addQuestion")
     public Integer addQuestion(
             @RequestHeader String access,
-            int userId,
+            @RequestParam int userId,
             @Parameter(schema = @Schema(implementation = QuestionDTO.class)) QuestionPO questionPO){
         // schema是questionDTO 但是对象可以被解析为QuestionPO 这样不香？没有对象转换太爽了！！！
         questionPO.setQuestionTeacherId(userId);
@@ -110,7 +104,7 @@ public class QuestionController {
     @PostMapping("/modifyQuestion")
     public Result modifyQuestion(
             @RequestHeader String access,
-            int userId,
+            @RequestParam int userId,
             @Parameter(schema = @Schema(implementation = QuestionPO.class)) QuestionPO questionPO){
         questionService.saveOrUpdate(questionPO); // 肯定是update的
         return new Result();

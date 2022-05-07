@@ -11,10 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -84,7 +81,7 @@ public class ClassController {
     @PostMapping("/addClass")
     public Integer addClass(
             @RequestHeader String access,
-            @Parameter(description = "创建班级的老师ID") int userId,
+            @Parameter(description = "创建班级的老师ID") @RequestParam int userId,
             String className){
         ClassPO classPO = new ClassPO(null, className, userId);
         classMapper.insert(classPO);

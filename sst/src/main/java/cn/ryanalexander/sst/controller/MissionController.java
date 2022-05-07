@@ -172,7 +172,7 @@ public class MissionController {
     @ApiOperation("添加任务 给整个班群发任务 | 不需要发送")
     @PostMapping("/assignMission")
     public Result assignMission(@RequestHeader String access,
-                                @Parameter(description = "老师ID 与access配对") int userId,
+                                @Parameter(description = "老师ID 与access配对") @RequestParam int userId,
                                 @Parameter(schema = @Schema(implementation = MissionDTO.class)) MissionDTO missionDTO){
         int classId = missionDTO.getMissionClassId();
 
