@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -15,6 +16,7 @@ import lombok.Data;
  */
 @TableName(value ="class")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ClassPO implements Serializable {
     /**

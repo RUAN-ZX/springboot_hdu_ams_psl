@@ -46,9 +46,12 @@ CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `course_num` CHAR(32) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
   `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
+	
 	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
   `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	`course_address` VARCHAR(64) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
+	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算 也不会分配！
+	`course_class` VARCHAR(200) DEFAULT NULL, # 最长有170的。。。恐怖 
 	
   `course_teacher_id` INT(8) UNSIGNED DEFAULT NULL, 
 	# 因为可能名字暂时没登记在案 这个记录还是留着为好 后面找很困难 所以default null、
@@ -64,7 +67,7 @@ CREATE TABLE `course` (
   `course_capacity_factor2` DOUBLE(10,2) DEFAULT 1.0, # 实验课才有2系数 理论课默认为1即可！
 
 
-	`course_hours` DOUBLE(10,2) NOT NULL, # 老师有几几开的 所以会这样！
+	`course_hours` DOUBLE(10,2) NOT NULL, # 老师有几几开的 所以会这样！ 
 	`course_hours_theory` DOUBLE(10,2) DEFAULT 0.00, # 无论实验 还是讲课 还是标准化的学时 先算 然后几几开就好了！
 	`course_hours_exp` DOUBLE(10,2) DEFAULT 0.00, # 注意 这里使用理论-实验就好了 
 	`course_hours_exp_std` TINYINT(1) UNSIGNED NOT NULL, # 理论课标准课时 直接×1
@@ -81,7 +84,7 @@ CREATE TABLE `course` (
 	
 	
 	`course_hours_op` DOUBLE(10,2) DEFAULT 0.00, # 上机学时 记录一下 不参与计算
-	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算 也不会分配！
+	
 	`course_properties` CHAR(1) DEFAULT NULL, # 性质 I ABJ
 	
 	`course_note1` VARCHAR(64) DEFAULT NULL, 
@@ -247,6 +250,8 @@ CREATE TABLE `evaluation`(
 	`evaluation_participate` SMALLINT(4) UNSIGNED NOT NULL,
 	`evaluation_score` DOUBLE(10,3) NOT NULL, # 92.925
 	`evaluation_school_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学校排名
+	`evaluation_school_attend` SMALLINT(4) UNSIGNED NOT NULL, # 学校参与排名人数
+	
 	`evaluation_academy_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学院排名
 -- 	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比 按照分数平均之后的 排名比 所以学期内排名比没意义！分数是唯一有用的！
 	

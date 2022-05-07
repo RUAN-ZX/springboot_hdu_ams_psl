@@ -68,8 +68,8 @@ public class EmailService {
 
         String mailTitle = "[教务查系统] 验证码："+captcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
-//        helper.setTo(mailTo); todo 系统上线再说！
-        helper.setTo(mailFrom);
+        helper.setTo(mailTo);  // todo 系统上线再说！
+//        helper.setTo(mailFrom);
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
