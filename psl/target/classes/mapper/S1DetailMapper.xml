@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.psl.mapper.S1DetailMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.S1DetailPO">
+            <id property="s1DetailId" column="s1_detail_id" jdbcType="INTEGER"/>
+            <result property="s1DetailTeacherId" column="s1_detail_teacher_id" jdbcType="INTEGER"/>
+            <result property="s1DetailTeacherName" column="s1_detail_teacher_name" jdbcType="VARCHAR"/>
+            <result property="s1DetailYear" column="s1_detail_year" jdbcType="SMALLINT"/>
+            <result property="s1KpiCourseTheory" column="s1_kpi_course_theory" jdbcType="DOUBLE"/>
+            <result property="s1KpiCourseExperiment" column="s1_kpi_course_experiment" jdbcType="DOUBLE"/>
+            <result property="s1KpiShortTerm" column="s1_kpi_short_term" jdbcType="DOUBLE"/>
+            <result property="s1KpiThesisDesign" column="s1_kpi_thesis_design" jdbcType="DOUBLE"/>
+            <result property="s1KpiAchievement1" column="s1_kpi_achievement1" jdbcType="DOUBLE"/>
+            <result property="s1KpiAchievement2" column="s1_kpi_achievement2" jdbcType="DOUBLE"/>
+            <result property="s1KpiSpecialAssignment" column="s1_kpi_special_assignment" jdbcType="DOUBLE"/>
+            <result property="s1KpiShoulderBoth" column="s1_kpi_shoulder_both" jdbcType="DOUBLE"/>
+            <result property="s1KpiPostgraduate" column="s1_kpi_postgraduate" jdbcType="DOUBLE"/>
+            <result property="s1Kpi" column="s1_kpi" jdbcType="DOUBLE"/>
+            <result property="s1Score" column="s1_score" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        s1_detail_id,s1_detail_teacher_id,s1_detail_teacher_name,
+        s1_detail_year,s1_kpi_course_theory,s1_kpi_course_experiment,
+        s1_kpi_short_term,s1_kpi_thesis_design,s1_kpi_achievement1,
+        s1_kpi_achievement2,s1_kpi_special_assignment,s1_kpi_shoulder_both,
+        s1_kpi_postgraduate,s1_kpi,s1_score
+    </sql>
+
+
+</mapper>

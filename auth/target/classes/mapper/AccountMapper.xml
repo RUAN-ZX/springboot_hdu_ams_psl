@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.auth.mapper.AccountMapper">
+
+
+    <!--    查教务 统一导入的！ 重复了不管 如果需要更改 也是很少数 让老师自己改去 提交申请 一个改容易的！  -->
+    <insert id="saveOrIgnoreBatchByAccount" parameterType="java.util.List"
+            useGeneratedKeys="true" keyProperty="account_id">
+        insert ignore into account(account_mail, account_user_id, account_app) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.accountMail},#{item.accountUserId},#{item.accountApp})
+        </foreach>
+    </insert>
+</mapper>

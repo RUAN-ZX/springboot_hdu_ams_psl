@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.psl.mapper.PostGraduateMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.PostGraduatePO">
+            <id property="postGraduateId" column="post_graduate_id" jdbcType="INTEGER"/>
+            <result property="postGraduateYear" column="post_graduate_year" jdbcType="INTEGER"/>
+            <result property="postGraduateTeacherId" column="post_graduate_teacher_id" jdbcType="INTEGER"/>
+            <result property="postGraduateTeacherName" column="post_graduate_teacher_name" jdbcType="CHAR"/>
+            <result property="postGraduateKpi" column="post_graduate_kpi" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        post_graduate_id,post_graduate_year,post_graduate_teacher_id,
+        post_graduate_teacher_name,post_graduate_kpi
+    </sql>
+    <insert id="saveOrUpdateBatch" parameterType="java.util.ArrayList">
+        insert into post_graduate(post_graduate_year, post_graduate_teacher_id,
+        post_graduate_teacher_name, post_graduate_kpi) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.postGraduateYear},#{item.postGraduateTeacherId},
+            #{item.postGraduateTeacherName},#{item.postGraduateKpi})
+        </foreach>
+        AS t1(r1, r2, r3, r4) ON DUPLICATE KEY UPDATE
+        post_graduate_year = r1, post_graduate_teacher_id = r2,
+        post_graduate_teacher_name = r3, post_graduate_kpi = r4
+    </insert>
+</mapper>

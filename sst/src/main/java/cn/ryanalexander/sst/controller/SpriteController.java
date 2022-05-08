@@ -104,12 +104,12 @@ public class SpriteController {
         spriteRecordPO.setSpriteRecordSpriteId(spriteId);
 
         // sprite调Health数据
-        Object spriteHealth = spriteMapper.selectObjs(new QueryWrapper<SpritePO>()
+        SpritePO sprite = spriteMapper.selectOne(new QueryWrapper<SpritePO>()
                 .select("sprite_health")
                 .eq("sprite_id", spriteId)
                 .last("limit 1"));
 
-        spriteRecordPO.setSpriteRecordHealth((Integer) spriteHealth);
+        spriteRecordPO.setSpriteRecordHealth( sprite.getSpriteHealth());
         spriteRecordPO.setSpriteRecordExperience(0);
 
         spriteRecordMapper.insert(spriteRecordPO);

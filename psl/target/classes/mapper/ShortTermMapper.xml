@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.psl.mapper.ShortTermMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.ShortTermPO">
+            <id property="shortTermId" column="short_term_id" jdbcType="INTEGER"/>
+            <result property="shortTermNum" column="short_term_num" jdbcType="CHAR"/>
+            <result property="shortTermTerm" column="short_term_term" jdbcType="CHAR"/>
+            <result property="shortTermTime" column="short_term_time" jdbcType="VARCHAR"/>
+            <result property="shortTermName" column="short_term_name" jdbcType="VARCHAR"/>
+            <result property="shortTermAddress" column="short_term_address" jdbcType="VARCHAR"/>
+            <result property="shortTermTeacherId" column="short_term_teacher_id" jdbcType="INTEGER"/>
+            <result property="shortTermTeacherName" column="short_term_teacher_name" jdbcType="VARCHAR"/>
+            <result property="shortTermCapacity" column="short_term_capacity" jdbcType="INTEGER"/>
+            <result property="shortTermCapacityFactor" column="short_term_capacity_factor" jdbcType="DOUBLE"/>
+            <result property="shortTermReform" column="short_term_reform" jdbcType="DOUBLE"/>
+            <result property="shortTermFactor" column="short_term_factor" jdbcType="DOUBLE"/>
+            <result property="shortTermHours" column="short_term_hours" jdbcType="DOUBLE"/>
+            <result property="shortTermHoursStd" column="short_term_hours_std" jdbcType="TINYINT"/>
+            <result property="shortTermProperties" column="short_term_properties" jdbcType="CHAR"/>
+            <result property="shortTermNote1" column="short_term_note1" jdbcType="VARCHAR"/>
+            <result property="shortTermNote2" column="short_term_note2" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        short_term_id,short_term_num,short_term_term,
+        short_term_time,short_term_name,short_term_address,
+        short_term_teacher_id,short_term_teacher_name,short_term_capacity,
+        short_term_capacity_factor,short_term_reform,short_term_factor,
+        short_term_hours,short_term_hours_std,short_term_properties,
+        short_term_note1,short_term_note2
+    </sql>
+
+    <select id="selectTermRange" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct short_term_term from short_term where short_term_teacher_id = #{teacherId}
+    </select>
+</mapper>

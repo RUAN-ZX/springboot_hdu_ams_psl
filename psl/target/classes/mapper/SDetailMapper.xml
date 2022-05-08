@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.psl.mapper.SDetailMapper">
+
+
+    <select id="selectSDetailByTeacherId" resultType="cn.ryanalexander.psl.domain.po.SDetailPO">
+        select * from s_detail where s_detail_teacher_id=#{teacherId} and s_detail_year=#{year} limit 1;
+    </select>
+</mapper>

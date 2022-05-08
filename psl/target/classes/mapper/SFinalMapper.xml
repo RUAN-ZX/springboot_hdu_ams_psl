@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ryanalexander.psl.mapper.SFinalMapper">
+
+    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.SFinalPO">
+            <id property="sFinalId" column="s_final_id" jdbcType="INTEGER"/>
+            <result property="sFinalTeacherName" column="s_final_teacher_name" jdbcType="VARCHAR"/>
+            <result property="sFinalTeacherId" column="s_final_teacher_id" jdbcType="INTEGER"/>
+            <result property="sFinalScore" column="s_final_score" jdbcType="DOUBLE"/>
+            <result property="sFinalYear" column="s_final_year" jdbcType="INTEGER"/>
+            <result property="sFinalGrade" column="s_final_grade" jdbcType="CHAR"/>
+            <result property="sFinalTitleLevel" column="s_final_title_level" jdbcType="TINYINT"/>
+            <result property="sFinalCourseMain" column="s_final_course_main" jdbcType="INTEGER"/>
+            <result property="sFinalNote" column="s_final_note" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        s_final_id,s_final_teacher_name,s_final_teacher_id,
+        s_final_score,s_final_year,s_final_grade,
+        s_final_title_level,s_final_course_main,s_final_note
+    </sql>
+
+    <insert id="saveOrUpdateBatch" parameterType="java.util.ArrayList">
+        insert into s_final(s_final_teacher_name,s_final_teacher_id,
+        s_final_score,s_final_year,s_final_grade,s_final_title_level,
+        s_final_course_main,s_final_note) values
+        <foreach collection="items" item="item" separator=",">
+            (#{item.sFinalTeacherName},#{item.sFinalTeacherId},
+             #{item.sFinalScore},#{item.sFinalYear},#{item.sFinalGrade},
+             #{item.sFinalTitleLevel},#{item.sFinalCourseMain},#{item.sFinalNote})
+        </foreach>
+        AS t1(r1, r2, r3, r4, r5, r6, r7, r8) ON DUPLICATE KEY UPDATE
+        s_final_teacher_name = r1,s_final_teacher_id = r2,s_final_score = r3,
+        s_final_year = r4,s_final_grade = r5,s_final_title_level = r6,
+        s_final_course_main = r7,s_final_note = r8
+    </insert>
+
+    <select id="selectSFinalByTeacherId" resultType="cn.ryanalexander.psl.domain.po.SFinalPO">
+        select * from s_final where s_final_teacher_id=#{teacherId} and s_final_year=#{year} limit 1;
+    </select>
+</mapper>
