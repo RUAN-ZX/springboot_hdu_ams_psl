@@ -38,6 +38,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("cn.ryanalexander.sst"))
                 .build();
+
 //                .globalRequestParameters(parameters);
     }
 

@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS `teacher_data` DEFAULT CHARACTER SET utf8mb4 ;
+CREATE DATABASE IF NOT EXISTS `teacher_temp` DEFAULT CHARACTER SET utf8mb4 ;
 
-USE `teacher_data`;
+USE `teacher_temp`;
 # 设定几种表 source表 源数据 derived表 导出表 派生表
 
 # account 教师 
@@ -40,11 +40,11 @@ CREATE TABLE `teacher` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
-## -------------课程 理论+实践 专门用于统计主讲课时的!
+## -------------三大课合一！
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
-  `course_num` CHAR(32) NOT NULL, # '(2019-2020-1)-B0405450-42119-1
+  `course_num` CHAR(34) NOT NULL, # '(2019-2020-1)-B0405450-42119-1 (2013-2014-2)-20110105-S0403070-1
   `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
 	
 	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
@@ -222,7 +222,7 @@ CREATE TABLE `special_assignment`(
 	
 	`special_assignment_name` VARCHAR(24) NOT NULL, # 信号系统与信号处理教研组
 	`special_assignment_project` VARCHAR(36) NOT NULL, # 卓越工程师专业系主任
-  UNIQUE KEY `uk_year_tname_project` (`special_assignment_year`,`special_assignment_teacher_name`,`special_assignment_project`),
+  UNIQUE KEY `uk_year_tname_project` (`special_assignment_year`,`special_assignment_teacher_name`, 		  `special_assignment_project`),
 	PRIMARY KEY(`special_assignment_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -247,15 +247,17 @@ CREATE TABLE `evaluation`(
 	`evaluation_term` CHAR(11) NOT NULL,
 	`evaluation_teacher_id` INT(8) NOT NULL,
 	`evaluation_teacher_name` CHAR(3) NOT NULL,
-	`evaluation_participate` SMALLINT(4) UNSIGNED NOT NULL,
+	
+	`evaluation_participate` SMALLINT(4) UNSIGNED NOT NULL, # 参与评价人数
 	`evaluation_score` DOUBLE(10,3) NOT NULL, # 92.925
 	`evaluation_school_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学校排名
-	`evaluation_school_attend` SMALLINT(4) UNSIGNED NOT NULL, # 学校参与排名人数
+	`evaluation_school_attend` SMALLINT(4) UNSIGNED NOT NULL, # 学校参与排名的老师人数
 	
 	`evaluation_academy_rank` SMALLINT(4) UNSIGNED NOT NULL, # 学院排名
 -- 	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比 按照分数平均之后的 排名比 所以学期内排名比没意义！分数是唯一有用的！
 	
-	PRIMARY KEY(`evaluation_id`)
+	PRIMARY KEY(`evaluation_id`),
+	UNIQUE KEY `uk_term_name` (`evaluation_term`,`evaluation_teacher_name`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 作为导出表 而不是用于历史数据导入表的！注意 导入的表不一定在一起 所以一个excel表 一个数据表！
@@ -324,17 +326,6 @@ CREATE TABLE `s_detail`(
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
--- 先找当年的规则有没有 没有就找最近的规则
--- 到时候统计 聚合起来作为一个json扔到s3Details
--- 读取 显示的时候 则是 311:教学成果奖
-DROP TABLE IF EXISTS `rule_s3s4`;
-CREATE TABLE `rule_s3s4`(
-	`rule_s3s4_id` TINYINT(4) AUTO_INCREMENT NOT NULL, 
-	`rule_s3s4_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
-	`rule_s3s4_json` VARCHAR(200) NOT NULL,
-	PRIMARY KEY (`rule_s3s4_id`)
-)ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
 ## 计算后结果按照排名顺序存储 导出自然也是那个顺序！
 DROP TABLE IF EXISTS `s_final`;
 CREATE TABLE `s_final`(
@@ -367,6 +358,20 @@ VALUES
   (
     "电子信息学院（微电子学院）"
   ) ;
+
+
+
+-- 先找当年的规则有没有 没有就找最近的规则
+-- 到时候统计 聚合起来作为一个json扔到s3Details
+-- 读取 显示的时候 则是 311:教学成果奖
+-- DROP TABLE IF EXISTS `rule_s3s4`;
+-- CREATE TABLE `rule_s3s4`(
+-- 	`rule_s3s4_id` TINYINT(4) AUTO_INCREMENT NOT NULL, 
+-- 	`rule_s3s4_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
+-- 	`rule_s3s4_json` VARCHAR(200) NOT NULL,
+-- 	PRIMARY KEY (`rule_s3s4_id`)
+-- )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
 
 -- INSERT T(Tid,Tpwd,Tname)
 -- VALUES("00001","she_maybe","闪闪兔");

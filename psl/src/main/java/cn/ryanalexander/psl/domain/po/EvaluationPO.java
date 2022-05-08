@@ -39,8 +39,12 @@ public class EvaluationPO implements Serializable {
     @ExcelProperty
     private Integer evaluationSchoolRank;
 
+    private Integer evaluationSchoolAttend;
+
     @ExcelProperty
     private Integer evaluationAcademyRank;
+
+
 
     private String evaluationTerm;
 
@@ -59,7 +63,7 @@ public class EvaluationPO implements Serializable {
         evaluationParticipate = s2Evaluation.getEvaluationParticipate();
 
         evaluationScore = s2Evaluation.getEvaluationScore();
-
+        evaluationSchoolAttend = s2Evaluation.getEvaluationSchoolAttend();
         evaluationTerm = s2Evaluation.getEvaluationTerm();
     }
 

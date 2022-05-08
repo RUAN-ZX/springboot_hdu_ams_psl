@@ -4,7 +4,6 @@ import cn.ryanalexander.psl.domain.exceptions.AppException;
 import cn.ryanalexander.psl.domain.po.EvaluationPO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.EvaluationService;
-import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -19,11 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName: Evaluation_
- * @Description
- * @Author ryan
- * @Date 2022/3/10 20:19
- * @Version 1.0.0-Beta
+ * <p><b></b></p>
+ *
+ * <p>2022/5/7 </p>
+ *
+ * @author ryan 2022/5/7 22:32
+ * @since 1.0.0
  **/
 @Data
 @NoArgsConstructor
@@ -31,7 +31,7 @@ import java.util.Map;
 @ApiModel("学评教")
 @ToString
 @ExcelIgnoreUnannotated
-public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
+public class Course implements ExcelEntity<Course>, Cloneable {
     @ExcelProperty(index = 1)
     private String evaluationTeacherName;
 
@@ -96,7 +96,7 @@ public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
     }
 
     @Override
-    public void transformAndSave(ArrayList<S2Evaluation> list, int size) {
+    public void transformAndSave(ArrayList<Course> list, int size) {
         EvaluationService evaluationService =
                 (EvaluationService) SpringUtil.getBean("evaluationServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
@@ -104,22 +104,22 @@ public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
         ArrayList<String> accountNameList = new ArrayList<>(size);
 
         // 这里 因为标准课时 前边累加了 都是指定系数1 没有直接指定标准课时的 所以不calculation
-        for (S2Evaluation s2Evaluation : list) {
-            accountNameList.add(s2Evaluation.evaluationTeacherName);
+        for (Course course : list) {
+            accountNameList.add(course.evaluationTeacherName);
         }
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
         ArrayList<EvaluationPO> evaluationPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
-        S2Evaluation s2Evaluation = null;
+        Course course = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
-                s2Evaluation = list.get(i);
-                s2Evaluation.setEvaluationTeacherId(accountIdList.get(i));
+                course = list.get(i);
+                course.setEvaluationTeacherId(accountIdList.get(i));
                 // 有些字段实在太长 删减点 别太过了
-                s2Evaluation.fieldStandardized();
+                course.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-                evaluationPOS.add(new EvaluationPO(s2Evaluation));
+//                evaluationPOS.add(new EvaluationPO(course));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -141,3 +141,4 @@ public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
         }
     }
 }
+

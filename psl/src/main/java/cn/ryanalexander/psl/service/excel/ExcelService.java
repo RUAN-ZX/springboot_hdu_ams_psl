@@ -8,6 +8,8 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ public class ExcelService {
         sheetAndExcelEntity.put("其他业绩", S1Achievement.class);
         sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
 
-        sheetAndExcelEntity.put("学评教", S2Evaluation.class);
+        sheetAndExcelEntity.put("总得分", S2Evaluation.class);
 
         // 汇总表需要灵活处理！
 //        sheetAndExcelEntity.put("成绩明细表", S1234.class);
@@ -51,23 +53,25 @@ public class ExcelService {
     }
     private final static String chineseRegex = "([\u4e00-\u9fa5]+)";
     private final ArrayList<String> noModalSheetList = new ArrayList<>();
-    public void modelRead(String url){
+
+    public void modelRead(InputStream file){
         ExcelReader excelReader = null;
 
         // 匹配名字 然后执行对应的套路
         try {
-            excelReader = EasyExcel.read(url).build();
+            excelReader = EasyExcel.read(file).build();
             List<ReadSheet> sheets = excelReader.excelExecutor().sheetList();
             for (ReadSheet sheet : sheets) {
+                String realName = sheet.getSheetName();
                 // 可以用别的字符做区分 省的sheetName重复 但是中文对就行！
-                Matcher matcher = Pattern.compile(chineseRegex).matcher(sheet.getSheetName());
+                Matcher matcher = Pattern.compile(chineseRegex).matcher(realName);
 
                 if(matcher.find()) { // 两种可能 都试一下 注意两个map不应该重合
                     String matchResult = matcher.group(1);
                     Class<?> excelModel = sheetAndExcelEntity.get(matchResult);
                     if(excelModel != null){
-                        System.out.println(matchResult);
-                        ReadSheet readSheet = EasyExcel.readSheet(matchResult)
+                        System.out.println(matchResult + " realName: " + realName);
+                        ReadSheet readSheet = EasyExcel.readSheet(realName)
                                 .headRowNumber(2) // 其实还可以特别指定哪个表对应headRows Map嘛
                                 .head(excelModel)
                                 .registerReadListener(new ModalDataListener()).build();
@@ -88,6 +92,7 @@ public class ExcelService {
     }
     public void noModelRead(String url){
         for (String noModalSheetName:noModalSheetList) {
+
             EasyExcel.read(url, new NoModelDataListener()).headRowNumber(2).sheet(noModalSheetName).doRead();
         }
     }

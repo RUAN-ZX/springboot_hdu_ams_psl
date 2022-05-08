@@ -95,7 +95,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
     @ExcelProperty(value = "总学时")
     private Double courseHours;
 
-    @ExcelProperty(value = "标准学时")
+    @ExcelProperty(value = "标准\n学时")
     private Double courseHoursStd;
 
 //    private Double courseHoursTheory = 0.0;
