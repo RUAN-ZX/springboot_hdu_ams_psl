@@ -49,10 +49,10 @@ public class S1Achievement implements ExcelEntity<S1Achievement>, Cloneable{
     @ExcelProperty("类别")
     private String achievementCategory;
 
-    @ExcelProperty("获奖\n等级")
+    @ExcelProperty("获奖等级")
     private Integer achievementRank;
 
-    @ExcelProperty("任务考核\n指标分值")
+    @ExcelProperty("任务考核指标分值")
     private Double achievementKpi;
 
     @ExcelProperty("备注")

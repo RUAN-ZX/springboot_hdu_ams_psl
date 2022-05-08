@@ -37,68 +37,37 @@ import java.util.Map;
 @ToString
 @ExcelIgnoreUnannotated
 public class S1ShortTerm implements ExcelEntity<S1ShortTerm>, Cloneable{
-    /**
-     *
-     */
+
     @ExcelProperty(value = "课程代码")
     private String shortTermNum;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "学期")
     private String shortTermTerm;
-    /**
-     *
-     */
+
     @ExcelProperty(value = "起始时间")
     private String shortTermTime;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "课程名称")
     private String shortTermName;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "上课地点")
     private String shortTermAddress;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "教师姓名")
     private String shortTermTeacherName;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "已选人数")
     private Integer shortTermCapacity;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "班级规模系数")
     private Double shortTermCapacityFactor;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "类别系数")
     private Double shortTermFactor;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "学时")
     private Double shortTermHours;
 
-    /**
-     *
-     */
     @ExcelProperty(value = "标准学时")
     private Double shortTermHoursStd;
 

@@ -94,7 +94,7 @@ public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
 //    @ExcelProperty(value = "实验标准课时")
     public Integer courseHoursExpStd;
 
-    @ExcelProperty(value = "标准\n课时")
+    @ExcelProperty(value = "标准课时")
     public Double courseHoursStd;
 
     public Integer courseType = 1; // Theory
@@ -188,7 +188,7 @@ public class S1CourseTheory implements ExcelEntity<S1CourseTheory>, Cloneable{
         }
         double hours = this.courseHours;
         double factor = this.courseFactor;
-        double prior = this.coursePrior;
+        double prior = this.coursePrior == null ? 1.0 : this.coursePrior;
         double hoursTheory = this.courseHoursTheory;
         double hoursExp = hours - hoursTheory;
         if(hoursExp < 0) hoursExp = 0.0; // 竟然存在这种情况。。

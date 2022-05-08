@@ -95,7 +95,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
     @ExcelProperty(value = "总学时")
     private Double courseHours;
 
-    @ExcelProperty(value = "标准\n学时")
+    @ExcelProperty(value = "标准学时")
     private Double courseHoursStd;
 
 //    private Double courseHoursTheory = 0.0;
@@ -188,7 +188,7 @@ public class S1CourseExperiment implements ExcelEntity<S1CourseExperiment>, Clon
         }
         double hours = this.courseHours;
         double factor = this.courseFactor;
-        double prior = this.coursePrior;
+        double prior = this.coursePrior == null ? 1.0 : this.coursePrior;
         this.courseHoursExp = hours;
 
         double capacity_factor_1 = DataUtil.getCapacityFactorByProperty(

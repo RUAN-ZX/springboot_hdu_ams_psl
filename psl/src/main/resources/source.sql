@@ -103,10 +103,10 @@ CREATE TABLE `short_term` (
   `short_term_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `short_term_num` CHAR(34) DEFAULT NULL, # '(2019-2020-1)-B0405450-42119-1 有些竞赛算在这里 故没课号！
   `short_term_term` CHAR(11) NOT NULL, # 2019-2020-1
-	`short_term_time` VARCHAR(24) DEFAULT NULL, # 第19周/周五/8:20
+	`short_term_time` VARCHAR(64) DEFAULT NULL, # 第19周/周五/8:20
 
   `short_term_name` VARCHAR(24) NOT NULL, # 项目:电子线路仿真技术与PCB设计
-	`short_term_address` VARCHAR(24) DEFAULT NULL, # 第8教研楼302（线路实习实验室）
+	`short_term_address` VARCHAR(64) DEFAULT NULL, # 第8教研楼302（线路实习实验室）
 
 	
   `short_term_teacher_id` INT(8) NOT NULL, # 董林玺/刘超然 这种应该做拆分！凡是有（多人） 或者带斜杠的 都可以拆分 到时候显示那个老师的就好了 统计的话 按照学时的比例分成工作量！
