@@ -74,24 +74,22 @@ public class MissionController {
             subjectIds.add(missionPO.getMissionSubjectId());
         }
 
-        List<Object> questionStems = questionMapper.selectObjs(new QueryWrapper<QuestionPO>()
-                .select("question_stem")
-                .in("question_id",questionIds).last("limit 1"));
-
-        List<Object> teacherNames = userMapper.selectObjs(new QueryWrapper<UserPO>()
-                .select("user_name")
-                .in("user_id",teacherIds).last("limit 1"));
-
-        List<Object> subjectsNames = subjectMapper.selectObjs(new QueryWrapper<SubjectPO>()
-                .select("subject_name")
-                .in("subject_id",subjectIds).last("limit 1"));
-
-
         for(int i = 0 ; i < missionPOS.size() ; ++i){
             JSONObject jsonObject = (JSONObject) JSONObject.toJSON(missionPOS.get(i));
-            jsonObject.put("questionStem", questionStems.get(i));
-            jsonObject.put("teacherName", teacherNames.get(i));
-            jsonObject.put("subjectName", subjectsNames.get(i));
+            jsonObject.put("questionStem", questionMapper.selectOne(new QueryWrapper<QuestionPO>()
+                    .select("question_stem")
+                    .in("question_id",questionIds)
+                    .last("limit 1")).getQuestionStem());
+
+            jsonObject.put("teacherName", userMapper.selectOne(new QueryWrapper<UserPO>()
+                    .select("user_name")
+                    .in("user_id",teacherIds)
+                    .last("limit 1")).getUserName());
+
+            jsonObject.put("subjectName", subjectMapper.selectOne(new QueryWrapper<SubjectPO>()
+                    .select("subject_name")
+                    .in("subject_id",subjectIds)
+                    .last("limit 1")).getSubjectName());
             result.add(jsonObject);
         }
         return result;
