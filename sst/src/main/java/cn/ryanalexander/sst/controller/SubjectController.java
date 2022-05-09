@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ public class SubjectController {
 
     @ApiOperation("添加科目")
     @PostMapping("/addSubject")
-    public Integer addSubject(String subjectName){
+    public Integer addSubject(@RequestParam String subjectName){
         SubjectPO subjectPO = new SubjectPO(null, subjectName);
         subjectService.saveOrUpdate(subjectPO);
         return subjectPO.getSubjectId();

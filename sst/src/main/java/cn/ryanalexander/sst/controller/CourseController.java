@@ -42,7 +42,7 @@ public class CourseController {
     }
 
     @ApiOperation("添加一天的课程")
-    @GetMapping("/addMyCourse")
+    @PostMapping("/addMyCourse")
     public Result addMyCourse(
             @RequestHeader String access,
             @RequestParam int userId,
