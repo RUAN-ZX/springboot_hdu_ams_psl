@@ -181,7 +181,7 @@ DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
 	student_id INT(8) UNSIGNED NOT NULL, # 毕设学生的id
 	student_name VARCHAR(25) NOT NULL, # 毕设学生名字
-	student_major VARCHAR(60) NOT NULL,#光电信息科学与工程(光电工程方向)
+	student_major VARCHAR(60) DEFAULT NULL, #光电信息科学与工程(光电工程方向)
 	student_graduate_year SMALLINT(4) UNSIGNED NOT NULL,# 每年都有一批！
 	PRIMARY KEY(`student_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
@@ -204,7 +204,7 @@ CREATE TABLE `thesis_design` (
 	thesis_design_factor2 DOUBLE(10,2) DEFAULT 0.0, # 优秀系数
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
 	thesis_design_std TINYINT(1) DEFAULT 0, # 标准学时 
-	UNIQUE KEY `uk_stu_id` (`thesis_design_student_id`), # 学号 得天独厚的区分条件
+	UNIQUE KEY `uk_stu_id` (`thesis_design_year`,`thesis_design_student_id`), # 学号 得天独厚的区分条件
 	PRIMARY KEY(`thesis_design_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -442,3 +442,5 @@ VALUES
 --     )
 -- 		
 -- select count(*) from course_union;
+
+-- select course_type from course_union where course_teacher_id = "40068";

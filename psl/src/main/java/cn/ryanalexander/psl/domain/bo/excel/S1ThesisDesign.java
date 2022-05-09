@@ -76,7 +76,8 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
     @Override
     public boolean isValidated() {
         // 有名字 有百分占比 正常情况！
-        return thesisDesignFactor1 != null || thesisDesignTeacherName != null;
+//        return thesisDesignFactor1 != null || thesisDesignTeacherName != null;
+        return thesisDesignStudentName != null || studentId != null;
     }
 
     @Override
@@ -95,6 +96,8 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
     }
     @Override
     public void fieldStandardized(){
+
+        this.thesisDesignGrade = DataUtil.getChineseCharacter(thesisDesignGrade);
         // 处理老师名字
         this.thesisDesignTeacherName =
                 DataUtil.getChineseCharacter(this.thesisDesignTeacherName);

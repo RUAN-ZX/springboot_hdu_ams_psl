@@ -31,9 +31,9 @@ public class CourseNumDecoder{
         // (2018-2019-1)-S0406080-40191-2
         numTemp = courseNum.split("-");
 
-        char firstChar = numTemp[1].charAt(0);
+        char firstChar = numTemp[3].charAt(0);
 
-        if(firstChar <= 9){
+        if(firstChar == '2'){ // 只有可能是2开头。。
             this.id = numTemp[4];
             this.courseType = 2;
         }
