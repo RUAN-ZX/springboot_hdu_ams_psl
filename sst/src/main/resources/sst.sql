@@ -73,6 +73,7 @@ DROP TABLE IF EXISTS `subject`;
 CREATE TABLE `subject` (
   `subject_id` int(10) NOT NULL AUTO_INCREMENT,
   `subject_name` varchar(10) NOT NULL,
+	UNIQUE KEY `uk_name` (`subject_name`),
   PRIMARY KEY (`subject_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 

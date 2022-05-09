@@ -26,37 +26,40 @@ import java.util.regex.Pattern;
  **/
 @Service
 public class ExcelService {
-    private static final HashMap<String, Class<?>> sheetAndExcelEntity = new HashMap<>();
+    private static final HashMap<String, Class<?>> ModelSheetList = new HashMap<>();
     static{
         // 最好先有工号邮箱 否则匹配的teacherId全是0 到时候还要清盘
-        sheetAndExcelEntity.put("工号和邮箱", AccountIdAndEmail.class);
-        sheetAndExcelEntity.put("职称信息表", TitleInfo.class);
+        ModelSheetList.put("工号和邮箱", AccountIdAndEmail.class);
+        ModelSheetList.put("职称信息表", TitleInfo.class);
 //
-        sheetAndExcelEntity.put("理论", S1CourseTheory.class);
-        sheetAndExcelEntity.put("短学期", S1ShortTerm.class);
-        sheetAndExcelEntity.put("实验", S1CourseExperiment.class);
-        sheetAndExcelEntity.put("毕业设计", S1ThesisDesign.class);
+        ModelSheetList.put("理论", S1CourseTheory.class);
+        ModelSheetList.put("短学期", S1ShortTerm.class);
+        ModelSheetList.put("实验", S1CourseExperiment.class);
+        ModelSheetList.put("毕业设计", S1ThesisDesign.class);
 //
 //        // 历史数据则可以通过工作量表获取 新数据应该有
-        sheetAndExcelEntity.put("标志性", S1Achievement.class);
-        sheetAndExcelEntity.put("非标志性业绩点", S1Achievement.class);
-        sheetAndExcelEntity.put("其他业绩", S1Achievement.class);
-        sheetAndExcelEntity.put("学院专项", S1SpecialAssignment.class);
+        ModelSheetList.put("标志性", S1Achievement.class);
+        ModelSheetList.put("非标志性业绩点", S1Achievement.class);
+        ModelSheetList.put("其他业绩", S1Achievement.class);
+        ModelSheetList.put("学院专项", S1SpecialAssignment.class);
 
-        sheetAndExcelEntity.put("总得分", S2Evaluation.class);
+        ModelSheetList.put("总得分", S2Evaluation.class);
 
-        sheetAndExcelEntity.put("课程", Course.class);
+        ModelSheetList.put("课程", Course.class);
 
         // 汇总表需要灵活处理！
 //        sheetAndExcelEntity.put("成绩明细表", S1234.class);
         // 让老师修剪自己的表 满足工作量表的要求！
-        sheetAndExcelEntity.put("工作量", S1Workload.class);
-        sheetAndExcelEntity.put("成绩汇总表", SFinal.class);
+        ModelSheetList.put("工作量", S1Workload.class);
+        ModelSheetList.put("成绩汇总表", SFinal.class);
     }
 
-    private final ArrayList<String> noModalSheetList = new ArrayList<>();
+    private static final HashMap<String, Class<?>> NonModelSheetList = new HashMap<>();
+    static {
+        NonModelSheetList.put("成绩明细表", NoModelDataListener.class);
+    }
 
-    public void modelRead(InputStream file){
+    public void excelRead(InputStream file){
         ExcelReader excelReader = null;
 
         // 匹配名字 然后执行对应的套路
@@ -70,17 +73,19 @@ public class ExcelService {
 
                 if(matcher.find()) { // 两种可能 都试一下 注意两个map不应该重合
                     String matchResult = matcher.group(1);
-                    Class<?> excelModel = sheetAndExcelEntity.get(matchResult);
-                    if(excelModel != null){
+                    if(ModelSheetList.get(matchResult) != null){
                         System.out.println(matchResult + " realName: " + realName);
                         ReadSheet readSheet = EasyExcel.readSheet(realName)
                                 .headRowNumber(2) // 其实还可以特别指定哪个表对应headRows Map嘛
-                                .head(excelModel)
+                                .head(ModelSheetList.get(matchResult))
                                 .registerReadListener(new ModalDataListener()).build();
 
                         excelReader.read(readSheet);
                     }
-                    else noModalSheetList.add(matchResult);
+                    else if(NonModelSheetList.get(matchResult) != null){
+                        EasyExcel.read(file, new NoModelDataListener()).headRowNumber(2)
+                                .sheet(realName).doRead();
+                    }
                 }
             }
         }
@@ -90,12 +95,6 @@ public class ExcelService {
         }
         finally {
             if(excelReader != null) excelReader.finish();
-        }
-    }
-    public void noModelRead(String url){
-        for (String noModalSheetName:noModalSheetList) {
-
-            EasyExcel.read(url, new NoModelDataListener()).headRowNumber(2).sheet(noModalSheetName).doRead();
         }
     }
 }

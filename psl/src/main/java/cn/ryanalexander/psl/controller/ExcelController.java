@@ -4,14 +4,11 @@ import cn.ryanalexander.psl.domain.bo.excel.out.S1234;
 import cn.ryanalexander.psl.domain.bo.excel.out.S1Workload;
 import cn.ryanalexander.psl.domain.dto.Result;
 import cn.ryanalexander.psl.domain.po.SDetailPO;
-import cn.ryanalexander.psl.processor.annotationIntercept.Require;
-import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.psl.service.S1DetailService;
 import cn.ryanalexander.psl.service.excel.ExcelService;
 import cn.ryanalexander.psl.service.tool.StaticConfiguration;
 import com.alibaba.excel.EasyExcel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +51,7 @@ public class ExcelController {
             @RequestPart("uploadFile") MultipartFile[] multipartFiles
     ) throws IOException {
         for(MultipartFile file : multipartFiles){
-            excelService.modelRead(file.getInputStream());
+            excelService.excelRead(file.getInputStream());
         }
 
 //        excelService.noModelRead(url);

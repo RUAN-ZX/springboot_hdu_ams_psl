@@ -1,25 +1,19 @@
 package cn.ryanalexander.sst.controller;
 
 import cn.ryanalexander.common.domain.dto.Result;
-import cn.ryanalexander.sst.domain.dto.QuestionDTO;
-import cn.ryanalexander.sst.domain.po.ItemInventoryPO;
-import cn.ryanalexander.sst.domain.po.QuestionPO;
+import cn.ryanalexander.sst.domain.po.ItemRecordPO;
 import cn.ryanalexander.sst.domain.po.SpritePO;
 import cn.ryanalexander.sst.domain.po.SpriteRecordPO;
-import cn.ryanalexander.sst.mapper.ItemInventoryMapper;
+import cn.ryanalexander.sst.mapper.ItemRecordMapper;
 import cn.ryanalexander.sst.mapper.SpriteMapper;
 import cn.ryanalexander.sst.mapper.SpriteRecordMapper;
-import cn.ryanalexander.sst.processor.annotationIntercept.Require;
-import cn.ryanalexander.sst.processor.annotationIntercept.RoleEnum;
-import cn.ryanalexander.sst.service.ItemInventoryService;
+import cn.ryanalexander.sst.service.ItemRecordService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -48,10 +42,10 @@ public class SpriteController {
     private SpriteRecordMapper spriteRecordMapper;
 
     @Resource
-    private ItemInventoryMapper itemInventoryMapper;
+    private ItemRecordMapper itemInventoryMapper;
 
     @Resource
-    private ItemInventoryService itemInventoryService;
+    private ItemRecordService itemInventoryService;
 
     //    @Require
     @ApiOperation("查询所有已获得的精灵（记录）的id")
@@ -115,11 +109,11 @@ public class SpriteController {
         spriteRecordMapper.insert(spriteRecordPO);
 
         // 道具-1
-        ItemInventoryPO itemInventoryPO = itemInventoryMapper.selectOne(new QueryWrapper<ItemInventoryPO>()
+        ItemRecordPO itemInventoryPO = itemInventoryMapper.selectOne(new QueryWrapper<ItemRecordPO>()
                 .eq("item_record_user_id", userId)
                 .eq("item_record_item_name", "ball"));
-        Integer num = itemInventoryPO.getItemInventoryItemNum();
-        itemInventoryPO.setItemInventoryItemNum(num - 1);
+        Integer num = itemInventoryPO.getItemRecordItemNum();
+        itemInventoryPO.setItemRecordItemNum(num - 1);
 
         itemInventoryService.saveOrUpdate(itemInventoryPO);
 

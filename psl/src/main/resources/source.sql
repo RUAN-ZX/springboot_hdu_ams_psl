@@ -201,7 +201,7 @@ CREATE TABLE `thesis_design` (
 	thesis_design_factor1 DOUBLE(10,2) DEFAULT 12.0, # 基本系数
 	thesis_design_factor2 DOUBLE(10,2) DEFAULT 0.0, # 优秀系数
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
-	thesis_design_std TINYINT(1) UNSIGNED NOT NULL, # 标准学时 
+	thesis_design_std TINYINT(1) DEFAULT 0, # 标准学时 
 	UNIQUE KEY `uk_stu_id` (`thesis_design_student_id`), # 学号 得天独厚的区分条件
 	PRIMARY KEY(`thesis_design_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;

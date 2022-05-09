@@ -14,6 +14,7 @@ import cn.ryanalexander.sst.mapper.UserMapper;
 import cn.ryanalexander.sst.processor.annotationIntercept.Require;
 import cn.ryanalexander.sst.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.sst.service.AccountFeignService;
+import cn.ryanalexander.sst.service.ItemRecordService;
 import cn.ryanalexander.sst.service.UserService;
 import cn.ryanalexander.sst.service.tool.StaticConfiguration;
 import com.alibaba.fastjson.JSONObject;
@@ -50,11 +51,12 @@ public class UserController {
     @Resource
     private StaticConfiguration staticConfiguration;
     @Resource
-    private UserService userService;
+    private ItemRecordService itemRecordService;
     @Resource
     private UserMapper userMapper;
     @Resource
     private AccountFeignService accountFeignService;
+
 
     @Transactional
     @ApiOperation("邮箱注册")
@@ -96,6 +98,10 @@ public class UserController {
         if(result.getCode() == 0){
             Map<String, String> dataMap = (Map<String, String>) result.getData();
             dataMap.put("userId", String.valueOf(accountUserId));
+
+            itemRecordService.changeItemNum(accountUserId, 2, "ball");
+            itemRecordService.changeItemNum(accountUserId, 2, "potion");
+
             return dataMap;
         } else throw new AppException(new ErrorCode(SubjectEnum.INTERNAL),"RPC Failed");
 

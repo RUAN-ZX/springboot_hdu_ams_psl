@@ -8,6 +8,7 @@ import cn.ryanalexander.psl.domain.po.ThesisDesignPO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.StudentService;
 import cn.ryanalexander.psl.service.ThesisDesignService;
+import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -94,6 +95,10 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
     }
     @Override
     public void fieldStandardized(){
+        // 处理老师名字
+        this.thesisDesignTeacherName =
+                DataUtil.getChineseCharacter(this.thesisDesignTeacherName);
+
         // 用对象前 先检测null
         if(this.thesisDesignNote != null && this.thesisDesignNote.length() > 24)
             this.thesisDesignNote = this.thesisDesignNote.substring(0, 24);
