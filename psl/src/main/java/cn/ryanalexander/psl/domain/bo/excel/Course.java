@@ -7,6 +7,7 @@ import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.mapper.CourseUnionMapper;
 import cn.ryanalexander.psl.service.CourseUnionService;
 import cn.ryanalexander.psl.service.EvaluationService;
+import cn.ryanalexander.psl.service.tool.CourseNumDecoder;
 import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
@@ -78,7 +79,12 @@ public class Course implements ExcelEntity<Course>, Cloneable {
     @ExcelProperty("专业组成")
     private String courseMajor;
 
-    private Integer courseType;
+    private int courseType;
+    private Double courseCapacityFactor;
+    private char courseProperty;
+
+    private String courseData;
+    private String courseDataOthers;
 
     @Override
     public boolean isValidated() {
@@ -106,6 +112,8 @@ public class Course implements ExcelEntity<Course>, Cloneable {
     public boolean multiContinue(){
         return false;
     }
+
+
     @Override
     public void fieldStandardized(){
         // 老师名字的处理 如果需要添加另一个 就和多人的情况一样 额外添加！所有双人课都需要处理！
@@ -115,23 +123,26 @@ public class Course implements ExcelEntity<Course>, Cloneable {
         Matcher matcher = Pattern.compile(DataUtil.CH_REGEX).matcher(finalName);
         if(matcher.find()) this.courseTeacherName = matcher.group(1);
 
+        CourseNumDecoder decoder = new CourseNumDecoder(
+                courseHours,
+                courseCapacity,courseName,courseNum
+        );
         // 分流 三类课
-        String[] numTemp = this.courseNum.split("-");
-        // (2018-2019-2)-20160418-S0403700-1
-        // (2018-2019-1)-S0406080-40191-2
-        char character = numTemp[1].charAt(0);
-        if(character <= 9) this.courseType = 2;
-        else if(character == 'S') this.courseType = 1;
-        else this.courseType = 0;
+        this.courseType = decoder.getCourseType();
 
         // 学期拼接
-        this.courseTerm = this.year + this.courseTerm;
+        this.courseTerm = this.year + "-" + this.courseTerm;
 
-        // 时间
-//        if(this.courseTime.length() > 64)
-//            System.out.println("fuckfuckfuck "+this.courseTime);
-//        if(this.courseMajor.length() > 48)
-//            System.out.println("cccc " + this.courseMajor);
+        // 决定性质
+        this.courseProperty =
+                decoder.getCourseProperty();
+
+        // 班级系数计算 非理论课就ABJ 理论课另当别论
+        this.courseCapacityFactor =
+            decoder.getCapacityFactorByProperty();
+
+        // 类别系数的判断！
+        this.courseData = decoder.getCourseData();
 
     }
     @Override
@@ -170,8 +181,6 @@ public class Course implements ExcelEntity<Course>, Cloneable {
         }
         finally {
             courseUnionPOS.clear();
-//            accountIdList.clear();
-//            accountNameList.clear();
         }
     }
 }

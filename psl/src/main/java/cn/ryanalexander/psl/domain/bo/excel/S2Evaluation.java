@@ -76,6 +76,8 @@ public class S2Evaluation implements ExcelEntity<S2Evaluation>, Cloneable {
     @Override
     public void fieldStandardized(){
         // 用对象前 先检测null teacherName一定有的。。
+        this.evaluationTeacherName
+                = DataUtil.getChineseCharacter(this.evaluationTeacherName);
         if(this.evaluationTeacherName.length() > 3)
             this.evaluationTeacherName = this.evaluationTeacherName.substring(0, 3);
     }

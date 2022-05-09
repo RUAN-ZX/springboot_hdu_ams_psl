@@ -33,18 +33,18 @@ import java.util.ArrayList;
 @ToString
 @ExcelIgnoreUnannotated
 public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
-    @ExcelProperty(value = "职工号")
+    @ExcelProperty(value = "教工号")
     public Integer accountId;
 
     @ExcelProperty(value = "姓名")
     public String accountName;
 
-    @ExcelProperty(value = "邮箱")
+    @ExcelProperty(value = "电子邮箱")
     public String accountMail;
 
     public AccountIdAndEmail(TitleInfo titleInfo){
         accountId = DataUtil.string2integer(titleInfo.getTeacherId());
-        accountName = titleInfo.getTeacherName();
+        accountName = DataUtil.getChineseCharacter(titleInfo.getTeacherName());
     }
     @Override
     public boolean isValidated() {

@@ -1,5 +1,10 @@
 package cn.ryanalexander.psl.service.tool;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.message.ReusableMessage;
+
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +35,7 @@ public class DataUtil {
         }
         return false;
     }
+
     public static double getCapacityFactorByProperty(String properties, Integer capacity){
         if(properties.equals("A") && capacity > 20) return capacity / 20.0;
         else if(properties.equals("I") && capacity > 80) return Math.min(1 + (capacity - 80) / 200.0, 1.2);

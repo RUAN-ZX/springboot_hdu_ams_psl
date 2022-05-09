@@ -97,4 +97,10 @@ public class MyBatisPlusServiceTest {
 //        }
         redisTemplate.opsForValue().set("5053:captcha", "123456", 60*24*2, TimeUnit.MINUTES);
     }
+
+    @Test
+    public void fuck(){
+        String a = "B040284G";
+        System.out.println(a.charAt(7));
+    }
 }

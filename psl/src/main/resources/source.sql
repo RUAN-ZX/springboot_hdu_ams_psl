@@ -116,20 +116,22 @@ CREATE TABLE `course_union` (
 	
 	`course_type` TINYINT(1) UNSIGNED NOT NULL, #理论 实验 短学期 0 1 2
 	
+	# 课程性质 ABC YJ 理论 S实验实践 这个没啥大用
+	# 实验课的性质就很有用！ A B J实验 I为理论 班级规模系数计算方式不同！ F类企业实习
+	# 当然 短学期里边也可能有A F 实验课里边有J 无论如何 与课程type无关 只会与这个性质有关！
+	`course_property` CHAR(1) NOT NULL, 
 	
   `course_capacity` SMALLINT(4) NOT NULL,
   `course_capacity_factor` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
 
 	`course_hours` TINYINT(1) UNSIGNED NOT NULL, # 学时
-	`course_hours_theory` DOUBLE(10,2) DEFAULT 0.00, # 记录一下。。
-	`course_hours_exp` DOUBLE(10,2) DEFAULT 0.00, # 记录一下。。
-  `course_hours_std` DOUBLE(10,2) DEFAULT 0.00, # 总标准课时	这个确实需要分成！没有分成数据就不分咯。。
+	`course_hours_theory` DOUBLE(10,2) DEFAULT NULL, # 记录一下。。
+	`course_hours_exp` DOUBLE(10,2) DEFAULT NULL, # 记录一下。。 没有就是NULL 和0区分开！
+  `course_hours_std` DOUBLE(10,2) DEFAULT NULL, # 总标准课时	这个确实需要分成！没有分成数据就不分咯。。
 	
 
-	`course_data` VARCHAR(24) DEFAULT NULL, # 类别系数 记录所有与类别相关的系数 取最高的来计算
+	`course_data` VARCHAR(24) DEFAULT NULL, # 类别系数 双语 卓越 翻转等
 	`course_data_others` VARCHAR(24) DEFAULT NULL, # 类别以外的系数 比如优课
-
-	`course_properties` CHAR(1) DEFAULT NULL, # 性质 I ABJ 关系到班级规模
 	
 	`course_note1` VARCHAR(64) DEFAULT NULL, 
 	# 检查这个属性 string.length 调用快的 超过则截断！检查string的长度！

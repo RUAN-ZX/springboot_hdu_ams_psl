@@ -7,6 +7,7 @@ import cn.ryanalexander.psl.service.tool.DataUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -83,7 +84,7 @@ public class ExcelService {
                         excelReader.read(readSheet);
                     }
                     else if(NonModelSheetList.get(matchResult) != null){
-                        EasyExcel.read(file, new NoModelDataListener()).headRowNumber(2)
+                        EasyExcel.read(file, new NoModelDataListener()).headRowNumber(2).excelType(ExcelTypeEnum.XLSX)
                                 .sheet(realName).doRead();
                     }
                 }
