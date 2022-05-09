@@ -1,6 +1,7 @@
-DROP DATABASE IF EXISTS `teacher_temp`;
-CREATE DATABASE `teacher_temp` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-USE `teacher_temp`;
+DROP DATABASE IF EXISTS `teacher_v3`;
+CREATE DATABASE `teacher_v3` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+USE `teacher_v3`;
 # 设定几种表 source表 源数据 derived表 导出表 派生表
 
 # account 教师 
@@ -33,14 +34,12 @@ CREATE TABLE `teacher` (
 	`teacher_title_year` SMALLINT(4) UNSIGNED NOT NULL,
 -- 	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
 -- 	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 每次更新即可
-	# 前后端去实现时区转换
+	# 前后端去实现时区转换 用java.util.Date即可传递时间！
 	
   PRIMARY KEY (`teacher_title_id`),
 	UNIQUE KEY `uk_teacher_id_name` (`teacher_id`,`teacher_name`,`teacher_title_year`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
-
-## -------------理论与实践课
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
@@ -97,19 +96,19 @@ CREATE TABLE `course` (
 	UNIQUE KEY `uk_cnum_ctname` (`course_num`,`course_teacher_name`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
+
 ## -------------三大课合一！
 DROP TABLE IF EXISTS `course_union`;
 CREATE TABLE `course_union` (
   `course_id` INT(8) AUTO_INCREMENT NOT NULL, 
   `course_num` CHAR(34) NOT NULL, # '(2019-2020-1)-B0405450-42119-1 (2013-2014-2)-20110105-S0403070-1
   `course_term` CHAR(12) NOT NULL, # 2019-2020-1 
-	`course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	
 	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算 也不会分配！
 	`course_class` VARCHAR(200) DEFAULT NULL, # 最长有170的。。。恐怖 
 	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
+  `course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	`course_address` VARCHAR(64) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
-	`course_major` VARCHAR(48) DEFAULT NULL, # 测控技术与仪器,电气工程及其自动化,医学信息工程,智能科学与技术
 	
   `course_teacher_id` INT(8) UNSIGNED DEFAULT NULL, 
 	`course_teacher_name` CHAR(3) NOT NULL, 
@@ -118,16 +117,18 @@ CREATE TABLE `course_union` (
 	
 	
   `course_capacity` SMALLINT(4) NOT NULL,
-  `course_capacity_factor` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
+  `course_capacity_factor1` DOUBLE(10,2) DEFAULT 1.0, # double应该多少为好？ 班级规模系数 根据规模算出来的 不同性质的课 计算方法不同！
+  `course_capacity_factor2` DOUBLE(10,2) DEFAULT 1.0, # 实验课才有2系数 理论课默认为1即可！
 
-	`course_hours` TINYINT(1) UNSIGNED NOT NULL, # 学时
+
+	`course_hours` DOUBLE(10,2) NOT NULL, # 学时
 	`course_hours_theory` DOUBLE(10,2) DEFAULT 0.00, # 记录一下。。
 	`course_hours_exp` DOUBLE(10,2) DEFAULT 0.00, # 记录一下。。
-  `course_hours_std` DOUBLE(10,2) DEFAULT 0.00, # 总标准课时	这个确实需要分成！没有分成数据就不分咯。。
+  `course_hours_std` TINYINT(1) UNSIGNED NOT NULL, # 总标准课时	这个确实需要分成！没有分成数据就不分咯。。
 	
 
-	`course_data` VARCHAR(24) DEFAULT NULL, # 类别系数 记录所有与类别相关的系数 取最高的来计算
-	`course_data_others` VARCHAR(24) DEFAULT NULL, # 类别以外的系数 比如优课
+	`course_factor` VARCHAR(24) DEFAULT NULL, # 类别系数 记录所有与类别相关的系数 取最高的来计算
+	`course_factor_others` VARCHAR(24) DEFAULT NULL, # 类别以外的系数 比如优课
 
 	`course_properties` CHAR(1) DEFAULT NULL, # 性质 I ABJ 关系到班级规模
 	
@@ -217,7 +218,7 @@ CREATE TABLE `achievement`(
 	
 	achievement_teacher_name CHAR(3) NOT NULL,
 	achievement_year SMALLINT(4) UNSIGNED NOT NULL, # 学年成果
-	achievement_name VARCHAR(150) NOT NULL, # 成果名称
+	achievement_name CHAR(3) NOT NULL, # 成果名称
 	
 	# 好像用不到 他老是变需求。。
 	achievement_type TINYINT(1) UNSIGNED DEFAULT NULL, # 0 标志性 1 非标志性 2 院级 只对S3S4有影响的！
@@ -351,10 +352,6 @@ CREATE TABLE `s_detail`(
 	`s2_rank` SMALLINT(4) UNSIGNED NOT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
 	`s2_score` DOUBLE(10,2) NOT NULL, 
 	
--- 	JSON name:value 311:10
--- 导出的时候 将detail转为两个形式 
--- 用于导出表List<List<String>> 只有数据 表头List<string>另外从rule导入
--- 用于前端 利用index相同的特性 把rule数组和数据结合使用！拼接为detail!
 	
 	`s3_data` VARCHAR(100) DEFAULT NULL,
 	`s4_data` VARCHAR(100) DEFAULT NULL,
@@ -403,25 +400,3 @@ VALUES
   (
     "电子信息学院（微电子学院）"
   ) ;
-
-
-
--- 先找当年的规则有没有 没有就找最近的规则
--- 到时候统计 聚合起来作为一个json扔到s3Details
--- 读取 显示的时候 则是 311:教学成果奖
--- DROP TABLE IF EXISTS `rule_s3s4`;
--- CREATE TABLE `rule_s3s4`(
--- 	`rule_s3s4_id` TINYINT(4) AUTO_INCREMENT NOT NULL, 
--- 	`rule_s3s4_year` SMALLINT(4) UNSIGNED DEFAULT NULL,
--- 	`rule_s3s4_json` VARCHAR(200) NOT NULL,
--- 	PRIMARY KEY (`rule_s3s4_id`)
--- )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
-
-
--- INSERT T(Tid,Tpwd,Tname)
--- VALUES("00001","she_maybe","闪闪兔");
-
--- select ifnull((select account_id from account where account_name = 'ff'), 'fuck')
--- 
--- INSERT INTO course ( course_num, course_term, course_time, course_name, course_address, course_teacher_id, course_teacher_name, course_type, course_capacity, course_capacity_factor1, course_hours, course_hours_theory, course_hours_exp, course_hours_exp_std, course_hours_theory_std, course_hours_std, course_reform, course_factor, course_prior, course_note1, course_note2 ) VALUES (
--- (2018-2019-2)-A1804020-40136-1, 2018-2019-2, 周二第3,4,5节{第1-16周}, 模拟电子电路, 第7教研楼南205, 40136, 刘圆圆, 1, 19, 1.0, 64.0, 48.0, 16.0, 22, 67, 90, 翻转1.4；卓越1.3, 1.4, 1.4, 卓越单独，翻转课堂，翻转核算高，依照翻转课堂进行核算, 系数不叠加，按最高计算)

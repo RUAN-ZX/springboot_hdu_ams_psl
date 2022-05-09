@@ -3,12 +3,12 @@ package cn.ryanalexander.psl.service.excel;
 import cn.ryanalexander.psl.domain.bo.excel.*;
 import cn.ryanalexander.psl.domain.bo.excel.out.S1Workload;
 import cn.ryanalexander.psl.domain.bo.excel.out.SFinal;
+import cn.ryanalexander.psl.service.tool.DataUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,13 +45,15 @@ public class ExcelService {
 
         sheetAndExcelEntity.put("总得分", S2Evaluation.class);
 
+        sheetAndExcelEntity.put("课程", Course.class);
+
         // 汇总表需要灵活处理！
 //        sheetAndExcelEntity.put("成绩明细表", S1234.class);
         // 让老师修剪自己的表 满足工作量表的要求！
         sheetAndExcelEntity.put("工作量", S1Workload.class);
         sheetAndExcelEntity.put("成绩汇总表", SFinal.class);
     }
-    private final static String chineseRegex = "([\u4e00-\u9fa5]+)";
+
     private final ArrayList<String> noModalSheetList = new ArrayList<>();
 
     public void modelRead(InputStream file){
@@ -64,7 +66,7 @@ public class ExcelService {
             for (ReadSheet sheet : sheets) {
                 String realName = sheet.getSheetName();
                 // 可以用别的字符做区分 省的sheetName重复 但是中文对就行！
-                Matcher matcher = Pattern.compile(chineseRegex).matcher(realName);
+                Matcher matcher = Pattern.compile(DataUtil.CH_REGEX).matcher(realName);
 
                 if(matcher.find()) { // 两种可能 都试一下 注意两个map不应该重合
                     String matchResult = matcher.group(1);

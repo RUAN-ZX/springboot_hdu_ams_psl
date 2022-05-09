@@ -1,9 +1,13 @@
 package cn.ryanalexander.psl.domain.bo.excel;
 
 import cn.ryanalexander.psl.domain.exceptions.AppException;
+import cn.ryanalexander.psl.domain.po.CourseUnionPO;
 import cn.ryanalexander.psl.domain.po.EvaluationPO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
+import cn.ryanalexander.psl.mapper.CourseUnionMapper;
+import cn.ryanalexander.psl.service.CourseUnionService;
 import cn.ryanalexander.psl.service.EvaluationService;
+import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -12,10 +16,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p><b></b></p>
@@ -28,35 +35,57 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("学评教")
+@ApiModel("课程总表")
 @ToString
 @ExcelIgnoreUnannotated
 public class Course implements ExcelEntity<Course>, Cloneable {
-    @ExcelProperty(index = 1)
-    private String evaluationTeacherName;
+    @ExcelProperty("学年")
+    private String year;
 
-    @ExcelProperty(index = 2)
-    private Integer evaluationParticipate;
+    @ExcelProperty("学期")
+    private String courseTerm;
 
-    @ExcelProperty(index = 3)
-    private Double evaluationScore;
+    @ExcelProperty("课程名称")
+    private String courseName;
 
-    @ExcelProperty(index = 4)
-    private Integer evaluationSchoolRank;
+    @ExcelProperty("学分")
+    private Double coursePoints;
 
-    @ExcelProperty(index = 5)
-    private Integer evaluationAcademyRank;
+    @ExcelProperty("教学班")
+    private String courseNum;
 
-    private Integer evaluationSchoolAttend;
+    @ExcelProperty("教学班组成")
+    private String courseClass;
 
-    private String evaluationTerm;
+    @ExcelProperty("选课人数")
+    private Integer courseCapacity;
 
-    private Integer evaluationTeacherId;
+    @ExcelProperty("教工号")
+    private String courseTeacherId;
+
+    @ExcelProperty("教师名称")
+    private String courseTeacherName;
+
+    @ExcelProperty("学时")
+    private Integer courseHours;
+
+    @ExcelProperty("上课时间")
+    private String courseTime;
+
+    @ExcelProperty("教学地点")
+    private String courseAddress;
+
+    @ExcelProperty("专业组成")
+    private String courseMajor;
+
+    private Integer courseType;
 
     @Override
     public boolean isValidated() {
         // 有名字 有百分占比 正常情况！
-        return evaluationTeacherName != null;
+        return courseTeacherId != null
+                && !courseTeacherId.equals("无")
+                && courseTeacherId.contains("lsd"); // lsd的教工号也不要！
     }
 
     @Override
@@ -75,69 +104,64 @@ public class Course implements ExcelEntity<Course>, Cloneable {
     }
     @Override
     public void fieldStandardized(){
-        // 用对象前 先检测null teacherName一定有的。。
-        if(this.evaluationTeacherName.length() > 3)
-            this.evaluationTeacherName = this.evaluationTeacherName.substring(0, 3);
+        // 老师名字的处理 如果需要添加另一个 就和多人的情况一样 额外添加！所有双人课都需要处理！
+        String finalName = this.courseTeacherName.split(",")[0];
+        this.courseTeacherId = this.courseTeacherId.split(",")[0];
+
+        Matcher matcher = Pattern.compile(DataUtil.CH_REGEX).matcher(finalName);
+        if(matcher.find()) this.courseTeacherName = matcher.group(1);
+
+        // 分流 三类课
+        String[] numTemp = this.courseNum.split("-");
+        // (2018-2019-2)-20160418-S0403700-1
+        // (2018-2019-1)-S0406080-40191-2
+        char character = numTemp[1].charAt(0);
+        if(character <= 9) this.courseType = 2;
+        else if(character == 'S') this.courseType = 1;
+        else this.courseType = 0;
+
+        // 学期拼接
+        this.courseTerm = this.year + this.courseTerm;
+
     }
     @Override
     public void stdCalculator(List<Map<Integer, String>> headInfoMap){
-        try{
-            if(headInfoMap != null) // null的含义就是 我不想更新这个时间
-                this.evaluationTerm =
-                        headInfoMap.get(0).get(0);
-            this.evaluationSchoolAttend =
-                    Integer.valueOf(headInfoMap.get(0).get(1));
 
-        }
-        catch (Exception e){
-            System.out.println("Invalid currentHeadInfo, a integer for current date(year) Expected");
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void transformAndSave(ArrayList<Course> list, int size) {
-        EvaluationService evaluationService =
-                (EvaluationService) SpringUtil.getBean("evaluationServiceImpl");
-        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
+        CourseUnionService courseUnionService =
+                (CourseUnionService) SpringUtil.getBean("courseUnionServiceImpl");
 
-        ArrayList<String> accountNameList = new ArrayList<>(size);
-
-        // 这里 因为标准课时 前边累加了 都是指定系数1 没有直接指定标准课时的 所以不calculation
-        for (Course course : list) {
-            accountNameList.add(course.evaluationTeacherName);
-        }
-        ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
-        ArrayList<EvaluationPO> evaluationPOS = new ArrayList<>(size);
+        ArrayList<CourseUnionPO> courseUnionPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
         Course course = null;
         for(int i = 0 ; i < list.size() ; i++){
             try{
                 course = list.get(i);
-                course.setEvaluationTeacherId(accountIdList.get(i));
-                // 有些字段实在太长 删减点 别太过了
+                // 这里做了分类
                 course.fieldStandardized();
-                // 内置转换函数 能够将CourseTheory转换为Course 然后save！
-//                evaluationPOS.add(new EvaluationPO(course));
+                courseUnionPOS.add(new CourseUnionPO(course));
             }
             catch (Exception e){
                 e.printStackTrace();
-                throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+                throw new AppException(e, "courseUnion", "transformAndSave CourseShortTerm.saveBatch(courses)");
             }
         }
         try{
             // todo saveOrUpdateBatch
-            evaluationService.saveBatch(evaluationPOS);
+            courseUnionService.saveBatch(courseUnionPOS);
         }
         catch (Exception e){
             e.printStackTrace();
-            throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
+            throw new AppException(e, "courseUnion", "transformAndSave CourseShortTerm.saveBatch(courses)");
         }
         finally {
-            evaluationPOS.clear();
-            accountIdList.clear();
-            accountNameList.clear();
+            courseUnionPOS.clear();
+//            accountIdList.clear();
+//            accountNameList.clear();
         }
     }
 }

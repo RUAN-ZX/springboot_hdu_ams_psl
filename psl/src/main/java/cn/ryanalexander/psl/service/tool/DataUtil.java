@@ -1,6 +1,8 @@
 package cn.ryanalexander.psl.service.tool;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p><b></b></p>
@@ -11,6 +13,15 @@ import java.util.HashMap;
  * @since 1.0.0
  **/
 public class DataUtil {
+    public final static String CH_REGEX = "([\u4e00-\u9fa5]+)";
+
+    public static String getChineseCharacter(String raw){
+        Matcher matcher = Pattern.compile(DataUtil.CH_REGEX).matcher(raw);
+        if(matcher.find()) return matcher.group(1);
+        else return null;
+    }
+
+
     private static final String[] MULTI_FLAG={"多人","/","、"};
     public static boolean multiStart(String courseTeacherName){
         // 但凡有一个符合就GG
