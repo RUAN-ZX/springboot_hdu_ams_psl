@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: sst
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 175.178.1.161:38848
+        username: nacos
+        password:
+        file-extension: yaml
+        namespace: sst
+      discovery:
+        server-addr: 175.178.1.161:38848
+        # server-addr: 175.178.1.161:38848 这是外网访问地址 现在已经上云 所以内网解决！
+        # 但是几台服务器不是同一个内网 GG nacos集群不需要搭建了 因为压力太小了 就一个应用。。。
+        # 目前就打算采用最简单的 公网暴露方式 app还是三台机器都部署
+#    sentinel:
+#      transport:
+#        #配置Sentinel dashboard地址
+#        dashboard: 175.178.1.161:38080
+#        #默认8719端口，假如被占用会自动从8719开始依次+1扫描,直至找到未被占用的端口
+#        port: 8719
+  #    alibaba:
+  #      seata:
+  #        #自定义事务组名称需要与seata-server中的对应
+  #        tx-service-group: fuck_tx_group
