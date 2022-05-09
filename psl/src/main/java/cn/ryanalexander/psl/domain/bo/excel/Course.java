@@ -85,7 +85,11 @@ public class Course implements ExcelEntity<Course>, Cloneable {
         // 有名字 有百分占比 正常情况！
         return courseTeacherId != null
                 && !courseTeacherId.equals("无")
-                && courseTeacherId.contains("lsd"); // lsd的教工号也不要！
+                && !courseTeacherId.contains("lsd")
+                && !courseTeacherId.contains("ls")
+                && courseNum != null
+                && courseTerm != null
+                && year != null; // lsd ls的教工号也不要！
     }
 
     @Override
@@ -122,6 +126,12 @@ public class Course implements ExcelEntity<Course>, Cloneable {
 
         // 学期拼接
         this.courseTerm = this.year + this.courseTerm;
+
+        // 时间
+//        if(this.courseTime.length() > 64)
+//            System.out.println("fuckfuckfuck "+this.courseTime);
+//        if(this.courseMajor.length() > 48)
+//            System.out.println("cccc " + this.courseMajor);
 
     }
     @Override

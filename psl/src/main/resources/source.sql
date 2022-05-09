@@ -106,10 +106,10 @@ CREATE TABLE `course_union` (
 	`course_name` VARCHAR(24) NOT NULL, # MATLAB及在电子信息课程中的应用 18
 	
 	`course_points` DOUBLE(10,2) DEFAULT NULL, # 学分 记录一下 不参与计算 也不会分配！
-	`course_class` VARCHAR(200) DEFAULT NULL, # 最长有170的。。。恐怖 
-	`course_time` VARCHAR(64) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
+	`course_class` VARCHAR(256) DEFAULT NULL, # 最长有170的。。。恐怖 
+	`course_time` VARCHAR(128) DEFAULT NULL, # 60 周三第10,11节{第1-17周|单周};周三第10,11节{第2-16周|双周}
 	`course_address` VARCHAR(64) DEFAULT NULL, # 第7教研楼中2021;第7教研楼中3021 21
-	`course_major` VARCHAR(48) DEFAULT NULL, # 测控技术与仪器,电气工程及其自动化,医学信息工程,智能科学与技术
+	`course_major` VARCHAR(96) DEFAULT NULL, # 测控技术与仪器,电气工程及其自动化,医学信息工程,智能科学与技术
 	
   `course_teacher_id` INT(8) UNSIGNED DEFAULT NULL, 
 	`course_teacher_name` CHAR(3) NOT NULL, 
@@ -425,3 +425,18 @@ VALUES
 -- 
 -- INSERT INTO course ( course_num, course_term, course_time, course_name, course_address, course_teacher_id, course_teacher_name, course_type, course_capacity, course_capacity_factor1, course_hours, course_hours_theory, course_hours_exp, course_hours_exp_std, course_hours_theory_std, course_hours_std, course_reform, course_factor, course_prior, course_note1, course_note2 ) VALUES (
 -- (2018-2019-2)-A1804020-40136-1, 2018-2019-2, 周二第3,4,5节{第1-16周}, 模拟电子电路, 第7教研楼南205, 40136, 刘圆圆, 1, 19, 1.0, 64.0, 48.0, 16.0, 22, 67, 90, 翻转1.4；卓越1.3, 1.4, 1.4, 卓越单独，翻转课堂，翻转核算高，依照翻转课堂进行核算, 系数不叠加，按最高计算)
+
+-- SELECT
+--     `course_class`,
+--     length(`course_class`)
+-- FROM
+--     course_union
+-- WHERE
+--     length(`course_class`) = (
+--         SELECT
+--             max(length(`course_class`))
+--         FROM
+--             course_union
+--     )
+-- 		
+-- select count(*) from course_union;

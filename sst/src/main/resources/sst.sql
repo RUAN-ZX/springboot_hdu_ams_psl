@@ -50,15 +50,16 @@ DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
   `course_id` int(10) NOT NULL AUTO_INCREMENT,
   `course_user_id` int(10) NOT NULL,
-  `course_class1` varchar(12) DEFAULT '',
-  `course_class2` varchar(12) DEFAULT '',
-  `course_class3` varchar(12) DEFAULT '',
-  `course_class4` varchar(12) DEFAULT '',
-  `course_class5` varchar(12) DEFAULT '',
-  `course_class6` varchar(12) DEFAULT '',
-  `course_class7` varchar(12) DEFAULT '',
-  `course_class8` varchar(12) DEFAULT '',
-  `course_day_week` tinyint(1) unsigned NOT NULL,
+  `course_class1` varchar(12) DEFAULT "",
+  `course_class2` varchar(12) DEFAULT "",
+  `course_class3` varchar(12) DEFAULT "",
+  `course_class4` varchar(12) DEFAULT "",
+  `course_class5` varchar(12) DEFAULT "",
+  `course_class6` varchar(12) DEFAULT "",
+  `course_class7` varchar(12) DEFAULT "",
+  `course_class8` varchar(12) DEFAULT "",
+  `course_day_week` tinyint(1) unsigned NOT NULL, # 0 - 
+	UNIQUE key `uk_userid_day` (`course_user_id`, `course_day_week`),
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
