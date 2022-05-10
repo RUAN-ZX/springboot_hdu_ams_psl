@@ -57,7 +57,7 @@ public class CourseNumDecoder{
     }
 
     public String getCourseData(){
-        System.out.println(this.id);
+//        System.out.println(this.id);
         char character = this.id.charAt(7); // 最后一位
         JSONObject result = new JSONObject();
         if(character == 's') result.put("双语", 1.3);

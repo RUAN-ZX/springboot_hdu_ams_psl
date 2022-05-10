@@ -4,40 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ryanalexander.psl.mapper.CourseUnionMapper">
 
-    <resultMap id="BaseResultMap" type="cn.ryanalexander.psl.domain.po.CourseUnionPO">
-            <id property="courseId" column="course_id" jdbcType="INTEGER"/>
-            <result property="courseNum" column="course_num" jdbcType="CHAR"/>
-            <result property="courseTerm" column="course_term" jdbcType="CHAR"/>
-            <result property="coursePoints" column="course_points" jdbcType="DOUBLE"/>
-            <result property="courseClass" column="course_class" jdbcType="VARCHAR"/>
-            <result property="courseTime" column="course_time" jdbcType="VARCHAR"/>
-            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
-            <result property="courseAddress" column="course_address" jdbcType="VARCHAR"/>
-            <result property="courseMajor" column="course_major" jdbcType="VARCHAR"/>
-            <result property="courseTeacherId" column="course_teacher_id" jdbcType="OTHER"/>
-            <result property="courseTeacherName" column="course_teacher_name" jdbcType="CHAR"/>
-            <result property="courseType" column="course_type" jdbcType="TINYINT"/>
-            <result property="courseCapacity" column="course_capacity" jdbcType="SMALLINT"/>
-            <result property="courseCapacityFactor" column="course_capacity_factor" jdbcType="DOUBLE"/>
-            <result property="courseHours" column="course_hours" jdbcType="TINYINT"/>
-            <result property="courseHoursTheory" column="course_hours_theory" jdbcType="DOUBLE"/>
-            <result property="courseHoursExp" column="course_hours_exp" jdbcType="DOUBLE"/>
-            <result property="courseHoursStd" column="course_hours_std" jdbcType="DOUBLE"/>
-            <result property="courseData" column="course_data" jdbcType="VARCHAR"/>
-            <result property="courseDataOthers" column="course_data_others" jdbcType="VARCHAR"/>
-            <result property="courseProperties" column="course_properties" jdbcType="CHAR"/>
-            <result property="courseNote1" column="course_note1" jdbcType="VARCHAR"/>
-            <result property="courseNote2" column="course_note2" jdbcType="VARCHAR"/>
-    </resultMap>
 
-    <sql id="Base_Column_List">
-        course_id,course_num,course_term,
-        course_points,course_class,course_time,
-        course_name,course_address,course_major,
-        course_teacher_id,course_teacher_name,course_type,
-        course_capacity,course_capacity_factor,course_hours,
-        course_hours_theory,course_hours_exp,course_hours_std,
-        course_data,course_data_others,course_properties,
-        course_note1,course_note2
-    </sql>
+    <select id="selectBatchByNum" parameterType="java.util.List"
+            resultType="cn.ryanalexander.psl.domain.po.CourseUnionPO">
+        <foreach collection="items" item="item" separator="union all">
+            select * from course_union where course_num = #{item}
+        </foreach>
+    </select>
 </mapper>

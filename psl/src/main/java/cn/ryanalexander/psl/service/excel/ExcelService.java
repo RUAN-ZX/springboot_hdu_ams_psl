@@ -11,7 +11,6 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,9 +32,11 @@ public class ExcelService {
         ModelSheetList.put("工号和邮箱", AccountIdAndEmail.class);
         ModelSheetList.put("职称信息表", TitleInfo.class);
 //
-        ModelSheetList.put("理论", S1CourseTheory.class);
-        ModelSheetList.put("短学期", S1ShortTerm.class);
-        ModelSheetList.put("实验", S1CourseExperiment.class);
+//        ModelSheetList.put("理论", S1CourseTheory.class);
+//        ModelSheetList.put("短学期", S1ShortTerm.class);
+//        ModelSheetList.put("实验", S1CourseExperiment.class);
+        ModelSheetList.put("多人", CourseMulti.class);
+        ModelSheetList.put("系数", CourseFactor.class);
         ModelSheetList.put("毕业设计", S1ThesisDesign.class);
 //
 //        // 历史数据则可以通过工作量表获取 新数据应该有

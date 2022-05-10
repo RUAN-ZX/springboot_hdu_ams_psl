@@ -2,6 +2,10 @@ package cn.ryanalexander.psl.mapper;
 
 import cn.ryanalexander.psl.domain.po.CourseUnionPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 * @author ryan
@@ -10,7 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity cn.ryanalexander.psl.domain.po.CourseUnionPO
 */
 public interface CourseUnionMapper extends BaseMapper<CourseUnionPO> {
-
+    ArrayList<CourseUnionPO> selectBatchByNum(@Param("items") List<String> list);
 }
 
 

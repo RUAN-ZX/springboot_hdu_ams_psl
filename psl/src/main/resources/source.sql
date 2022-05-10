@@ -444,3 +444,4 @@ VALUES
 -- select count(*) from course_union;
 
 -- select course_type from course_union where course_teacher_id = "40068";
+-- select * from course_union where course_num = "(2018-2019-2)-20170601-S0400620-1";

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseUnionPO implements Serializable {
+public class CourseUnionPO implements Serializable, Cloneable{
     /**
      * 
      */
@@ -162,4 +162,14 @@ public class CourseUnionPO implements Serializable {
         this.courseData = course.getCourseData();
     }
 
+    @Override
+    public CourseUnionPO clone() {
+        try {
+            CourseUnionPO clone = (CourseUnionPO) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

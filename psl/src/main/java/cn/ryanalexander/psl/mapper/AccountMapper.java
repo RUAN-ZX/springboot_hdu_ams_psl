@@ -27,6 +27,7 @@ public interface AccountMapper extends BaseMapper<AccountPO> {
     void saveOrUpdateBatchByMail(@Param("items") List<AccountIdAndEmail> list);
 
     void saveOrIgnoreBatchByNameAndId(@Param("items") List<AccountPO> list);
+
     ArrayList<Integer> selectBatchIdByName(@Param("items") List<String> list);
 
     String selectOneByTid(@Param("teacherId") Integer id);
