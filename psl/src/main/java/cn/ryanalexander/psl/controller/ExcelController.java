@@ -47,14 +47,21 @@ public class ExcelController {
     @PostMapping (value = "/update",
             headers = "content-type=multipart/form-data",
             produces = "application/json;charset=utf-8")
-    public Result updateExcel(
+    public Result update(
             @RequestPart("uploadFile") MultipartFile[] multipartFiles
     ) throws IOException {
         for(MultipartFile file : multipartFiles){
-            excelService.excelRead(file.getInputStream());
+            excelService.modelRead(file.getInputStream());
         }
 
 //        excelService.noModelRead(url);
+        return new Result();
+    }
+
+    @ApiOperation("用现有的excel表")
+    @GetMapping (value = "/update")
+    public Result update(int start, int end) throws IOException {
+        excelService.noModelRead(start, end);
         return new Result();
     }
 

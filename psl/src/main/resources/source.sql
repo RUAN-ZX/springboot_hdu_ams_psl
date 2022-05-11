@@ -34,9 +34,9 @@ CREATE TABLE `teacher` (
 -- 	`create_time` DATETIME NOT NULL, # 这个要管 创建的时候 其他时候他也不会变
 -- 	`update_time` DATETIME DEFAULT NOW(), # 不用管这个数据 每次更新即可
 	# 前后端去实现时区转换
-	
-  PRIMARY KEY (`teacher_title_id`),
-	UNIQUE KEY `uk_teacher_id_name` (`teacher_id`,`teacher_name`,`teacher_title_year`)
+	UNIQUE KEY `uk_teacher_id_name` (`teacher_id`,`teacher_name`,`teacher_title_year`),
+	INDEX `idx_name` (`teacher_name`),
+  PRIMARY KEY (`teacher_title_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
@@ -138,9 +138,10 @@ CREATE TABLE `course_union` (
 	# 应该在循环里边顺手检查一下！
   `course_note2` VARCHAR(64) DEFAULT NULL,
 	
+	UNIQUE KEY `uk_cunion_num_name` (`course_num`,`course_teacher_name`),
+	INDEX `idx_cunion_term_type_id` (`course_term`,`course_type`,`course_teacher_id`),
+  PRIMARY KEY (`course_id`)
 	
-  PRIMARY KEY (`course_id`),
-	UNIQUE KEY `uk_cunion_num_name` (`course_num`,`course_teacher_name`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 
@@ -205,6 +206,7 @@ CREATE TABLE `thesis_design` (
 	thesis_design_t1 DOUBLE(10,2) DEFAULT 1.0, # T1系数 std = (f1+f2)*t1
 	thesis_design_std TINYINT(1) DEFAULT 0, # 标准学时 
 	UNIQUE KEY `uk_stu_id` (`thesis_design_year`,`thesis_design_student_id`), # 学号 得天独厚的区分条件
+	INDEX `idx_year_id` (`thesis_design_year`,`thesis_design_teacher_id`),
 	PRIMARY KEY(`thesis_design_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -241,7 +243,9 @@ CREATE TABLE `achievement`(
 	achievement_kpi DOUBLE(10,2) NOT NULL, # 最终指标分值
 	achievement_note VARCHAR(32) DEFAULT NULL,# 我们教科办备注
   # 有完全一摸一样的 没办法。。
+	INDEX `idx_year_id` (`achievement_year`,`achievement_teacher_id`),
 	PRIMARY KEY(`achievement_id`)
+	
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 研究生的绩点 也作为源数据！ 
@@ -252,7 +256,7 @@ CREATE TABLE `post_graduate`(
 	`post_graduate_teacher_id` INT(8) NOT NULL, 
 	`post_graduate_teacher_name` CHAR(3) NOT NULL, # 
 	`post_graduate_kpi` DOUBLE(10,5) NOT NULL, # 标准学时 统一使用标准学时！
-	UNIQUE KEY `uk_post_graduate_year_tid` (`post_graduate_year`,`post_graduate_teacher_name`),
+	UNIQUE KEY `uk_post_graduate_year_name` (`post_graduate_year`,`post_graduate_teacher_name`),
 	PRIMARY KEY(`post_graduate_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
@@ -304,7 +308,8 @@ CREATE TABLE `evaluation`(
 -- 	`evaluation_result` DOUBLE(10,2) NOT NULL, # 排名占比！ 排名比 按照分数平均之后的 排名比 所以学期内排名比没意义！分数是唯一有用的！
 	
 	PRIMARY KEY(`evaluation_id`),
-	UNIQUE KEY `uk_term_name` (`evaluation_term`,`evaluation_teacher_name`)
+	UNIQUE KEY `uk_term_name` (`evaluation_term`,`evaluation_teacher_name`),
+	INDEX `uk_term_id` (`evaluation_term`,`evaluation_teacher_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 作为导出表 而不是用于历史数据导入表的！注意 导入的表不一定在一起 所以一个excel表 一个数据表！
@@ -344,7 +349,7 @@ CREATE TABLE `s_detail`(
 	`s_detail_teacher_name` VARCHAR(24) NOT NULL, # 怪怪的老师名字都来了。。有些没有id 暂时 还是先登记在案吧
 	`s_detail_year` SMALLINT(4) UNSIGNED NOT NULL,
 	
-	`s1_kpi` DOUBLE(10,4) NOT NULL, # 标准课时
+	`s1_kpi` DOUBLE(10,4) DEFAULT NULL, # 标准课时 13年的数据莫得。。
 	`s1_score` DOUBLE(10,2) NOT NULL, # S1分数
 	
 	`s2_score1` DOUBLE(10,2) NOT NULL,# 上上学期学评教分数
@@ -369,7 +374,8 @@ CREATE TABLE `s_detail`(
 	`s_note` VARCHAR(100) DEFAULT NULL,
 	
 	PRIMARY KEY (`s_detail_id`),
-	UNIQUE KEY `uk_s_detail_tid_year` (`s_detail_teacher_name`,`s_detail_year`)
+	UNIQUE KEY `uk_s_detail_tid_year` (`s_detail_year`,`s_detail_teacher_name`),
+	INDEX `idx_id` (`s_detail_teacher_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 

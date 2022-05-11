@@ -32,8 +32,9 @@ public class AchievementController {
     @GetMapping("/getByTeacherIdAndYear")
     public Result getByTeacherId(String accountId, String year){
         return new Result(achievementMapper.selectList(new QueryWrapper<AchievementPO>()
-                .eq("achievement_teacher_id", accountId)
-                .eq("achievement_year",year)));
+                        .eq("achievement_year",year)
+                        .eq("achievement_teacher_id", accountId)
+                ));
     }
 
     @Require(RoleEnum.TEACHER)

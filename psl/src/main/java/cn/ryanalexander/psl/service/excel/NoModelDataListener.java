@@ -1,6 +1,10 @@
 package cn.ryanalexander.psl.service.excel;
 
+import cn.ryanalexander.common.domain.dto.Account;
+import cn.ryanalexander.psl.domain.po.AccountPO;
 import cn.ryanalexander.psl.domain.po.SDetailPO;
+import cn.ryanalexander.psl.mapper.AccountMapper;
+import cn.ryanalexander.psl.mapper.SDetailMapper;
 import cn.ryanalexander.psl.service.SDetailService;
 import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
@@ -8,6 +12,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -60,6 +65,9 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         log.info("解析到一条数据:{}", JSON.toJSONString(data));
+        // 空记录过滤！
+        if(data.get(reverseHeadMap1.get("姓名")) == null) return;
+
         SDetailPO dataPO = new SDetailPO();
         HashMap<String, Double> s3Data = new HashMap<>();
         HashMap<String, Double> s4Data = new HashMap<>();
@@ -67,8 +75,8 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
         dataPO.setSDetailYear(Integer.valueOf(sDetailYear));
         // reverseHeadMap1.get("姓名") 获取名字所在col index 然后data getByIndex
         dataPO.setSDetailTeacherName(data.get(reverseHeadMap1.get("姓名")));
-        dataPO.setSDetailTeacherId(DataUtil.string2integer(data.get(reverseHeadMap1.get("工号"))));
-        dataPO.setS1Kpi(DataUtil.string2double(data.get(reverseHeadMap2.get("合计教学工作量"))));
+        dataPO.setSDetailTeacherId(DataUtil.string2integer(data.get(reverseHeadMap1.get("工号")),null));
+        dataPO.setS1Kpi(DataUtil.string2double(data.get(reverseHeadMap2.get("合计教学工作量")), null));
         dataPO.setS1Score(DataUtil.string2double(data.get(reverseHeadMap2.get("S1"))));
 
 
@@ -103,12 +111,27 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
                 s4Data.put(currentHead, DataUtil.string2double(data.get(i)));
             }
         }
+        // todo 一个个查有点慢
         dataPO.setS3Data(JSON.toJSONString(s3Data));
         dataPO.setS4Data(JSON.toJSONString(s4Data));
         dataPO.setSScore(DataUtil.string2double(data.get(reverseHeadMap1.get("总分"))));
-//        String stringData = JSON.toJSONString(sData);
-//        System.out.println(JSON.parse(stringData));
-//        System.out.println(stringData);
+
+        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
+        if(dataPO.getSDetailTeacherId() == null
+                && dataPO.getSDetailTeacherName() != null){
+            String name = DataUtil.getChineseCharacter(dataPO.getSDetailTeacherName());
+            System.out.println(name);
+            AccountPO accountPO = accountMapper.selectOne(
+                    new QueryWrapper<AccountPO>()
+                            .select("account_id")
+                            .eq("account_name", name)
+                            .last("limit 1"));
+            if(accountPO != null){
+                dataPO.setSDetailTeacherId(accountPO.getAccountId());
+            }
+
+        }
+
         cachedDataList.add(dataPO);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData();

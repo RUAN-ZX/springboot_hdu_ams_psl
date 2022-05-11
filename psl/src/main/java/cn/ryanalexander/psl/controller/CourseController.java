@@ -52,8 +52,9 @@ public class CourseController {
     @GetMapping("/get/v2")
     public Result getV2(String accountId, String time, String type){
         if(type.equals("3")) return new Result(thesisDesignMapper.selectList(new QueryWrapper<ThesisDesignPO>()
-                .eq("thesis_design_teacher_id", accountId)
-                .eq("thesis_design_year", time))
+                    .eq("thesis_design_year", time)
+                    .eq("thesis_design_teacher_id", accountId)
+                )
         );
 
         return new Result(courseUnionMapper.selectList(new QueryWrapper<CourseUnionPO>()

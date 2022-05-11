@@ -50,16 +50,16 @@ public class S1Workload implements ExcelEntity<S1Workload> {
     private String teacherId;
 
     // 除了研究生 双肩挑的所有。。。
-    @ExcelProperty(value = "本科教学业绩点")
+    @ExcelProperty(value = "本科")
     private String teacherHoursStd;
 
-    @ExcelProperty(value = "研究生标准课时总计")
+    @ExcelProperty(value = "研究生")
     private String postGraduateHours; // postGraduateKpi * 100
 
     @ExcelProperty(value = "双肩挑")
     private String shoulderBothHours;
 
-    @ExcelProperty(value = "小计")
+    @ExcelProperty(value = "合计")
     private String s1Hours;
 
     @ExcelProperty(value = "S1")

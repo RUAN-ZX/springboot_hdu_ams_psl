@@ -18,6 +18,11 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  **/
 public class DataUtil {
+    public static boolean isValidId(String teacherId){
+        if(teacherId == null) return false;
+        return !(teacherId.contains("lsd") || teacherId.contains("ls"));
+    }
+
     public final static String CH_REGEX = "([\u4e00-\u9fa5]+)";
 
     public static String getChineseCharacter(String raw){
@@ -81,14 +86,14 @@ public class DataUtil {
     }
 
 
-    public static double string2double(String doubleNum){
+    public static Double string2double(String doubleNum){
         return string2double(doubleNum, 0.0);
     }
-    public static double string2double(String doubleNum, double defaultDouble){
+    public static Double string2double(String doubleNum, Double defaultDouble){
         if(doubleNum == null || doubleNum.equals("null") || doubleNum.equals("#N/A"))
             return defaultDouble;
 
-        double result = defaultDouble;
+        Double result = defaultDouble;
         try{
             result = Double.parseDouble(doubleNum);
             return result;
@@ -96,13 +101,13 @@ public class DataUtil {
             return result;
         }
     }
-    public static int string2integer(String integerNum){
+    public static Integer string2integer(String integerNum){
         return string2integer(integerNum, 0);
     }
-    public static int string2integer(String integerNum, int defaultInt){
+    public static Integer string2integer(String integerNum, Integer defaultInt){
         if(integerNum == null || integerNum.equals("null") || integerNum.equals("#N/A"))
             return defaultInt;
-        int result = defaultInt;
+        Integer result = defaultInt;
         try{
             result = Integer.parseInt(integerNum);
             return result;

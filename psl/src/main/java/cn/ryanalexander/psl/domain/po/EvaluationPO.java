@@ -58,7 +58,7 @@ public class EvaluationPO implements Serializable {
         evaluationSchoolRank = s2Evaluation.getEvaluationSchoolRank();
 
         evaluationTeacherName = s2Evaluation.getEvaluationTeacherName();
-        evaluationTeacherId = s2Evaluation.getEvaluationTeacherId();
+        evaluationTeacherId = Integer.valueOf(s2Evaluation.getEvaluationTeacherId());
 
         evaluationParticipate = s2Evaluation.getEvaluationParticipate();
 

@@ -92,6 +92,9 @@ public class SFinal implements ExcelEntity<SFinal> {
         // 用对象前 先检测null teacherName一定有的。。
         if(this.sFinalTeacherName.length() > 3)
             this.sFinalTeacherName = this.sFinalTeacherName.substring(0, 3);
+
+        if(this.sNote != null && this.sNote.length() > 32)
+            this.sNote = this.sNote.substring(0,32);
     }
     @Override
     public void stdCalculator(List<Map<Integer, String>> headInfoMap){

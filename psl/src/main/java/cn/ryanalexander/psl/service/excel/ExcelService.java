@@ -4,15 +4,19 @@ import cn.ryanalexander.psl.domain.bo.excel.*;
 import cn.ryanalexander.psl.domain.bo.excel.out.S1Workload;
 import cn.ryanalexander.psl.domain.bo.excel.out.SFinal;
 import cn.ryanalexander.psl.service.tool.DataUtil;
+import cn.ryanalexander.psl.service.tool.StaticConfiguration;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +30,8 @@ import java.util.regex.Pattern;
  **/
 @Service
 public class ExcelService {
+    @Resource
+    private StaticConfiguration staticConfiguration;
     private static final HashMap<String, Class<?>> ModelSheetList = new HashMap<>();
     static{
         // 最好先有工号邮箱 否则匹配的teacherId全是0 到时候还要清盘
@@ -61,7 +67,7 @@ public class ExcelService {
         NonModelSheetList.put("成绩明细表", NoModelDataListener.class);
     }
 
-    public void excelRead(InputStream file){
+    public void modelRead(InputStream file){
         ExcelReader excelReader = null;
 
         // 匹配名字 然后执行对应的套路
@@ -84,10 +90,6 @@ public class ExcelService {
 
                         excelReader.read(readSheet);
                     }
-                    else if(NonModelSheetList.get(matchResult) != null){
-                        EasyExcel.read(file, new NoModelDataListener()).headRowNumber(2).excelType(ExcelTypeEnum.XLSX)
-                                .sheet(realName).doRead();
-                    }
                 }
             }
         }
@@ -98,5 +100,41 @@ public class ExcelService {
         finally {
             if(excelReader != null) excelReader.finish();
         }
+    }
+    public void noModelRead(int start, int end){
+
+//        int end = 21;
+        for(int i = start ; i < end ; ++i){
+            String file = i + "-" + (i + 1) + "学年业绩考核数据汇总表.xlsx";
+            file = staticConfiguration.getExcelReadUrl() + file;
+            ExcelReader excelReader = null;
+            try {
+                excelReader = EasyExcel.read(file).build();
+                List<ReadSheet> sheets = excelReader.excelExecutor().sheetList();
+                for (ReadSheet sheet : sheets) {
+                    String realName = sheet.getSheetName();
+                    // 可以用别的字符做区分 省的sheetName重复 但是中文对就行！
+                    Matcher matcher = Pattern.compile(DataUtil.CH_REGEX).matcher(realName);
+
+                    if(matcher.find()) { // 两种可能 都试一下 注意两个map不应该重合
+                        String matchResult = matcher.group(1);
+                        if(NonModelSheetList.get(matchResult) != null){
+                            EasyExcel.read(file, new NoModelDataListener()).headRowNumber(2)
+                                    .sheet(realName).doRead();
+                        }
+                    }
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            finally {
+                if(excelReader != null) excelReader.finish();
+            }
+        }
+
+
+
+
     }
 }
