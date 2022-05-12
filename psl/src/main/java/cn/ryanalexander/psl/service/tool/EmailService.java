@@ -64,7 +64,7 @@ public class EmailService {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
-        String content = readFile(staticConfiguration.getMailUrl());
+        String content = readFile(staticConfiguration.getCaptchaMailUrl());
 
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Tcaptcha),
                 true);
@@ -77,25 +77,25 @@ public class EmailService {
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
-
-
     }
-    public void sendFeedbackMails(String Tid, String Tname, String Tmail, String Fcontent) throws MessagingException, IOException {
+
+    @Async // 给我看的！
+    public void sendFeedbackMails(String accountId, String accountName, String feedback, String topic) throws MessagingException, IOException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
 
-        String content = readFile(staticConfiguration.getMailUrl());
-        helper.setText(content.replace("老师",Tname+"老师").replace("123456",Fcontent),
-                true);
-        // todo 怎么弄 怎么设计title
-        String mailTitle = "处理结果"+Fcontent+" [ "+Tname+"老师 (职工号:"+Tid+") ]";
-        String mailFrom = "ryan_innerpeace@foxmail.com";
-        helper.setTo(Tmail);
-        helper.setFrom(mailFrom);
+        String content = readFile(staticConfiguration.getFeedbackMailUrl());
+
+        helper.setText(content.replace("反馈内容", feedback)
+                .replace("反馈主题", topic), true);
+
+        String mailTitle = "来自["+accountName+"老师 ("+accountId+")]的反馈";
+        String mail = "ryan_innerpeace@foxmail.com";
+        helper.setTo(mail);
+        helper.setFrom(mail);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
-
 
     }
 

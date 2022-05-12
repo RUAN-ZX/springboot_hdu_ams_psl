@@ -1,6 +1,7 @@
 package cn.ryanalexander.psl.controller;
 
 
+import cn.ryanalexander.common.domain.dto.Result;
 import cn.ryanalexander.psl.config.redis.RedisKeyEnum;
 import cn.ryanalexander.psl.domain.exceptions.InvalidException;
 import cn.ryanalexander.psl.domain.exceptions.NotFoundException;
@@ -9,13 +10,17 @@ import cn.ryanalexander.psl.processor.annotationIntercept.Require;
 import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 
 import cn.ryanalexander.psl.service.AccountService;
+import cn.ryanalexander.psl.service.tool.EmailService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +29,8 @@ public class AccountController {
     // @Qualifier("womanService") 而serviceImpl要制定好名字！@Service("")
     @Resource
     private AccountService accountService;
+    @Resource
+    private EmailService emailService;
 
     @Require(RoleEnum.TEACHER)
     @ApiOperation("通过access登录 刷新refresh token")
@@ -133,7 +140,16 @@ public class AccountController {
         return accountService.getEmailById(accountId);
     }
 
-
+    @Require(RoleEnum.TEACHER)
+    @ApiOperation("教师发送反馈")
+    @PostMapping("/sendFeedback")
+    public Result sendFeedback(String accountId,
+                               String accountName,
+                               String feedback,
+                               String topic) throws MessagingException, IOException {
+        emailService.sendFeedbackMails(accountId, accountName, feedback, topic);
+        return new Result();
+    }
 }
 
 
