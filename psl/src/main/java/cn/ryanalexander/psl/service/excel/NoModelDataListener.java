@@ -81,12 +81,11 @@ public class NoModelDataListener extends AnalysisEventListener<Map<Integer, Stri
 
 
         int s2Pos = reverseHeadMap2.get("学评教平均值");
-        dataPO.setS1Score(DataUtil.string2double(data.get(s2Pos)));
-
-        dataPO.setS2Score2(DataUtil.string2double(data.get(s2Pos - 2)));
-        dataPO.setS2Score1(DataUtil.string2double(data.get(s2Pos - 1)));
-
-        dataPO.setS2ScoreAvg(DataUtil.getAvg(dataPO.getS2Score1(), dataPO.getS2Score2()));
+//
+//        dataPO.setS2Score2(DataUtil.string2double(data.get(s2Pos - 2)));
+//        dataPO.setS2Score1(DataUtil.string2double(data.get(s2Pos - 1)));
+//
+//        dataPO.setS2ScoreAvg(DataUtil.getAvg(dataPO.getS2Score1(), dataPO.getS2Score2()));
         dataPO.setS2Rank(DataUtil.string2integer(data.get(s2Pos + 1)));
         dataPO.setS2Score(DataUtil.string2double(data.get(reverseHeadMap2.get("S2"))));
 

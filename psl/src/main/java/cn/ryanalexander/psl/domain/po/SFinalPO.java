@@ -75,7 +75,7 @@ public class SFinalPO implements Serializable {
         sFinalTeacherName = sFinal.getSFinalTeacherName();
         sFinalYear = sFinal.getSFinalYear();
         sFinalNote = sFinal.getSNote();
-        sFinalCourseMain = DataUtil.string2integer(sFinal.getSFinalCourseMain());
+        sFinalCourseMain = DataUtil.string2integer(sFinal.getSFinalCourseMain(),null);
         sFinalGrade = sFinal.getSFinalGrade();
         sFinalScore = DataUtil.string2double(sFinal.getSFinalScore());
         sFinalTitleLevel = DataUtil.transformTitleGrade(sFinal.getSFinalTitleLevel());

@@ -51,11 +51,18 @@ public class AccountIdAndEmail implements ExcelEntity<AccountIdAndEmail> {
         return accountId != null && accountMail != null;
     }
 
+    @Override
+    public void fieldStandardized() {
+        this.accountName = DataUtil.getChineseCharacter(this.accountName);
+    }
 
     @Override
     public void transformAndSave(ArrayList<AccountIdAndEmail> list, int size) {
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
         try{
+            for (AccountIdAndEmail account : list) {
+                account.fieldStandardized();
+            }
             accountMapper.saveOrUpdateBatchByMail(list);
         }
         catch (AppException e){

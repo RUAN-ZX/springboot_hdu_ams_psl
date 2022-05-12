@@ -1,6 +1,9 @@
 package cn.ryanalexander.psl.processor.annotationIntercept;
 
+import cn.ryanalexander.psl.domain.po.AccountPO;
+import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.AccountService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -16,8 +19,9 @@ import java.lang.reflect.Method;
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Resource
+    private AccountMapper accountMapper;
+    @Resource
     private AccountService accountService;
-
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest,
                              HttpServletResponse response, Object handler){
@@ -34,11 +38,15 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             String access = httpServletRequest.getHeader("access");
             String accountId = httpServletRequest.getParameterMap().get("accountId")[0];
             accountService.verifyAccess(accountId, access);
-            if(require.value() != RoleEnum.ROOT){
-
+            if(require.value() == RoleEnum.ROOT){
+                AccountPO account = accountMapper.selectOne(new QueryWrapper<AccountPO>()
+                        .eq("account_id", accountId));
+                return account.getAccountRole() == RoleEnum.ROOT.getId();
             }
-            if(require.value() != RoleEnum.MANAGER){
-
+            if(require.value() == RoleEnum.MANAGER){
+                AccountPO account = accountMapper.selectOne(new QueryWrapper<AccountPO>()
+                        .eq("account_id", accountId));
+                return account.getAccountRole() == RoleEnum.MANAGER.getId();
             }
         }
         else {

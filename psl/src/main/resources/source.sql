@@ -7,7 +7,7 @@ USE `teacher_temp`;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `account_id` INT(8) NOT NULL, # teacher id
-  `account_name` VARCHAR(24) NOT NULL, # Hadi Barzegar Bafrooei
+  `account_name` CHAR(3) NOT NULL, # Hadi Barzegar Bafrooei
 
   `account_mail` VARCHAR(50) DEFAULT NULL, # 保持最新状态就行了！
 	`account_phone` CHAR(11) DEFAULT NULL, # 13713524786
@@ -192,6 +192,7 @@ CREATE TABLE `student` (
 DROP TABLE IF EXISTS `thesis_design`;
 CREATE TABLE `thesis_design` (
 	thesis_design_id INT(8) AUTO_INCREMENT NOT NULL, 
+	thesis_design_name VARCHAR(48) DEFAULT NULL,
 	thesis_design_year SMALLINT(4) UNSIGNED NOT NULL,# 每年都有一批！
 	thesis_design_note VARCHAR(24) DEFAULT NULL,# 备注
 	thesis_design_teacher_id INT(8) NOT NULL,# 教师id 方便查询。
@@ -352,11 +353,11 @@ CREATE TABLE `s_detail`(
 	`s1_kpi` DOUBLE(10,4) DEFAULT NULL, # 标准课时 13年的数据莫得。。
 	`s1_score` DOUBLE(10,2) NOT NULL, # S1分数
 	
-	`s2_score1` DOUBLE(10,2) NOT NULL,# 上上学期学评教分数
-	`s2_score2` DOUBLE(10,2) NOT NULL,# 上学期学评教分数
-	`s2_score_avg` DOUBLE(10,2) NOT NULL, # 平均 注意 如果只有一个有的 就认为这个为avg
+	`s2_score1` DOUBLE(10,2) DEFAULT NULL,# 上上学期学评教分数
+	`s2_score2` DOUBLE(10,2) DEFAULT NULL,# 上学期学评教分数
+	`s2_score_avg` DOUBLE(10,2) DEFAULT NULL, # 平均 注意 如果只有一个有的 就认为这个为avg
 	`s2_rank` SMALLINT(4) UNSIGNED NOT NULL, # 平均分的排名 调两个学期的所有数据 算出老师平均分 然后再排名 说白了之前表里边的排名没有意义 单学期有啥用
-	`s2_score` DOUBLE(10,2) NOT NULL, 
+	`s2_score` DOUBLE(10,2) DEFAULT NULL, 
 	
 -- 	JSON name:value 311:10
 -- 导出的时候 将detail转为两个形式 
@@ -393,7 +394,7 @@ CREATE TABLE `s_final`(
 	`s_final_note` VARCHAR(32) DEFAULT NULL, # 教科办说明情况
 -- 	`s_rank` SMALLINT(4) UNSIGNED DEFAULT NULL, # 不一定参与评价 所以这个rank没意义 我们只能提供参考罢了
 	PRIMARY KEY (`s_final_id`), # 这里的teacherId值得相信！
-	UNIQUE KEY `uk_s_final_tid_year` (`s_final_year`,`s_final_teacher_id`)
+	UNIQUE KEY `uk_s_final_tid_year` (`s_final_year`,`s_final_teacher_name`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # academy 学院
@@ -448,6 +449,8 @@ VALUES
 --     )
 -- 		
 -- select count(*) from course_union;
-
+-- select DISTINCT thesis_design_year from thesis_design where thesis_design_teacher_id = "40068";
 -- select course_type from course_union where course_teacher_id = "40068";
 -- select * from course_union where course_num = "(2018-2019-2)-20170601-S0400620-1";
+
+-- select * from s_final where s_final_teacher_name = "顾梅园" AND s_final_year = "2019";

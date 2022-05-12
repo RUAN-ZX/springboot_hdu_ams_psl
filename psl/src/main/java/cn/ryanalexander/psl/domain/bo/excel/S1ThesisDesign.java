@@ -67,6 +67,9 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
     @ExcelProperty(value = "标准学时")
     private Integer thesisDesignStd;
 
+    @ExcelProperty(value = "毕业设计题目")
+    private String thesisDesignName;
+
     // 表头捕获
     private Integer thesisDesignYear;
     // 获取
@@ -162,7 +165,7 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
     @Override
     public void transformAndSave(ArrayList<S1ThesisDesign> list, int size) {
         ThesisDesignService thesisDesignService = (ThesisDesignService) SpringUtil.getBean("thesisDesignServiceImpl");
-        StudentService studentService = (StudentService) SpringUtil.getBean("studentServiceImpl");
+//        StudentService studentService = (StudentService) SpringUtil.getBean("studentServiceImpl");
         AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 
         ArrayList<String> accountNameList = new ArrayList<>(size);
@@ -173,7 +176,7 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
         }
         ArrayList<Integer> accountIdList = accountMapper.selectBatchIdByName(accountNameList);
         ArrayList<ThesisDesignPO> thesisDesignPOS = new ArrayList<>(size);
-        ArrayList<StudentPO> studentPOS = new ArrayList<>(size);
+//        ArrayList<StudentPO> studentPOS = new ArrayList<>(size);
 
         // accountId 注入到CourseTheory
         S1ThesisDesign s1ThesisDesign = null;
@@ -185,7 +188,7 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
                 s1ThesisDesign.fieldStandardized();
                 // 内置转换函数 能够将CourseTheory转换为Course 然后save！
                 thesisDesignPOS.add(new ThesisDesignPO(s1ThesisDesign));
-                studentPOS.add(new StudentPO(s1ThesisDesign));
+//                studentPOS.add(new StudentPO(s1ThesisDesign));
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -194,7 +197,7 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
         }
         try{
             thesisDesignService.saveBatch(thesisDesignPOS);
-            studentService.saveBatch(studentPOS);
+//            studentService.saveBatch(studentPOS);
 
         }
         catch (Exception e){
@@ -202,7 +205,7 @@ public class S1ThesisDesign implements ExcelEntity<S1ThesisDesign>, Cloneable{
             throw new AppException(e, "CourseShortTerm", "transformAndSave CourseShortTerm.saveBatch(courses)");
         }
         finally {
-            studentPOS.clear();
+//            studentPOS.clear();
             thesisDesignPOS.clear();
             accountIdList.clear();
             accountNameList.clear();

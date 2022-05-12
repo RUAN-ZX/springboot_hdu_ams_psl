@@ -46,7 +46,6 @@ public class CourseController {
     // todo 这里小心term往往不准确 估计需要写入的时候特别照顾 不从excel读而是直接从课号推断 万无一失！
     // 打算本地存储老师查询过得课 点进去课程详情也能显示清楚！
 
-    @Deprecated
     @Require(RoleEnum.TEACHER)
     @ApiOperation("get course By TeacherId And type And year")
     @GetMapping("/get/v2")
@@ -63,38 +62,6 @@ public class CourseController {
                 .eq("course_teacher_id", accountId))
         );
     }
-    @Deprecated
-    @Require(RoleEnum.TEACHER)
-    @ApiOperation("get course By TeacherId And type And year")
-    @GetMapping("/get")
-    public Result get(String accountId, String time, String type){
-        switch (type) {
-            case "0":  // 理论
-                return new Result(courseMapper.selectList(new QueryWrapper<CoursePO>()
-                        .eq("course_teacher_id", accountId)
-                        .eq("course_term", time)
-                        .eq("course_properties", "I"))
-                );
-            case "1":
-                return new Result(courseMapper.selectList(new QueryWrapper<CoursePO>()
-                        .eq("course_teacher_id", accountId)
-                        .eq("course_term", time)
-                        .ne("course_properties", "I"))
-                );
-            case "2":
-                return new Result(shortTermMapper.selectList(new QueryWrapper<ShortTermPO>()
-                        .eq("short_term_teacher_id", accountId)
-                        .eq("short_term_term", time))
-                );
-            default:
-                return new Result(thesisDesignMapper.selectList(new QueryWrapper<ThesisDesignPO>()
-                        .eq("thesis_design_teacher_id", accountId)
-                        .eq("thesis_design_year", time))
-                );
-        }
-
-    }
-
     @Require(RoleEnum.TEACHER)
     @ApiOperation("get years range of course")
     @GetMapping("/getYears")

@@ -37,6 +37,8 @@ public class ThesisDesignPO implements Serializable {
      */
     private String thesisDesignNote;
 
+    private String thesisDesignName;
+
     /**
      * 
      */
@@ -88,6 +90,7 @@ public class ThesisDesignPO implements Serializable {
 
         thesisDesignYear = ctd.getThesisDesignYear();
         thesisDesignNote = ctd.getThesisDesignNote();
+        thesisDesignName = ctd.getThesisDesignName();
         thesisDesignTeacherId = ctd.getThesisDesignTeacherId();
         thesisDesignTeacherName = ctd.getThesisDesignTeacherName();
         thesisDesignStudentName = ctd.getThesisDesignStudentName();

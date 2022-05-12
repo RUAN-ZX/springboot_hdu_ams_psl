@@ -4,6 +4,8 @@ import cn.ryanalexander.psl.domain.bo.excel.out.S1234;
 import cn.ryanalexander.psl.domain.bo.excel.out.S1Workload;
 import cn.ryanalexander.psl.domain.dto.Result;
 import cn.ryanalexander.psl.domain.po.SDetailPO;
+import cn.ryanalexander.psl.processor.annotationIntercept.Require;
+import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.psl.service.S1DetailService;
 import cn.ryanalexander.psl.service.excel.ExcelService;
 import cn.ryanalexander.psl.service.tool.StaticConfiguration;
@@ -53,11 +55,10 @@ public class ExcelController {
         for(MultipartFile file : multipartFiles){
             excelService.modelRead(file.getInputStream());
         }
-
-//        excelService.noModelRead(url);
         return new Result();
     }
 
+//    @Require(RoleEnum.MANAGER)
     @ApiOperation("用现有的excel表")
     @GetMapping (value = "/update")
     public Result update(int start, int end) throws IOException {
@@ -104,6 +105,7 @@ public class ExcelController {
 
 
     //@RequestParam指向前端input file的name,加入HttpServletRequest请求
+//    @Require(RoleEnum.MANAGER)
     @ApiOperation("上传excel并保存")
     @PostMapping(value = "/upload",
             headers = "content-type=multipart/form-data",

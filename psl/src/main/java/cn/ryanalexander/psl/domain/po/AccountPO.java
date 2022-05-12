@@ -1,6 +1,7 @@
 package cn.ryanalexander.psl.domain.po;
 
 import cn.ryanalexander.psl.domain.bo.excel.TitleInfo;
+import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.psl.service.tool.DataUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -46,9 +47,12 @@ public class AccountPO implements Serializable {
      */
     private String accountPwd;
 
+    private Integer accountRole;
+
     public AccountPO(TitleInfo titleInfo){
         accountId = DataUtil.string2integer(titleInfo.getTeacherId());
         accountName = titleInfo.getTeacherName();
+        accountRole = RoleEnum.TEACHER.getId();
     }
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

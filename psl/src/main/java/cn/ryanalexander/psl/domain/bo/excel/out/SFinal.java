@@ -2,13 +2,17 @@ package cn.ryanalexander.psl.domain.bo.excel.out;
 
 import cn.ryanalexander.psl.domain.bo.excel.ExcelEntity;
 import cn.ryanalexander.psl.domain.exceptions.AppException;
+import cn.ryanalexander.psl.domain.po.AccountPO;
 import cn.ryanalexander.psl.domain.po.SDetailPO;
 import cn.ryanalexander.psl.domain.po.SFinalPO;
+import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.mapper.SFinalMapper;
+import cn.ryanalexander.psl.service.SFinalService;
 import cn.ryanalexander.psl.service.tool.DataUtil;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -90,8 +94,7 @@ public class SFinal implements ExcelEntity<SFinal> {
     @Override
     public void fieldStandardized(){
         // 用对象前 先检测null teacherName一定有的。。
-        if(this.sFinalTeacherName.length() > 3)
-            this.sFinalTeacherName = this.sFinalTeacherName.substring(0, 3);
+        this.sFinalTeacherName = DataUtil.getChineseCharacter(this.sFinalTeacherName);
 
         if(this.sNote != null && this.sNote.length() > 32)
             this.sNote = this.sNote.substring(0,32);
@@ -113,11 +116,12 @@ public class SFinal implements ExcelEntity<SFinal> {
     public void transformAndSave(ArrayList<SFinal> list, int size) {
         SFinalMapper sFinalMapper =
                 (SFinalMapper) SpringUtil.getBean("SFinalMapper");
-
+        SFinalService sFinalService =
+                (SFinalService) SpringUtil.getBean("SFinalServiceImpl");
 //        SFinalService sFinalService =
 //                (SFinalService) SpringUtil.getBean("sFinalServiceImpl");
 
-//        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
+        AccountMapper accountMapper = (AccountMapper) SpringUtil.getBean("accountMapper");
 //
 //        ArrayList<String> accountNameList = new ArrayList<>(size);
 //        // 这里 因为标准课时 前边累加了 都是指定系数1 没有直接指定标准课时的 所以不calculation
@@ -137,7 +141,17 @@ public class SFinal implements ExcelEntity<SFinal> {
 //                sFinal.setSFinalTeacherId(String.valueOf(accountIdList.get(i)));
                 // 有些字段实在太长 删减点 别太过了
                 sFinal.fieldStandardized();
-                System.out.println(sFinal);
+                // 13 - 15年 表没有工号！
+                if(sFinal.getSFinalTeacherId() == null){
+                    AccountPO accountPO = accountMapper.selectOne(new QueryWrapper<AccountPO>()
+                            .select("account_id")
+                            .eq("account_name", sFinal.getSFinalTeacherName())
+                            .last("limit 1"));
+                    if(accountPO == null) continue;
+                    sFinal.setSFinalTeacherId(String.valueOf(accountPO.getAccountId()));
+                }
+
+//                System.out.println(sFinal);
                 sFinalPOS.add(new SFinalPO(sFinal));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,7 +159,7 @@ public class SFinal implements ExcelEntity<SFinal> {
             }
         }
         try{
-            sFinalMapper.saveOrUpdateBatch(sFinalPOS);
+            sFinalService.saveBatch(sFinalPOS);
         }
         catch (Exception e){
             e.printStackTrace();

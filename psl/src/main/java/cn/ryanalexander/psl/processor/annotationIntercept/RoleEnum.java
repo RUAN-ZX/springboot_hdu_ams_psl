@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RoleEnum {
     ROOT(0, "先生"),
-    MANAGER(1, "老师"),
+    MANAGER(1, "管理员"),
     TEACHER(2, "老师"),
     EXPIRED(3, ""); // 所有用户只要过期了 要刷新access都这么处理 反正拿到access你再操作
 

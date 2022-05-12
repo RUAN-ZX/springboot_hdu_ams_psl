@@ -26,7 +26,7 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     @Resource
-    private StaticConfiguration StaticConfiguration;
+    private StaticConfiguration staticConfiguration;
     @Resource
     private AccountMapper tDao;
 
@@ -64,15 +64,16 @@ public class EmailService {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
-        String content = readFile(StaticConfiguration.getMailUrl());
+        String content = readFile(staticConfiguration.getMailUrl());
 
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Tcaptcha),
                 true);
 
         String mailTitle = "[教务查系统] 验证码："+Tcaptcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
-//        helper.setTo(Tmail); todo 系统上线再说！
-        helper.setTo(mailFrom);
+        if(staticConfiguration.getMailSendEnable()) helper.setTo(Tmail);
+        else helper.setTo(mailFrom);
+
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
         mailSender.send(mimiMessage);
@@ -84,7 +85,7 @@ public class EmailService {
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
 
-        String content = readFile(StaticConfiguration.getMailUrl());
+        String content = readFile(staticConfiguration.getMailUrl());
         helper.setText(content.replace("老师",Tname+"老师").replace("123456",Fcontent),
                 true);
         // todo 怎么弄 怎么设计title
