@@ -1,9 +1,7 @@
 package cn.ryanalexander.psl.controller;
 
-import cn.ryanalexander.psl.domain.dto.Result;
-import cn.ryanalexander.psl.domain.po.CoursePO;
+import cn.ryanalexander.common.domain.dto.Result;
 import cn.ryanalexander.psl.domain.po.CourseUnionPO;
-import cn.ryanalexander.psl.domain.po.ShortTermPO;
 import cn.ryanalexander.psl.domain.po.ThesisDesignPO;
 import cn.ryanalexander.psl.mapper.CourseMapper;
 import cn.ryanalexander.psl.mapper.CourseUnionMapper;
@@ -11,7 +9,6 @@ import cn.ryanalexander.psl.mapper.ShortTermMapper;
 import cn.ryanalexander.psl.mapper.ThesisDesignMapper;
 import cn.ryanalexander.psl.processor.annotationIntercept.Require;
 import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
-import cn.ryanalexander.psl.service.CourseUnionService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -9,9 +9,9 @@ package cn.ryanalexander.psl.domain.bo.excel;
  * @apiNote 对于多人 且多课号的情况 理论课的逻辑是 记录课程信息（最下边的）+使用给定学时大小
  * 如果多人情况 如果有标准学时 使用给定标准学时完事（特别安排相当于）
  **/
-import cn.ryanalexander.psl.domain.exceptions.AppException;
-import cn.ryanalexander.psl.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.psl.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.psl.domain.po.CoursePO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.CourseService;

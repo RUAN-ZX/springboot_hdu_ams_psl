@@ -134,8 +134,7 @@ public class AccountController {
         // 您好，您的验证码是。。。
         return "OK";
     }
-    //
-    // todo 因为暂时不打算让psl创建真正的ACCOUNT 所以口径一致 统一使用teacherId 创建token 验证 都是一个id！
+
     @ApiOperation("用户已经邮箱注册 获取登记在案的邮箱验证码")
     @GetMapping("/getCaptcha")
     public Object getCaptcha(int userId, MailInfo mailInfo){

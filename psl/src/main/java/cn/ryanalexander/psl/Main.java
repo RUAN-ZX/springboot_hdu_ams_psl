@@ -13,7 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Version 1.0.0-Beta
  **/
 @EnableDiscoveryClient
-@SpringBootApplication()
+@SpringBootApplication
 @MapperScan(basePackages = "cn.ryanalexander.psl.mapper")
 public class Main {
     public static void main(String[] args) {

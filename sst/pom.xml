@@ -8,9 +8,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sst</artifactId>
-
+    <version>1.1.0</version>
 
     <dependencies>
+        <!--        RPC openfeign调用-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
         <!--mysql驱动-->
         <dependency>
             <groupId>mysql</groupId>

@@ -1,6 +1,6 @@
 package cn.ryanalexander.psl.controller;
 
-import cn.ryanalexander.psl.domain.dto.Result;
+import cn.ryanalexander.common.domain.dto.Result;
 import cn.ryanalexander.psl.domain.po.AchievementPO;
 import cn.ryanalexander.psl.mapper.AchievementMapper;
 import cn.ryanalexander.psl.processor.annotationIntercept.Require;

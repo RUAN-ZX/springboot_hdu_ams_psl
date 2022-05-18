@@ -2,15 +2,18 @@ package cn.ryanalexander.psl.controller;
 
 
 import cn.ryanalexander.common.domain.dto.Result;
+import cn.ryanalexander.common.domain.exceptions.InvalidException;
+import cn.ryanalexander.common.domain.exceptions.NotFoundException;
 import cn.ryanalexander.psl.config.redis.RedisKeyEnum;
-import cn.ryanalexander.psl.domain.exceptions.InvalidException;
-import cn.ryanalexander.psl.domain.exceptions.NotFoundException;
 import cn.ryanalexander.psl.domain.po.AccountPO;
 import cn.ryanalexander.psl.processor.annotationIntercept.Require;
 import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 
 import cn.ryanalexander.psl.service.AccountService;
+import cn.ryanalexander.psl.service.tool.BlockHandler;
 import cn.ryanalexander.psl.service.tool.EmailService;
+import cn.ryanalexander.psl.service.tool.FallbackHandler;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
@@ -18,12 +21,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Optional;
 
 @RestController
+@SentinelResource
 public class AccountController {
     // 如果该Service有多个实现类，设置注入哪个ServiceImpl类
     // @Qualifier("womanService") 而serviceImpl要制定好名字！@Service("")
@@ -41,7 +46,7 @@ public class AccountController {
         result.put(RedisKeyEnum.ACCOUNT.key, accountService.getById(accountId).getAccountName());
         return result;
     }
-
+//    java -Dsentinel.dashboard.auth.username=ryan -Dsentinel.dashboard.auth.password=SSBsb3ZlIHRoZSBMWVEgaW4gaGVyID -jar -Dserver.port=30083 sentinel-dashboard-1.7.2.jar
     // 无所谓 是个用户都应该享有这种权利！
     @Require(RoleEnum.TEACHER)
     @ApiOperation("客户端定时刷新 or loginByAccess都行 类似续杯1小时")
@@ -112,17 +117,6 @@ public class AccountController {
         jsonObject.put(RedisKeyEnum.ACCOUNT.key, accountPO.getAccountName());
         return jsonObject;
     }
-    @ApiOperation("获取验证码")
-    @GetMapping("/getCaptcha")
-    public Object getCaptcha(String accountId){
-        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
-        AccountPO accountPO = accountNullable.orElseThrow(() -> new NotFoundException(AccountPO.class, "accountService.getById"));
-        String Tname = accountPO.getAccountName();
-        String Temail = accountPO.getAccountMail();
-
-        accountService.getCaptcha(accountId, Tname, Temail);
-        return Temail;
-    }
 
     @Require(RoleEnum.TEACHER)
     @ApiOperation("更改密码")
@@ -149,6 +143,23 @@ public class AccountController {
                                String topic) throws MessagingException, IOException {
         emailService.sendFeedbackMails(accountId, accountName, feedback, topic);
         return new Result();
+    }
+
+    @SentinelResource(value = "getCaptcha",
+            blockHandlerClass = BlockHandler.class,
+            fallbackClass = FallbackHandler.class,
+            exceptionsToIgnore = {IllegalArgumentException.class}
+    )
+    @ApiOperation("获取验证码")
+    @GetMapping("/getCaptcha")
+    public Object getCaptcha(String accountId){
+        Optional<AccountPO> accountNullable = Optional.ofNullable(accountService.getById(accountId));
+        AccountPO accountPO = accountNullable.orElseThrow(IllegalArgumentException::new);
+        String Tname = accountPO.getAccountName();
+        String Temail = accountPO.getAccountMail();
+
+        accountService.getCaptcha(accountId, Tname, Temail);
+        return Temail;
     }
 }
 

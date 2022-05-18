@@ -1,9 +1,9 @@
 package cn.ryanalexander.psl.processor;
 
-import cn.ryanalexander.psl.domain.dto.Result;
-import cn.ryanalexander.psl.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.psl.domain.exceptions.AppException;
-import cn.ryanalexander.psl.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.domain.dto.Result;
+import cn.ryanalexander.common.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;

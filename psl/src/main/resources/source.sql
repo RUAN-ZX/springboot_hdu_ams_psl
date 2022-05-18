@@ -310,7 +310,7 @@ CREATE TABLE `evaluation`(
 	
 	PRIMARY KEY(`evaluation_id`),
 	UNIQUE KEY `uk_term_name` (`evaluation_term`,`evaluation_teacher_name`),
-	INDEX `uk_term_id` (`evaluation_term`,`evaluation_teacher_id`)
+	INDEX `idx_term_id` (`evaluation_term`,`evaluation_teacher_id`)
 )ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
 
 # 作为导出表 而不是用于历史数据导入表的！注意 导入的表不一定在一起 所以一个excel表 一个数据表！

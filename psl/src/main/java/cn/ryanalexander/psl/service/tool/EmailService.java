@@ -1,9 +1,9 @@
 package cn.ryanalexander.psl.service.tool;
 
-import cn.ryanalexander.psl.domain.exceptions.AppException;
-import cn.ryanalexander.psl.domain.exceptions.ExceptionInfo;
-import cn.ryanalexander.psl.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.psl.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.ExceptionInfo;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -71,12 +71,20 @@ public class EmailService {
 
         String mailTitle = "[教务查系统] 验证码："+Tcaptcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
-        if(staticConfiguration.getMailSendEnable()) helper.setTo(Tmail);
-        else helper.setTo(mailFrom);
-
         helper.setFrom(mailFrom);
         helper.setSubject(mailTitle);
-        mailSender.send(mimiMessage);
+
+        if(staticConfiguration.getTestMailEnable() != null && staticConfiguration.getTestMailEnable()){
+            for(String mailTo : staticConfiguration.getTestMailList()){
+                helper.setTo(mailTo);
+                mailSender.send(mimiMessage);
+            }
+        }
+        else{
+            helper.setTo(Tmail);
+            mailSender.send(mimiMessage);
+        }
+
     }
 
     @Async // 给我看的！

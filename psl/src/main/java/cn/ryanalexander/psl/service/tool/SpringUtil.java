@@ -1,9 +1,9 @@
 package cn.ryanalexander.psl.service.tool;
 
-import cn.ryanalexander.psl.domain.exceptions.code.ErrorCode;
-import cn.ryanalexander.psl.domain.exceptions.AppException;
-import cn.ryanalexander.psl.domain.exceptions.ExceptionInfo;
-import cn.ryanalexander.psl.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.ExceptionInfo;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;

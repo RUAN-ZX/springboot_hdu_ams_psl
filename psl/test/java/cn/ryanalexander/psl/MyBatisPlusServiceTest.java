@@ -31,7 +31,9 @@ public class MyBatisPlusServiceTest {
 
     @Test
     public void testGetCount(){
-        System.out.println(new BCryptPasswordEncoder().encode("loverfucker"));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String pwd = encoder.encode("SSBsb3ZlIHRoZSBMWVEgaW4gaGVyID");
+        System.out.println(pwd);
     }
 
     @Test

@@ -1,16 +1,21 @@
 package cn.ryanalexander.psl.controller;
 
-import cn.ryanalexander.psl.domain.dto.Result;
+import cn.ryanalexander.common.domain.dto.Result;
+import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
+import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.psl.service.tool.BlockHandler;
+import cn.ryanalexander.psl.service.tool.FallbackHandler;
 import cn.ryanalexander.psl.domain.po.EvaluationPO;
 import cn.ryanalexander.psl.domain.po.S1DetailPO;
 import cn.ryanalexander.psl.domain.po.SFinalPO;
-import cn.ryanalexander.psl.mapper.EvaluationMapper;
 import cn.ryanalexander.psl.mapper.SFinalMapper;
 import cn.ryanalexander.psl.processor.annotationIntercept.Require;
 import cn.ryanalexander.psl.processor.annotationIntercept.RoleEnum;
 import cn.ryanalexander.psl.service.EvaluationService;
 import cn.ryanalexander.psl.service.SDetailService;
 import cn.ryanalexander.psl.service.SFinalService;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
@@ -44,11 +49,31 @@ public class SController {
     @Resource
     private EvaluationService evaluationService;
 
-    // todo 前端得接收一下这个evaluation
     @Require(RoleEnum.TEACHER)
+    @ApiOperation("get Years choice By TeacherId")
+    @GetMapping("/getYearsByTeacherId")
+    public Object getYearsByTeacherId(String accountId){
+        return sFinalMapper.selectObjs(new QueryWrapper<SFinalPO>()
+                .select("distinct s_final_year")
+                .eq("s_final_teacher_id", accountId));
+    }
+    public static Result fallbackHandler(String accountId, Integer year, BlockException e) {
+        return new Result(new ErrorCode(SubjectEnum.INTERNAL), "fallBack!!!!!!");
+    }
+    public static Result blockHandler(String accountId, Integer year, BlockException e) {
+        return new Result(new ErrorCode(SubjectEnum.USER), "Blocked!!!!");
+    }
+
+
+//    @SentinelResource(value = "/s/getByTeacherIdAndYear",
+//            blockHandler = "blockHandler",
+//            fallback = "fallbackHandler",
+//            exceptionsToIgnore = {IllegalArgumentException.class}
+//    )
+    @SentinelResource(value = "/s/getByTeacherIdAndYear")
     @ApiOperation("get SFinal and SDetail By TeacherId")
     @GetMapping("/getByTeacherIdAndYear")
-    public Result getSDetailByTeacherId(String accountId, Integer year){
+    public Result getByTeacherIdAndYear(String accountId, Integer year){
         String term1 = (year - 1) + "-" + year + "-2";
         String term2 = year + "-" + (year + 1) + "-1";
         ArrayList<Object> result = new ArrayList<>();
@@ -58,24 +83,13 @@ public class SController {
         result.add(new S1DetailPO());
         // 两个学期的信息 sDetail只用S2 其他的均取自这里
         result.add(evaluationService.getOne(new QueryWrapper<EvaluationPO>()
-                        .eq("evaluation_term", term1)
-                        .eq("evaluation_teacher_id", accountId)
-                ));
+                .eq("evaluation_term", term1)
+                .eq("evaluation_teacher_id", accountId)
+        ));
         result.add(evaluationService.getOne(new QueryWrapper<EvaluationPO>()
-                        .eq("evaluation_term", term2)
-                        .eq("evaluation_teacher_id", accountId)
-                ));
-
-
+                .eq("evaluation_term", term2)
+                .eq("evaluation_teacher_id", accountId)
+        ));
         return new Result(JSONObject.toJSON(result));
-    }
-
-    @Require(RoleEnum.TEACHER)
-    @ApiOperation("get Years choice By TeacherId")
-    @GetMapping("/getYearsByTeacherId")
-    public Object getYearsByTeacherId(String accountId){
-        return sFinalMapper.selectObjs(new QueryWrapper<SFinalPO>()
-                .select("distinct s_final_year")
-                .eq("s_final_teacher_id", accountId));
     }
 }

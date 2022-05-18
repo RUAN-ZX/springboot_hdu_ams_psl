@@ -1,13 +1,12 @@
 package cn.ryanalexander.psl.domain.bo.excel;
 
-import cn.ryanalexander.psl.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.AppException;
 import cn.ryanalexander.psl.domain.po.CourseUnionPO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.CourseUnionService;
 import cn.ryanalexander.psl.service.tool.SpringUtil;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

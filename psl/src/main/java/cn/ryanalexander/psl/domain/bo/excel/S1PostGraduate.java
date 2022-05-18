@@ -1,6 +1,6 @@
 package cn.ryanalexander.psl.domain.bo.excel;
 
-import cn.ryanalexander.psl.domain.exceptions.AppException;
+import cn.ryanalexander.common.domain.exceptions.AppException;
 import cn.ryanalexander.psl.domain.po.PostGraduatePO;
 import cn.ryanalexander.psl.mapper.AccountMapper;
 import cn.ryanalexander.psl.service.PostGraduateService;
