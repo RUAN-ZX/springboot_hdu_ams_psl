@@ -2,12 +2,14 @@ spring:
   application:
     name: sst
   profiles:
-    active: dev
+    active: prod
   cloud:
     nacos:
       config:
-        server-addr: 175.178.1.161:38848
+        server-addr: 175.178.1.161:30081
         username: nacos
         password:
         file-extension: yaml
         namespace: sst
+      discovery:
+        server-addr: 175.178.1.161:30081

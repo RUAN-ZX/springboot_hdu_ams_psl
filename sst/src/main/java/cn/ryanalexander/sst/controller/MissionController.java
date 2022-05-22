@@ -166,6 +166,7 @@ public class MissionController {
         int classId = missionDTO.getMissionClassId();
 
         List<Object> missionStudentIds = recordMapper.selectObjs(new QueryWrapper<RecordPO>()
+                .select("record_student_id")
                 .eq("record_class_id", classId));
 
         int size = missionStudentIds.size();
