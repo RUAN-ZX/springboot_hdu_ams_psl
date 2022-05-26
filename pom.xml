@@ -83,7 +83,7 @@
         <dependency>
             <groupId>cn.ryanalexander.common</groupId>
             <artifactId>common</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!--        nacos 获取config-->

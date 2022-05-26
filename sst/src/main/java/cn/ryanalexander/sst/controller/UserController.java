@@ -58,7 +58,7 @@ public class UserController {
     private AccountFeignService accountFeignService;
 
 
-    @Transactional
+//    @Transactional
     @ApiOperation("邮箱注册")
     @PostMapping("/registerByMail")
     public Object registerByMail(String userName,

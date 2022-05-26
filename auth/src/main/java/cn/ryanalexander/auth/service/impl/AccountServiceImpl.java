@@ -10,6 +10,7 @@ import cn.ryanalexander.common.domain.dto.MailInfo;
 import cn.ryanalexander.common.domain.exceptions.*;
 import cn.ryanalexander.common.domain.exceptions.code.ErrorCode;
 import cn.ryanalexander.common.domain.exceptions.code.SubjectEnum;
+import cn.ryanalexander.common.enums.AppKeyEnum;
 import cn.ryanalexander.common.service.tool.JwtService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -137,7 +138,9 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountPO>
         String captcha = this.generateVerCode();
 
         try{// callName: 黄继业 | roleName: 老师 | 黄继业老师
-            emailService.sendCaptchaMails(captcha,
+            emailService.sendCaptchaMails(
+                    AppKeyEnum.getByKey(mailInfo.getAccountApp()).getName(),
+                    captcha,
                     mailInfo.getCallName() + mailInfo.getRoleName(),
                     mailInfo.getMailTo(),
                     mailInfo.getMailHtmlUrl());

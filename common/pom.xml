@@ -6,7 +6,7 @@
     <artifactId>common</artifactId>
 
     <groupId>cn.ryanalexander.common</groupId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <!--  mvn versions:set -DnewVersion=1.0.0  统一修改！ -->
     <packaging>pom</packaging><!-- 这里添加，注意不是jar或war -->
 

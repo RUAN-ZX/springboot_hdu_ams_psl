@@ -57,7 +57,7 @@ public class EmailService {
     }
 
 
-    public void sendCaptchaMails(String captcha, String name, String mailTo, String mailHtmlUrl) throws MessagingException, IOException {
+    public void sendCaptchaMails(String appName, String captcha, String name, String mailTo, String mailHtmlUrl) throws MessagingException, IOException {
         MimeMessage mimiMessage = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(mimiMessage, true);
@@ -66,7 +66,7 @@ public class EmailService {
         helper.setText(content.replace("老师，", name + "，").replace("123456", captcha),
                 true);
 
-        String mailTitle = "[教务查系统] 验证码："+captcha;
+        String mailTitle = "[" + appName + "] 验证码："+captcha;
         String mailFrom = "ryan_innerpeace@foxmail.com";
         helper.setTo(mailTo);  // todo 系统上线再说！
 //        helper.setTo(mailFrom);

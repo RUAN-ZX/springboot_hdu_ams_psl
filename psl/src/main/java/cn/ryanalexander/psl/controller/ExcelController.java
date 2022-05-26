@@ -43,12 +43,11 @@ public class ExcelController {
 
 
 //    @Require(RoleEnum.MANAGER)
+    @CrossOrigin
     @ApiOperation("上传Excel并更新数据")
-    @PostMapping (value = "/update",
-            headers = "content-type=multipart/form-data",
-            produces = "application/json;charset=utf-8")
+    @PostMapping ("/update")
     public Result update(
-            @RequestPart("uploadFile") MultipartFile[] multipartFiles
+            @RequestParam("uploadFile") MultipartFile[] multipartFiles
     ) throws IOException {
         for(MultipartFile file : multipartFiles){
             excelService.modelRead(file.getInputStream());
@@ -57,8 +56,8 @@ public class ExcelController {
     }
 
 //    @Require(RoleEnum.MANAGER)
-    @ApiOperation("用现有的excel表")
-    @GetMapping (value = "/update")
+    @ApiOperation("用现有的excel表更新 即需要先保存再读取")
+    @GetMapping (value = "/updateByLocalFiles")
     public Result update(int start, int end) throws IOException {
         excelService.noModelRead(start, end);
         return new Result();
@@ -104,10 +103,13 @@ public class ExcelController {
 
     //@RequestParam指向前端input file的name,加入HttpServletRequest请求
 //    @Require(RoleEnum.MANAGER)
+//    @ApiOperation("上传excel并保存")
+//    @PostMapping(value = "/upload",
+//            headers = "content-type=multipart/form-data",
+//            produces = "application/json;charset=utf-8")
+    @CrossOrigin
     @ApiOperation("上传excel并保存")
-    @PostMapping(value = "/upload",
-            headers = "content-type=multipart/form-data",
-            produces = "application/json;charset=utf-8")
+    @RequestMapping("/upload")
     public String upload(@RequestParam("uploadFile") MultipartFile[] multipartFiles, HttpServletRequest request) throws IOException {
         //设置当前日期
         String uploadDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date());
